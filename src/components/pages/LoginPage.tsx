@@ -1,11 +1,9 @@
-import Form from "../molecules/loginForm/LoginForm";
+import Form from '../molecules/loginForm/LoginForm';
 
-import React from 'react'
+import React from 'react';
 
-const LoginPage:React.FC = () => {
-  return (
-    <Form/>
-  )
-}
+const LoginPage: React.FC = () => {
+  return <Form />;
+};
 
-export default LoginPage
+export default LoginPage;

@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-type InputType = "text" | "password";
+type InputType = 'text' | 'password';
 
 type InputProps = {
   id: string;
