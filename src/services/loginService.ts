@@ -9,8 +9,8 @@ const loginService = async (userData: User) => {
     data: userData,
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
-    },
+      'Content-Type': 'application/json'
+    }
   });
 
   const data = response.data;
