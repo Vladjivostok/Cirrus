@@ -1,20 +1,11 @@
-import axios from 'axios';
+import httpService from './httpService';
 
 import { User } from '../common/types';
-import { LOGIN_URL, dummyUrl } from '../common/constants';
+import { LOGIN_URL } from '../common/constants';
 
-const loginService = async (userData: User) => {
-  const response = await axios({
-    url: dummyUrl, // using dummyUrl for testing / leter replace with LOGIN_URL
-    data: userData,
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  });
-
-  const data = response.data;
-  console.log(data);
+export const LoginService = {
+  login: async (userData: User) => {
+    const response = await httpService.post(LOGIN_URL, userData);
+    return response.data;
+  }
 };
-
-export default loginService;
