@@ -1,4 +1,3 @@
-const LOGIN_URL = 'http://localhost:8080/api/v1/login';
-const dummyUrl = 'https://reqres.in/api/users';
+const LOGIN_URL = `/api/v1/login`;
 
-export { LOGIN_URL, dummyUrl };
+export { LOGIN_URL };
