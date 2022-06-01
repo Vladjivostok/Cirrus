@@ -1,10 +1,10 @@
 import httpService from './httpService';
 
-import { User, Response } from '../common/types';
+import { User, UserLoginData, Response } from '../common/types';
 import { LOGIN_URL } from '../common/constants';
 
 export const LoginService = {
-  login: async (userData: User): Promise<Response> => {
+  login: async (userData: User): Promise<Response<UserLoginData>> => {
     const response = await httpService.post(LOGIN_URL, userData);
     return response.data;
   }
