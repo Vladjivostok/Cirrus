@@ -16,10 +16,25 @@ const Form: React.FC = () => {
     message: 'Password input cant be empty!'
   });
 
-  const onChangeHandler = (e: any) => {
+  const [isValid, setIsValid] = useState({ username: false, password: false });
+  const [isBtnDisable, setIsBtnDisabled] = useState(true);
+
+  const onChangeHandler = (event: any) => {
+    if (event.target.name == 'username') {
+      validateUsername(event);
+    } else if (event.target.name == 'password') {
+      validatePassword(event);
+    }
+
+    if (isValid.username == true && isValid.password == true) {
+      setIsBtnDisabled(false);
+    } else if (isValid.username == false || isValid.password == false) {
+      setIsBtnDisabled(true);
+    }
+
     setInputValues((prevState) => ({
       ...prevState,
-      [e.target.name]: e.target.value
+      [event.target.name]: event.target.value
     }));
   };
 
@@ -28,57 +43,62 @@ const Form: React.FC = () => {
     console.log(inputValues);
   };
 
-  const validateInput = (event: any) => {
-    switch (event.target.name) {
-      case 'username':
-        setUsernameError((prevError) => ({
-          ...prevError,
-          isShown: false
-        }));
-        if (event.target.value == '') {
-          setUsernameError((prevError) => ({
-            ...prevError,
-            isShown: true
-          }));
-        }
-        break;
-      case 'password':
-        setPasswordError((prevError) => ({
-          ...prevError,
-          isShown: false
-        }));
-        if (event.target.value == '') {
-          setPasswordError((prevError) => ({
-            ...prevError,
-            isShown: true
-          }));
-        }
-        break;
+  const validateUsername = (event: any) => {
+    if (event.target.value == '') {
+      setUsernameError((prevError) => ({
+        ...prevError,
+        isShown: true
+      }));
+      setIsValid((prevValue) => ({
+        ...prevValue,
+        username: false
+      }));
+    } else {
+      setUsernameError((prevError) => ({
+        ...prevError,
+        isShown: false
+      }));
+      setIsValid((prevValue) => ({
+        ...prevValue,
+        username: true
+      }));
+    }
+  };
 
-      default:
-        break;
+  const validatePassword = (event: any) => {
+    if (event.target.value == '') {
+      setPasswordError((prevError) => ({
+        ...prevError,
+        isShown: true
+      }));
+      setIsValid((prevValue) => ({
+        ...prevValue,
+        password: false
+      }));
+    } else {
+      setPasswordError((prevError) => ({
+        ...prevError,
+        isShown: false
+      }));
+      setIsValid((prevValue) => ({
+        ...prevValue,
+        password: true
+      }));
     }
   };
 
   return (
     <form onSubmit={submitHandler}>
-      <Input
-        name={'username'}
-        type={'text'}
-        placeholder={'Username'}
-        onChange={onChangeHandler}
-        onBlur={validateInput}
-      />
+      <Input name={'username'} type={'text'} placeholder={'Username'} onChange={onChangeHandler} />
       {usernameError.isShown && <p>{usernameError.message}</p>}
       <Input
         name={'password'}
         type={'password'}
         placeholder={'Password'}
         onChange={onChangeHandler}
-        onBlur={validateInput}
       />
       {passwordError.isShown && <p>{passwordError.message}</p>}
-      <Button />
+      <Button isDisabled={isBtnDisable} label={'Log In'} />
     </form>
   );
 };

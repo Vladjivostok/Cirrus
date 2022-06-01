@@ -7,13 +7,10 @@ type InputProps = {
   type: InputType;
   placeholder: string;
   onChange: any;
-  onBlur: any;
 };
 
-const Input: React.FC<InputProps> = ({ name, type, placeholder, onChange, onBlur }) => {
-  return (
-    <input name={name} type={type} placeholder={placeholder} onChange={onChange} onBlur={onBlur} />
-  );
+const Input: React.FC<InputProps> = ({ name, type, placeholder, onChange }) => {
+  return <input name={name} type={type} placeholder={placeholder} onChange={onChange} />;
 };
 
 export default Input;

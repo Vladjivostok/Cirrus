@@ -1,7 +1,16 @@
 import React from 'react';
 
-const Button: React.FC = () => {
-  return <button type="submit">Klikni</button>;
+type Props = {
+  isDisabled: boolean;
+  label: string;
+};
+
+const Button: React.FC<Props> = ({ isDisabled, label }) => {
+  return (
+    <button type="submit" disabled={isDisabled}>
+      {label}
+    </button>
+  );
 };
 
 export default Button;
