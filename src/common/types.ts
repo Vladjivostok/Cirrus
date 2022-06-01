@@ -1,7 +1,6 @@
 //@Interfaces
 export interface Response<T> {
-  statusCode: number;
-  httpStatus: ResponseStatusCode;
+  statusCode: ResponseStatusCode;
   error: string | null;
   data?: T;
 }
@@ -12,10 +11,10 @@ export type User = {
   password: string;
 };
 
-export type UserLoginData = {
+export type UserLoginDataResponse = {
   user: {
-    username: 'admin';
-    email: 'admin@admin.com';
+    username: string;
+    email: string;
     accessToken: string | null;
     refreshToken: string | null;
   };
