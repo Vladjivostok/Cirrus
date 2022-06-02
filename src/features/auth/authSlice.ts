@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { User } from '../../common/types';
 import { LoginService } from '../../services/loginService';
 
-type loginAction = {
+type LoginAction = {
   payload: User;
   type: string;
 };
@@ -27,7 +27,7 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    login: (state, action: loginAction) => {
+    login: (state, action: LoginAction) => {
       state.user = action.payload;
     }
   }

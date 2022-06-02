@@ -6,10 +6,10 @@ export interface Response<T> {
 }
 
 //@Types
-export type User = {
+export interface User {
   username: string;
   password: string;
-};
+}
 
 export type UserLoginDataResponse = {
   user: {
