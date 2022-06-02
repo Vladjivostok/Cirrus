@@ -1,31 +1,36 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { User } from '../../common/types';
+import { LoginService } from '../../services/loginService';
 
-import type { RootState } from '../../store/store';
-
-interface AuthState {
-  isLoggedIn: boolean;
-}
-
-const initialState: AuthState = {
-  isLoggedIn: false
+type loginAction = {
+  payload: User;
+  type: string;
 };
 
-export const authSlice = createSlice({
-  name: 'auth',
-  initialState,
-  reducers: {
-    login: (state) => {
-      state.isLoggedIn = true;
-    },
-
-    logout: (state) => {
-      state.isLoggedIn = false;
-    }
+export const login = createAsyncThunk('auth/login', async (userData: User, thunkAPI) => {
+  try {
+    return await LoginService.login(userData);
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
   }
 });
 
-export const { login, logout } = authSlice.actions;
+interface LoginState {
+  user: User;
+}
 
-export const loginStatus = (state: RootState) => state.auth.isLoggedIn;
+const initialState: LoginState = {
+  user: { username: '', password: '' }
+};
+
+const authSlice = createSlice({
+  name: 'auth',
+  initialState,
+  reducers: {
+    login: (state, action: loginAction) => {
+      state.user = action.payload;
+    }
+  }
+});
 
 export default authSlice.reducer;
