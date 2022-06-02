@@ -1,13 +1,13 @@
 import React from 'react';
 
 type Props = {
-  isDisabled: boolean;
+  disabled: boolean;
   label: string;
 };
 
-const Button: React.FC<Props> = ({ isDisabled, label }) => {
+const Button: React.FC<Props> = ({ label, disabled }) => {
   return (
-    <button type="submit" disabled={isDisabled}>
+    <button disabled={disabled} type="submit">
       {label}
     </button>
   );

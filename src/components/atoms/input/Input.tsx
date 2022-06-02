@@ -1,16 +1,18 @@
 import React from 'react';
+import { string } from 'yup';
 
-type InputType = 'text' | 'password';
-
-type InputProps = {
-  name: string;
-  type: InputType;
-  placeholder: string;
+type Props = {
+  value: 'text';
   onChange: any;
+  name: string;
+  type: 'text' | 'password';
+  placeholder: string;
 };
 
-const Input: React.FC<InputProps> = ({ name, type, placeholder, onChange }) => {
-  return <input name={name} type={type} placeholder={placeholder} onChange={onChange} />;
+const Input: React.FC<Props> = ({ value, name, type, placeholder, onChange }) => {
+  return (
+    <input value={value} name={name} type={type} placeholder={placeholder} onChange={onChange} />
+  );
 };
 
 export default Input;

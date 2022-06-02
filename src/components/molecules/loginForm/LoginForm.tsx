@@ -1,106 +1,53 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Formik, Field, Form } from 'formik';
 
 import Input from '../../atoms/input/Input';
 import Button from '../../atoms/button/Button';
+import * as Yup from 'yup';
 
-const Form: React.FC = () => {
-  const [inputValues, setInputValues] = useState({ username: '', password: '' });
+const LoginSceme = Yup.object().shape({
+  username: Yup.string().required('Username required!'),
+  password: Yup.string().required('Password required!')
+});
 
-  const [usernameError, setUsernameError] = useState({
-    isShown: false,
-    message: 'Username input cant be empty!'
-  });
-
-  const [passwordError, setPasswordError] = useState({
-    isShown: false,
-    message: 'Password input cant be empty!'
-  });
-
-  const [isValid, setIsValid] = useState({ username: false, password: false });
-  const [isBtnDisable, setIsBtnDisabled] = useState(true);
-
-  const onChangeHandler = (event: any) => {
-    if (event.target.name == 'username') {
-      validateUsername(event);
-    } else if (event.target.name == 'password') {
-      validatePassword(event);
-    }
-
-    if (isValid.username == true && isValid.password == true) {
-      setIsBtnDisabled(false);
-    } else if (isValid.username == false || isValid.password == false) {
-      setIsBtnDisabled(true);
-    }
-
-    setInputValues((prevState) => ({
-      ...prevState,
-      [event.target.name]: event.target.value
-    }));
-  };
-
-  const submitHandler = (event: any) => {
-    event.preventDefault();
-    console.log(inputValues);
-  };
-
-  const validateUsername = (event: any) => {
-    if (event.target.value == '') {
-      setUsernameError((prevError) => ({
-        ...prevError,
-        isShown: true
-      }));
-      setIsValid((prevValue) => ({
-        ...prevValue,
-        username: false
-      }));
-    } else {
-      setUsernameError((prevError) => ({
-        ...prevError,
-        isShown: false
-      }));
-      setIsValid((prevValue) => ({
-        ...prevValue,
-        username: true
-      }));
-    }
-  };
-
-  const validatePassword = (event: any) => {
-    if (event.target.value == '') {
-      setPasswordError((prevError) => ({
-        ...prevError,
-        isShown: true
-      }));
-      setIsValid((prevValue) => ({
-        ...prevValue,
-        password: false
-      }));
-    } else {
-      setPasswordError((prevError) => ({
-        ...prevError,
-        isShown: false
-      }));
-      setIsValid((prevValue) => ({
-        ...prevValue,
-        password: true
-      }));
-    }
-  };
-
+const LoginForm: React.FC = () => {
   return (
-    <form onSubmit={submitHandler}>
-      <Input name={'username'} type={'text'} placeholder={'Username'} onChange={onChangeHandler} />
-      {usernameError.isShown && <p>{usernameError.message}</p>}
-      <Input
-        name={'password'}
-        type={'password'}
-        placeholder={'Password'}
-        onChange={onChangeHandler}
-      />
-      {passwordError.isShown && <p>{passwordError.message}</p>}
-      <Button isDisabled={isBtnDisable} label={'Log In'} />
-    </form>
+    <Formik
+      initialValues={{ username: '', password: '' }}
+      validationSchema={LoginSceme}
+      onSubmit={(data, { setSubmitting, resetForm }) => {
+        setSubmitting(true);
+
+        console.log(data);
+
+        setSubmitting(false);
+        resetForm();
+      }}
+    >
+      {({ errors, values, isSubmitting, handleSubmit, touched }) => (
+        <Form onSubmit={handleSubmit}>
+          <Field
+            name="username"
+            placeholder={'Username'}
+            type={'text'}
+            value={values.username}
+            as={Input}
+          />
+          {errors.username && touched.username ? <div>{errors.username}</div> : null}
+          <Field
+            name="password"
+            placeholder={'Password'}
+            type={'password'}
+            value={values.password}
+            as={Input}
+          />
+          {errors.password && touched.password ? <div>{errors.password}</div> : null}
+          <Button disabled={isSubmitting} label={'Login'} />
+          <pre>{JSON.stringify(values, null, 2)}</pre>
+        </Form>
+      )}
+    </Formik>
   );
 };
 
-export default Form;
+export default LoginForm;
