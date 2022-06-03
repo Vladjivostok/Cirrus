@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { LoginService } from './services/loginService';
 import { User } from './common/types';
-import { login } from './features/auth/authSlice';
+// import { login } from './features/auth/authSlice';
+import { myReducer } from './features/auth/authSlice';
 
 import authSlice from './features/auth/authSlice';
 
@@ -13,7 +14,7 @@ const App: React.FC = () => {
   useAppSelector((state) => console.log('From selector ====>  ', state.auth));
 
   useEffect(() => {
-    dispatch(login(userData));
+    dispatch(myReducer(userData));
   }, []);
 
   return <div className="App"></div>;
