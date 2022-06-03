@@ -1,0 +1,21 @@
+.input {
+  width: 10rem;
+  padding: 0.4rem;
+  font-size: 0.5rem;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 0.15rem;
+  margin-bottom: 1.3rem;
+}
+
+.errorMsg {
+  color: #d93025;
+  position: absolute;
+  top: 1.6rem;
+  font-family: sans-serif;
+  font-size: 0.5rem;
+}
+
+.inputWrapper {
+  position: relative;
+}

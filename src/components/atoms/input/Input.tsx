@@ -1,9 +1,10 @@
-import React from 'react';
-import { string } from 'yup';
+import React, { ChangeEventHandler } from 'react';
+
+import './input.css';
 
 type Props = {
   value: 'text';
-  onChange: any;
+  onChange: ChangeEventHandler<HTMLInputElement>;
   name: string;
   type: 'text' | 'password';
   placeholder: string;
@@ -11,7 +12,14 @@ type Props = {
 
 const Input: React.FC<Props> = ({ value, name, type, placeholder, onChange }) => {
   return (
-    <input value={value} name={name} type={type} placeholder={placeholder} onChange={onChange} />
+    <input
+      className="input"
+      value={value}
+      name={name}
+      type={type}
+      placeholder={placeholder}
+      onChange={onChange}
+    />
   );
 };
 

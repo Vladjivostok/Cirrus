@@ -1,5 +1,7 @@
 import React from 'react';
 
+import './button.css';
+
 type Props = {
   disabled: boolean;
   label: string;
@@ -7,7 +9,7 @@ type Props = {
 
 const Button: React.FC<Props> = ({ label, disabled }) => {
   return (
-    <button disabled={disabled} type="submit">
+    <button className="button" disabled={disabled} type="submit">
       {label}
     </button>
   );

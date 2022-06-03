@@ -2,14 +2,20 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Roboto';
 }
 
 body {
   font-size: 62.5%;
+  font-family: 'Roboto';
 }
 
 a {
   text-decoration: none;
   color: inherit;
+}
+
+:root {
+  --button-text-color: white;
+  --button-color-primary: #1a73e8;
+  --button-color-primary-hover: #0a58be;
 }
