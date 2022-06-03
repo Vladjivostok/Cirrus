@@ -1,10 +1,7 @@
 import React, { useEffect } from 'react';
-import { LoginService } from './services/loginService';
-import { User } from './common/types';
-// import { login } from './features/auth/authSlice';
-import { myReducer } from './features/auth/authSlice';
 
-import authSlice from './features/auth/authSlice';
+import { User } from './common/types';
+import { myReducer } from './features/auth/authSlice';
 
 import { useAppSelector, useAppDispatch } from './store/hooks';
 

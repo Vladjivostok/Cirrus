@@ -1,4 +1,3 @@
-// const LOGIN_URL = `/api/v1/login`;
-const LOGIN_URL = ``;
+const LOGIN_URL = `/api/v1/login`;
 
 export { LOGIN_URL };
