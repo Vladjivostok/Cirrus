@@ -1,7 +1,7 @@
 * {
   margin: 0;
-  padding: 0;
   box-sizing: border-box;
+  padding: 0;
 }
 
 body {
@@ -18,4 +18,6 @@ a {
   --button-text-color: white;
   --button-color-primary: #1a73e8;
   --button-color-primary-hover: #0a58be;
+  --error-message-color: #d93025;
+  --border-color: #ccc;
 }

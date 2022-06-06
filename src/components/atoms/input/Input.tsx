@@ -2,15 +2,17 @@ import React, { ChangeEventHandler } from 'react';
 
 import './input.css';
 
-type Props = {
-  value: 'text';
+type InputType = 'text' | 'password';
+
+interface InputProps {
+  value: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
   name: string;
-  type: 'text' | 'password';
+  type: InputType;
   placeholder: string;
-};
+}
 
-const Input: React.FC<Props> = ({ value, name, type, placeholder, onChange }) => {
+const Input: React.FC<InputProps> = ({ value, name, type, placeholder, onChange }) => {
   return (
     <input
       className="input"

@@ -1,9 +1,90 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import LoginForm from '../molecules/loginForm/LoginForm';
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
+
+import logo from './../../../src/assets/Cirrus.png';
+import Input from '../atoms/input/Input';
+import Button from '../atoms/button/Button';
+import FormErrorMessage from '../atoms/errorMessage/FormErrorMessage';
+import { Hide, Show } from '../../assets/Svg';
+import './loginPage.css';
+
+const LoginScheme = Yup.object().shape({
+  username: Yup.string().trim().required('Username required!'),
+  password: Yup.string().trim().required('Password required!')
+});
 
 const LoginPage: React.FC = () => {
-  return <LoginForm />;
+  const [toggleShowPassword, setToggleShowPassword] = useState(false);
+  const togglePassword = () => {
+    setToggleShowPassword(!toggleShowPassword);
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      password: ''
+    },
+    validationSchema: LoginScheme,
+    onSubmit: (values) => {
+      formik.setSubmitting(true);
+
+      console.log(JSON.stringify(values, null, 2));
+
+      formik.setSubmitting(false);
+      formik.resetForm();
+      setToggleShowPassword(false);
+      toggleIcon();
+    }
+  });
+
+  const errorMessage = (errors: any, touched: any, inputType: 'username' | 'password') => {
+    if (touched.username && inputType === 'username') {
+      return <FormErrorMessage>{errors.username}</FormErrorMessage>;
+    } else if (touched.password && inputType === 'password') {
+      return <FormErrorMessage>{errors.password}</FormErrorMessage>;
+    }
+  };
+  const toggleIcon = () => {
+    if (!toggleShowPassword) {
+      return <Show onClick={togglePassword}></Show>;
+    } else if (toggleShowPassword) {
+      return <Hide onClick={togglePassword}></Hide>;
+    }
+  };
+
+  return (
+    <div className="loginPage">
+      <form className="loginForm" onSubmit={formik.handleSubmit}>
+        <img src={logo} alt="Cirrus logo missing" />
+        <div className="inputWrapper">
+          <Input
+            name="username"
+            placeholder="Username"
+            type="text"
+            value={formik.values.username}
+            onChange={formik.handleChange}
+          />
+          {errorMessage(formik.errors, formik.touched, 'username')}
+        </div>
+        <div className="inputWrapper">
+          <Input
+            name="password"
+            placeholder="Password"
+            type={toggleShowPassword ? 'text' : 'password'}
+            value={formik.values.password}
+            onChange={formik.handleChange}
+          />
+          {errorMessage(formik.errors, formik.touched, 'password')}
+          {toggleIcon()}
+          {/* <button type="button" onClick={togglePassword}></button> */}
+        </div>
+
+        <Button type="submit" disabled={formik.isSubmitting} label="Login" />
+      </form>
+    </div>
+  );
 };
 
 export default LoginPage;

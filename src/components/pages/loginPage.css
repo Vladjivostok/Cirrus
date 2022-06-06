@@ -1,22 +1,22 @@
-.loginFormContainer {
-  height: 100vh;
+.loginPage {
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100vh;
 }
 
 .loginForm {
-  padding: 2rem 1.5rem;
-  border: 0.5px solid #ccc;
-  border-radius: 0.2rem;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  border: 0.5px solid #ccc;
+  border-radius: 0.2rem;
+  padding: 2rem 1.5rem;
 }
 
 img {
+  margin-bottom: 1rem;
   width: 5rem;
   height: 5rem;
-  margin-bottom: 1rem;
 }
