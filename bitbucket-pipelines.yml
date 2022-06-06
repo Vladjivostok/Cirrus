@@ -20,5 +20,5 @@ pipelines:
               variables:
                 USER: $SERVER_USERNAME
                 SERVER: $SERVER_NAME
-                REMOTE_PATH: '/Documents/cirrus/fe'
+                REMOTE_PATH: './Documents/cirrus/fe'
                 LOCAL_PATH: 'build/*'
