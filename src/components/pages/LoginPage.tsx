@@ -85,7 +85,6 @@ const LoginPage: React.FC = () => {
           />
           {errorMessage(formik.errors, formik.touched, 'password')}
           {toggleIcon()}
-          {/* <button type="button" onClick={togglePassword}></button> */}
         </div>
 
         <Button type="submit" disabled={formik.isSubmitting} label="Login" />
