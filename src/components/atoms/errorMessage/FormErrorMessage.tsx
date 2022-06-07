@@ -3,7 +3,7 @@ import React from 'react';
 import './formErrorMessage.css';
 
 type FormErrorMessageProps = {
-  children: string;
+  children: string | undefined;
 };
 
 const FormErrorMessage = (props: FormErrorMessageProps) => {

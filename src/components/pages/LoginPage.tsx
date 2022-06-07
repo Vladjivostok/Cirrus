@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import * as Yup from 'yup';
-import { useFormik } from 'formik';
+import { useFormik, FormikErrors, FormikTouched } from 'formik';
 
 import logo from './../../../src/assets/Cirrus.png';
 import Input from '../atoms/input/Input';
@@ -30,8 +30,6 @@ const LoginPage: React.FC = () => {
     onSubmit: (values) => {
       formik.setSubmitting(true);
 
-      console.log(JSON.stringify(values, null, 2));
-
       formik.setSubmitting(false);
       formik.resetForm();
       setToggleShowPassword(false);
@@ -39,7 +37,16 @@ const LoginPage: React.FC = () => {
     }
   });
 
-  const errorMessage = (errors: any, touched: any, inputType: 'username' | 'password') => {
+  interface FormValues {
+    username: string | undefined;
+    password: string | undefined;
+  }
+
+  const errorMessage = (
+    errors: FormikErrors<FormValues>,
+    touched: FormikTouched<FormValues>,
+    inputType: 'username' | 'password'
+  ) => {
     if (touched.username && inputType === 'username') {
       return <FormErrorMessage>{errors.username}</FormErrorMessage>;
     } else if (touched.password && inputType === 'password') {
