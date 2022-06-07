@@ -11,3 +11,7 @@
 .inputWrapper {
   position: relative;
 }
+
+.inputWrapper input::-ms-reveal {
+  display: none;
+}

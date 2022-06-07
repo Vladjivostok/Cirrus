@@ -7,7 +7,7 @@ import logo from './../../../src/assets/Cirrus.png';
 import Input from '../atoms/input/Input';
 import Button from '../atoms/button/Button';
 import FormErrorMessage from '../atoms/errorMessage/FormErrorMessage';
-import { Hide, Show } from '../../assets/Svg';
+import { Hide, Show } from '../atoms/passwordIcon/Svg';
 import './loginPage.css';
 
 const LoginScheme = Yup.object().shape({
