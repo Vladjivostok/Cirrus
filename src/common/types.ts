@@ -1,35 +1,27 @@
 //@Interfaces
 export interface Response<T> {
-  statusCode: ResponseStatusCode;
-  error: string | null;
-  data?: T;
+  error_code: ResponseErrorCode | null;
+  data: T;
 }
 
-//@Types
 export interface User {
   username: string;
   password: string;
 }
 
+//@Types
 export type UserLoginDataResponse = {
-  user: {
-    username: string;
-    email: string;
-    accessToken: string | null;
-    refreshToken: string | null;
-  };
+  data: {
+    access_token: string;
+  } | null;
 };
 
 //@Enums
-export enum ResponseStatusCode {
-  //200
-  ok = 200,
-
-  //300
-
-  //400
-  Forbidden = 403,
-
-  //500
-  Unauthorized = 500
+export enum ResponseErrorCode {
+  USER_NOT_FOUND = 'err001',
+  NOT_LOGGED_IN = 'err002',
+  USER_WITH_THAT_ID_DOES_NOT_EXIST = 'err003',
+  NOT_AUTHORIZED = 'err004',
+  INVITE_ALREADY_SENT_TO_THAT_EMAIL = 'err005',
+  INVITATION_TOKEN_NOT_VALID = 'err006'
 }
