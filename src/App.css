@@ -1,0 +1,23 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+  padding: 0;
+}
+
+body {
+  font-size: 62.5%;
+  font-family: 'Roboto';
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+:root {
+  --button-text-color: white;
+  --button-color-primary: #1a73e8;
+  --button-color-primary-hover: #0a58be;
+  --error-message-color: #d93025;
+  --border-color: #ccc;
+}

@@ -1,20 +1,9 @@
-import React, { useEffect } from 'react';
-
-import { User } from './common/types';
-import { myReducer } from './features/auth/authSlice';
-
-import { useAppSelector, useAppDispatch } from './store/hooks';
+import React from 'react';
+import './App.css';
+import LoginPage from './components/pages/LoginPage';
 
 const App: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const userData: User = { username: 'morpheus', password: 'leader01' };
-  useAppSelector((state) => console.log('From selector ====>  ', state.auth));
-
-  useEffect(() => {
-    dispatch(myReducer(userData));
-  }, []);
-
-  return <div className="App"></div>;
+  return <LoginPage />;
 };
 
 export default App;
