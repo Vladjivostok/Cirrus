@@ -2,14 +2,8 @@ import { createSlice, createAsyncThunk, createReducer } from '@reduxjs/toolkit';
 import { User } from '../../../common/types';
 import { LoginService } from '../../../services/loginService';
 
-// interface LoginAction {
-//   payload: User;
-//   type: string;
-// }
-
 interface LoginState {
   user: object | null;
-  // user: User | null
   isError: boolean;
   isSuccess: boolean;
   isLoading: boolean;
@@ -24,12 +18,11 @@ const initialState: LoginState = {
   message: ''
 };
 
-export const login = createAsyncThunk('auth/login', async (userData: any, thunkAPI) => {
+export const login = createAsyncThunk('auth/login', async (userData: User, thunkAPI) => {
   try {
     return await LoginService.login(userData);
   } catch (error) {
     console.error(error);
-
     return thunkAPI.rejectWithValue(error);
   }
 });

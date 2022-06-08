@@ -12,15 +12,13 @@ import logo from './../../../src/assets/Cirrus.png';
 import Input from '../atoms/input/Input';
 import Button from '../atoms/button/Button';
 import FormErrorMessage from '../atoms/errorMessage/FormErrorMessage';
-import { Hide, Show } from '../atoms/passwordIcon/Svg';
+import { Hide, Show } from '../atoms/passwordIcons/Svg';
 import './loginPage.css';
 
 const LoginScheme = Yup.object().shape({
   username: Yup.string().trim().required('Username required!'),
   password: Yup.string().trim().required('Password required!')
 });
-
-// Forsiraj sessiju da se doda dummy user ako je success dobar i da se obrise prethodna sessija
 
 const LoginPage: React.FC = () => {
   const [toggleShowPassword, setToggleShowPassword] = useState(false);
@@ -40,6 +38,8 @@ const LoginPage: React.FC = () => {
 
     if (isSuccess) {
       alert('Successfully logged in');
+
+      sessionStorage.removeItem('user');
     }
     dispatch(reset());
   }, [isSuccess, isError, dispatch]);

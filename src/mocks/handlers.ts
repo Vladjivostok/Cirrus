@@ -1,13 +1,16 @@
 import { rest } from 'msw';
-import { User } from '../common/types';
 
 export const handlers = [
   rest.post('/api/v1/login', (req, res, ctx) => {
-    // sessionStorage.setItem('is-authenticated', 'true');
+    const goodUser = {
+      username: 'admin',
+      password: 'admin'
+    };
 
-    const isAuth = sessionStorage.getItem('user');
+    const stringObj = JSON.stringify(goodUser);
+    const stringBody = JSON.stringify(req.body);
 
-    if (!isAuth) {
+    if (stringObj !== stringBody) {
       return res(ctx.status(400, 'Bad Request'));
     } else {
       return res(
