@@ -1,7 +1,7 @@
 //@Interfaces
 export interface Response<T> {
-  error_code: ResponseErrorCode | null;
-  data: T;
+  message?: ResponseErrorCode | null;
+  data?: T;
 }
 
 export interface User {
@@ -11,9 +11,8 @@ export interface User {
 
 //@Types
 export type UserLoginDataResponse = {
-  data: {
-    access_token: string;
-  } | null;
+  userId: number;
+  accessToken: string;
 };
 
 //@Enums
@@ -23,5 +22,6 @@ export enum ResponseErrorCode {
   USER_WITH_THAT_ID_DOES_NOT_EXIST = 'err003',
   NOT_AUTHORIZED = 'err004',
   INVITE_ALREADY_SENT_TO_THAT_EMAIL = 'err005',
-  INVITATION_TOKEN_NOT_VALID = 'err006'
+  INVITATION_TOKEN_NOT_VALID = 'err006',
+  USER_NOT_VERIFIED = 'err007'
 }
