@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { User } from '../../common/types';
-import { myReducer } from '../../features/auth/authSlice';
+import { login, reset } from '../../store/redux/auth/authSlice';
 
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 
@@ -20,13 +20,30 @@ const LoginScheme = Yup.object().shape({
   password: Yup.string().trim().required('Password required!')
 });
 
+// Forsiraj sessiju da se doda dummy user ako je success dobar i da se obrise prethodna sessija
+
 const LoginPage: React.FC = () => {
   const [toggleShowPassword, setToggleShowPassword] = useState(false);
   const togglePassword = () => {
     setToggleShowPassword(!toggleShowPassword);
   };
 
+  const { isError, message, isSuccess } = useAppSelector((state) => state.auth);
+
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (isError) {
+      console.log(message);
+      alert('Wrong credentials, invalid username or password');
+    }
+
+    if (isSuccess) {
+      alert('Successfully logged in');
+    }
+    dispatch(reset());
+  }, [isSuccess, isError, dispatch]);
+
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -35,7 +52,7 @@ const LoginPage: React.FC = () => {
     validationSchema: LoginScheme,
     onSubmit: (values: User) => {
       formik.setSubmitting(true);
-      dispatch(myReducer(values));
+      dispatch(login(values));
       formik.setSubmitting(false);
       formik.resetForm();
       setToggleShowPassword(false);
