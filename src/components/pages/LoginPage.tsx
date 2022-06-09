@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
+import { User } from '../../common/types';
+import { login, reset } from '../../store/redux/auth/authSlice';
+
+import { useAppSelector, useAppDispatch } from '../../store/hooks';
 
 import * as Yup from 'yup';
-import { useFormik } from 'formik';
+import { useFormik, FormikErrors, FormikTouched } from 'formik';
 
 import logo from './../../../src/assets/Cirrus.png';
 import Input from '../atoms/input/Input';
 import Button from '../atoms/button/Button';
 import FormErrorMessage from '../atoms/errorMessage/FormErrorMessage';
-import { Hide, Show } from '../../assets/Svg';
+import { Hide, Show } from '../atoms/passwordIcons/Svg';
 import './loginPage.css';
 
 const LoginScheme = Yup.object().shape({
@@ -21,23 +26,62 @@ const LoginPage: React.FC = () => {
     setToggleShowPassword(!toggleShowPassword);
   };
 
+  const { isError, message, isSuccess } = useAppSelector((state) => state.auth);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (isError) {
+      console.log(message);
+      alert('Wrong credentials, invalid username or password');
+    }
+
+    if (isSuccess) {
+      alert('Successfully logged in');
+
+      sessionStorage.removeItem('user');
+    }
+    dispatch(reset());
+  }, [isSuccess, isError, dispatch]);
+
   const formik = useFormik({
     initialValues: {
       username: '',
       password: ''
     },
     validationSchema: LoginScheme,
-    onSubmit: (values) => {
+    // onSubmit: (values: User) => {
+    //   formik.setSubmitting(true);
+
+    //   dispatch(login(values));
+
+    //   formik.setSubmitting(false);
+    //   formik.resetForm();
+    //   setToggleShowPassword(false);
+    //   toggleIcon();
+    // }
+
+    onSubmit: async (values: User) => {
       formik.setSubmitting(true);
 
-      formik.setSubmitting(false);
+      dispatch(login(values));
+
       formik.resetForm();
       setToggleShowPassword(false);
       toggleIcon();
     }
   });
 
-  const errorMessage = (errors: any, touched: any, inputType: 'username' | 'password') => {
+  interface FormValues {
+    username: string | undefined;
+    password: string | undefined;
+  }
+
+  const errorMessage = (
+    errors: FormikErrors<FormValues>,
+    touched: FormikTouched<FormValues>,
+    inputType: 'username' | 'password'
+  ) => {
     if (touched.username && inputType === 'username') {
       return <FormErrorMessage>{errors.username}</FormErrorMessage>;
     } else if (touched.password && inputType === 'password') {
