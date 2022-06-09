@@ -30,8 +30,6 @@ const LoginPage: React.FC = () => {
     onSubmit: (values) => {
       formik.setSubmitting(true);
 
-      console.log(JSON.stringify(values, null, 2));
-
       formik.setSubmitting(false);
       formik.resetForm();
       setToggleShowPassword(false);
@@ -78,7 +76,6 @@ const LoginPage: React.FC = () => {
           />
           {errorMessage(formik.errors, formik.touched, 'password')}
           {toggleIcon()}
-          {/* <button type="button" onClick={togglePassword}></button> */}
         </div>
 
         <Button type="submit" disabled={formik.isSubmitting} label="Login" />
