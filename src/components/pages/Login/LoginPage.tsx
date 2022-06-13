@@ -1,14 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
+import { User } from '../../../common/types';
+import { login, reset } from '../../../store/redux/auth/authSlice';
+import { useNavigate } from 'react-router-dom';
+
+import { useAppSelector, useAppDispatch } from '../../../store/hooks';
 
 import * as Yup from 'yup';
 import { useFormik, FormikErrors, FormikTouched } from 'formik';
 
-import logo from './../../../src/assets/Cirrus.png';
-import Input from '../atoms/input/Input';
-import Button from '../atoms/button/Button';
-import FormErrorMessage from '../atoms/errorMessage/FormErrorMessage';
-import { Hide, Show } from '../atoms/passwordIcon/Svg';
+import { ResponseErrorCode } from '../../../common/types';
+
+import logo from '../../../../src/assets/Cirrus.png';
+import Input from '../../atoms/input/Input';
+import Button from '../../atoms/button/Button';
+import FormErrorMessage from '../../atoms/errorMessage/FormErrorMessage';
+import { Hide, Show } from '../../atoms/passwordIcons/Svg';
 import './loginPage.css';
+import useErrorMessage from '../../../common/hooks/errorMessageHook';
 
 const LoginScheme = Yup.object().shape({
   username: Yup.string().trim().required('Username required!'),
@@ -21,16 +30,28 @@ const LoginPage: React.FC = () => {
     setToggleShowPassword(!toggleShowPassword);
   };
 
+  const navigate = useNavigate();
+  const { message, isError, isSuccess } = useAppSelector((state) => state.auth);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    useErrorMessage(message);
+    if (isSuccess) {
+      alert('Successfully logged in');
+    }
+    dispatch(reset());
+  }, [isSuccess, isError, dispatch]);
+
   const formik = useFormik({
     initialValues: {
       username: '',
       password: ''
     },
     validationSchema: LoginScheme,
-    onSubmit: (values) => {
+    onSubmit: async (values: User) => {
       formik.setSubmitting(true);
-
-      formik.setSubmitting(false);
+      await dispatch(login(values));
       formik.resetForm();
       setToggleShowPassword(false);
       toggleIcon();
