@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import LoginPage from './components/pages/Login/LoginPage';
+import LoginPage from './components/pages/Login/loginPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 const App: React.FC = () => {
