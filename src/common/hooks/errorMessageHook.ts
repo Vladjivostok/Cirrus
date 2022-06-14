@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const useErrorMessage = (message: string) => {
   if (message === 'err001') {
     alert('User not found');

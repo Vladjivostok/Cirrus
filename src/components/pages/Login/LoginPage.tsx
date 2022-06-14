@@ -2,22 +2,20 @@ import React, { useState, useEffect } from 'react';
 
 import { User } from '../../../common/types';
 import { login, reset } from '../../../store/redux/auth/authSlice';
-import { useNavigate } from 'react-router-dom';
 
 import { useAppSelector, useAppDispatch } from '../../../store/hooks';
 
 import * as Yup from 'yup';
 import { useFormik, FormikErrors, FormikTouched } from 'formik';
 
-import { ResponseErrorCode } from '../../../common/types';
-
 import logo from '../../../../src/assets/Cirrus.png';
 import Input from '../../atoms/input/Input';
 import Button from '../../atoms/button/Button';
 import FormErrorMessage from '../../atoms/errorMessage/FormErrorMessage';
 import { Hide, Show } from '../../atoms/passwordIcons/Svg';
-import './loginPage.css';
 import useErrorMessage from '../../../common/hooks/errorMessageHook';
+
+import './loginPage.css';
 
 const LoginScheme = Yup.object().shape({
   username: Yup.string().trim().required('Username required!'),
@@ -30,7 +28,6 @@ const LoginPage: React.FC = () => {
     setToggleShowPassword(!toggleShowPassword);
   };
 
-  const navigate = useNavigate();
   const { message, isError, isSuccess } = useAppSelector((state) => state.auth);
 
   const dispatch = useAppDispatch();
