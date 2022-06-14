@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, createReducer } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 import { User } from '../../../common/types';
 import { LoginService } from '../../../services/loginService';
