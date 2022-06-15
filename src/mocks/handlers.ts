@@ -32,6 +32,7 @@ export const handlers = [
     return res(
       ctx.status(200),
       ctx.json({
+        id: 123,
         access_token: dummyJWTToken
       })
     );
