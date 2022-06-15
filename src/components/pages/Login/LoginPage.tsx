@@ -13,12 +13,12 @@ import Input from '../../atoms/input/Input';
 import Button from '../../atoms/button/Button';
 import FormErrorMessage from '../../atoms/errorMessage/FormErrorMessage';
 import { Hide, Show } from '../../atoms/passwordIcons/Svg';
-import './loginPage.css';
 import useErrorMessage from '../../../common/hooks/errorMessageHook';
+
+import './loginPage.css';
 
 const LoginScheme = Yup.object().shape({
   username: Yup.string().trim().required('Username required!'),
-
   password: Yup.string().trim().required('Password required!')
 });
 
@@ -73,9 +73,9 @@ const LoginPage: React.FC = () => {
   };
   const toggleIcon = () => {
     if (!toggleShowPassword) {
-      return <Show onClick={togglePassword}></Show>;
-    } else if (toggleShowPassword) {
       return <Hide onClick={togglePassword}></Hide>;
+    } else if (toggleShowPassword) {
+      return <Show onClick={togglePassword}></Show>;
     }
   };
 
