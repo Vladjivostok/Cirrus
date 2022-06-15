@@ -8,7 +8,7 @@ import { worker } from './mocks/browser';
 
 import './index.css';
 
-if (process.env.REACT_APP_NODE_ENV === 'development') {
+if (process.env.REACT_APP_START_MSW === 'true') {
   worker.start();
 }
 
