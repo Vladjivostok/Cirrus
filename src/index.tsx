@@ -8,10 +8,8 @@ import { worker } from './mocks/browser';
 
 import './index.css';
 
-if (process.env.REACT_APP_NODE_ENV === 'development') {
+if (process.env.REACT_APP_START_MSW === 'true') {
   worker.start();
-} else {
-  worker.stop();
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);

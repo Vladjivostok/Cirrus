@@ -9,10 +9,10 @@ import * as Yup from 'yup';
 import { useFormik, FormikErrors, FormikTouched } from 'formik';
 
 import logo from '../../../../src/assets/Cirrus.png';
-import Input from '../../atoms/Input/Input';
-import Button from '../../atoms/Button/Button';
-import FormErrorMessage from '../../atoms/ErrorMessage/FormErrorMessage';
-import { Hide, Show } from '../../atoms/PasswordIcons/Svg';
+import Input from '../../atoms/input/Input';
+import Button from '../../atoms/button/Button';
+import FormErrorMessage from '../../atoms/errorMessage/FormErrorMessage';
+import { Hide, Show } from '../../atoms/passwordIcons/Svg';
 import useErrorMessage from '../../../common/hooks/errorMessageHook';
 
 import './loginPage.css';
