@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
 
-import { User } from '../../common/types';
-import { login, reset } from '../../store/redux/auth/authSlice';
+import { User } from '../../../common/types';
+import { login, reset } from '../../../store/redux/auth/authSlice';
 
-import { useAppSelector, useAppDispatch } from '../../store/hooks';
+import { useAppSelector, useAppDispatch } from '../../../store/hooks';
 
 import * as Yup from 'yup';
 import { useFormik, FormikErrors, FormikTouched } from 'formik';
 
-import logo from './../../../src/assets/Cirrus.png';
-import Input from '../atoms/input/Input';
-import Button from '../atoms/button/Button';
-import FormErrorMessage from '../atoms/errorMessage/FormErrorMessage';
-import { Hide, Show } from '../atoms/passwordIcons/Svg';
+import logo from '../../../../src/assets/Cirrus.png';
+import Input from '../../atoms/input/Input';
+import Button from '../../atoms/button/Button';
+import FormErrorMessage from '../../atoms/errorMessage/FormErrorMessage';
+import { Hide, Show } from '../../atoms/passwordIcons/Svg';
+import useErrorMessage from '../../../common/hooks/errorMessageHook';
+
 import './loginPage.css';
 
 const LoginScheme = Yup.object().shape({
@@ -26,20 +28,14 @@ const LoginPage: React.FC = () => {
     setToggleShowPassword(!toggleShowPassword);
   };
 
-  const { isError, message, isSuccess } = useAppSelector((state) => state.auth);
+  const { message, isError, isSuccess } = useAppSelector((state) => state.auth);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (isError) {
-      console.log(message);
-      alert('Wrong credentials, invalid username or password');
-    }
-
+    useErrorMessage(message);
     if (isSuccess) {
       alert('Successfully logged in');
-
-      sessionStorage.removeItem('user');
     }
     dispatch(reset());
   }, [isSuccess, isError, dispatch]);
@@ -50,22 +46,9 @@ const LoginPage: React.FC = () => {
       password: ''
     },
     validationSchema: LoginScheme,
-    // onSubmit: (values: User) => {
-    //   formik.setSubmitting(true);
-
-    //   dispatch(login(values));
-
-    //   formik.setSubmitting(false);
-    //   formik.resetForm();
-    //   setToggleShowPassword(false);
-    //   toggleIcon();
-    // }
-
     onSubmit: async (values: User) => {
       formik.setSubmitting(true);
-
-      dispatch(login(values));
-
+      await dispatch(login(values));
       formik.resetForm();
       setToggleShowPassword(false);
       toggleIcon();
@@ -90,9 +73,9 @@ const LoginPage: React.FC = () => {
   };
   const toggleIcon = () => {
     if (!toggleShowPassword) {
-      return <Show onClick={togglePassword}></Show>;
-    } else if (toggleShowPassword) {
       return <Hide onClick={togglePassword}></Hide>;
+    } else if (toggleShowPassword) {
+      return <Show onClick={togglePassword}></Show>;
     }
   };
 

@@ -1,0 +1,24 @@
+image: node:16.15.0
+
+pipelines:
+  branches:
+    master:
+      - step:
+          name: Build and test
+          caches:
+            - node
+          script:
+            - npm install 
+            - npm run build
+          artifacts:
+            - build/**
+      - step:
+          name: Deploy artifacts using SCP to PROD
+          deployment: production
+          script:
+            - pipe: atlassian/scp-deploy:0.3.3
+              variables:
+                USER: $SERVER_USERNAME
+                SERVER: $SERVER_NAME
+                REMOTE_PATH: './Documents/cirrus/fe'
+                LOCAL_PATH: 'build/*'

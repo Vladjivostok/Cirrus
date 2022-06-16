@@ -1,4 +1,5 @@
-import { createSlice, createAsyncThunk, createReducer } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { AxiosError } from 'axios';
 import { User } from '../../../common/types';
 import { LoginService } from '../../../services/loginService';
 
@@ -7,23 +8,31 @@ interface LoginState {
   isError: boolean;
   isSuccess: boolean;
   isLoading: boolean;
-  message: unknown;
+  message: string;
 }
 
 const initialState: LoginState = {
   user: { username: '', password: '' },
-  isError: false,
   isSuccess: false,
   isLoading: false,
+  isError: false,
   message: ''
 };
 
 export const login = createAsyncThunk('auth/login', async (userData: User, thunkAPI) => {
   try {
-    return await LoginService.login(userData);
+    const token = await LoginService.login(userData);
+
+    localStorage.setItem('user:', JSON.stringify(token));
+    return token;
   } catch (error) {
-    console.error(error);
-    return thunkAPI.rejectWithValue(error);
+    let errCode = '';
+
+    if (error instanceof AxiosError) {
+      errCode = error.response?.data.message;
+    }
+
+    return thunkAPI.rejectWithValue(errCode);
   }
 });
 
@@ -48,11 +57,12 @@ const authSlice = createSlice({
         state.isSuccess = true;
         state.user = action.payload;
       })
+
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        state.message = action.payload;
         state.user = null;
+        state.message += action.payload;
       });
   }
 });

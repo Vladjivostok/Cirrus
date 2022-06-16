@@ -1,26 +1,40 @@
 import { rest } from 'msw';
 
+type RequestUser = {
+  body: {
+    username: string;
+    password: string;
+  };
+};
+
+const validUser = {
+  username: 'admin',
+  password: 'admin'
+};
+
+const dummyJWTToken =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicGFzc3dvcmQiOiJhZG1pbiJ9.rFcqI_6iHyIx450Esqa3yXqyZLhPhKt9eKeHcnjYujQ';
+
 export const handlers = [
-  rest.post('/api/v1/login', (req, res, ctx) => {
-    const goodUser = {
-      username: 'admin',
-      password: 'admin'
-    };
+  rest.post('/api/v1/login', (req: RequestUser, res, ctx) => {
+    const check =
+      validUser.password == req.body.password && validUser.username == req.body.username;
 
-    const stringObj = JSON.stringify(goodUser);
-    const stringBody = JSON.stringify(req.body);
-
-    if (stringObj !== stringBody) {
-      return res(ctx.status(400, 'Bad Request'));
-    } else {
+    if (!check) {
       return res(
-        ctx.status(200),
+        ctx.status(400),
         ctx.json({
-          data: {
-            access_token: 'json_web_token'
-          }
+          message: 'err003'
         })
       );
     }
+
+    return res(
+      ctx.status(200),
+      ctx.json({
+        id: 123,
+        access_token: dummyJWTToken
+      })
+    );
   })
 ];
