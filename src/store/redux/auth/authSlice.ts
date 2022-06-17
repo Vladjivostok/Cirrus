@@ -3,12 +3,14 @@ import { AxiosError } from 'axios';
 import { User } from '../../../common/types';
 import { LoginService } from '../../../services/loginService';
 
+import { ResponseErrorCode } from '../../../common/types';
+
 interface LoginState {
   user: object | null;
   isError: boolean;
   isSuccess: boolean;
   isLoading: boolean;
-  message: string;
+  message: ResponseErrorCode;
 }
 
 const initialState: LoginState = {
