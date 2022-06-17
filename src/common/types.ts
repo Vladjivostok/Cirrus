@@ -15,13 +15,14 @@ export type UserLoginDataResponse = {
   accessToken: string;
 };
 
+export type ResponseErrorCode = 'err001' | 'err007' | 'err003' | '';
+
+// export type ResponseErrorCode =
+//    {
+//       err001?: string;
+//       err003?: string;
+//       err007?: string;
+//     }
+//   | undefined;
+
 //@Enums
-export enum ResponseErrorCode {
-  'USER_NOT_FOUND' = 'err001',
-  'NOT_LOGGED_IN' = 'err002',
-  USER_WITH_THAT_ID_DOES_NOT_EXIST = 'err003',
-  NOT_AUTHORIZED = 'err004',
-  INVITE_ALREADY_SENT_TO_THAT_EMAIL = 'err005',
-  INVITATION_TOKEN_NOT_VALID = 'err006',
-  USER_NOT_VERIFIED = 'err007'
-}

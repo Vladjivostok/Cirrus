@@ -13,8 +13,7 @@ import Input from '../../atoms/input/Input';
 import Button from '../../atoms/button/Button';
 import FormErrorMessage from '../../atoms/errorMessage/FormErrorMessage';
 import { Hide, Show } from '../../atoms/passwordIcons/Svg';
-import useErrorMessage from '../../../common/hooks/errorMessageHook';
-
+import errorMessageDialog from '../../../common/hooks/errorMessageHook';
 import './loginPage.css';
 
 const LoginScheme = Yup.object().shape({
@@ -33,7 +32,7 @@ const LoginPage: React.FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    useErrorMessage(message);
+    errorMessageDialog(message);
     if (isSuccess) {
       alert('Successfully logged in');
     }
