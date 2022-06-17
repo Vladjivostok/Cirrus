@@ -1,7 +1,7 @@
 .errorMsg {
   position: absolute;
-  top: 1.6rem;
+  top: 3.2rem;
   color: var(--error-message-color);
-  font-size: 0.5rem;
+  font-size: 1rem;
   font-family: sans-serif;
 }

@@ -1,11 +1,11 @@
 .button {
   transition-duration: 0.1s;
   border: 0;
-  border-radius: 0.2rem;
-  padding: 0.28rem 0.7rem;
+  border-radius: 0.4rem;
+  padding: 0.65rem 1.5rem;
   background-color: var(--button-color-primary);
   color: var(--button-text-color);
-  font-size: 0.6rem;
+  font-size: 1.1rem;
 }
 .button:hover {
   background-color: var(--button-color-primary-hover);
