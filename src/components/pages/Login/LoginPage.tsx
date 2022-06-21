@@ -4,6 +4,7 @@ import { User } from '../../../common/types';
 import { login, reset } from '../../../store/redux/auth/authSlice';
 
 import { useAppSelector, useAppDispatch } from '../../../store/hooks';
+import { useNavigate } from 'react-router-dom';
 
 import * as Yup from 'yup';
 import { useFormik, FormikErrors, FormikTouched } from 'formik';
@@ -12,7 +13,7 @@ import logo from '../../../../src/assets/Cirrus.png';
 import Input from '../../atoms/input/Input';
 import Button from '../../atoms/button/Button';
 import FormErrorMessage from '../../atoms/errorMessage/FormErrorMessage';
-import { Hide, Show } from '../../atoms/passwordIcons/Svg';
+import { Hide, Show } from '../../atoms/icons/password/PasswordIcon';
 
 import { notifyAboutError } from '../../../common/utility';
 
@@ -30,8 +31,9 @@ const LoginPage: React.FC = () => {
     setToggleShowPassword(!toggleShowPassword);
   };
 
-  const { message, isError } = useAppSelector((state) => state.auth);
+  const { message, isError, user, isLoading } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isError) {
@@ -78,6 +80,12 @@ const LoginPage: React.FC = () => {
       return <Show onClick={togglePassword}></Show>;
     }
   };
+
+  useEffect(() => {
+    if (user?.accessToken && !isLoading && !isError) {
+      navigate('/dashboard');
+    }
+  }, [user?.accessToken]);
 
   return (
     <div className="loginPage">

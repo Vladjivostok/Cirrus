@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { ReactComponent as Eye } from './../../../assets/eye.svg';
-import { ReactComponent as EyeBlocked } from './../../../assets/eye-blocked.svg';
+import { ReactComponent as Eye } from './../../../../assets/eye.svg';
+import { ReactComponent as EyeBlocked } from './../../../../assets/eye-blocked.svg';
 
-import './svg.css';
+import './passwordIcon.css';
 
 type ShowHideProps = {
   onClick: React.MouseEventHandler<HTMLDivElement> | undefined;

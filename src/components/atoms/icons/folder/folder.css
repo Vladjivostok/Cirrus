@@ -1,0 +1,22 @@
+.folder {
+  position: relative;
+  overflow: visible;
+  width: 3.7rem;
+  height: 3.7rem;
+}
+
+.folder__icon {
+  object-fit: cover;
+  fill: var(--dashboard-color-dark-grey);
+}
+
+.folder__title {
+  position: absolute;
+  top: 1.6rem;
+  left: 3.8rem;
+  text-align: center;
+  font-size: 0.77rem;
+  color: var(--dashboard-color-dark-grey);
+  font-weight: 500;
+  white-space: pre;
+}
