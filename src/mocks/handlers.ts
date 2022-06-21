@@ -16,7 +16,7 @@ const dummyJWTToken =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicGFzc3dvcmQiOiJhZG1pbiJ9.rFcqI_6iHyIx450Esqa3yXqyZLhPhKt9eKeHcnjYujQ';
 
 export const handlers = [
-  rest.post('/api/v1/login', (req: RequestUser, res, ctx) => {
+  rest.post(`${process.env.REACT_APP_BASE_API_URL}/api/v1/login`, (req: RequestUser, res, ctx) => {
     const check =
       validUser.password == req.body.password && validUser.username == req.body.username;
 
@@ -33,7 +33,7 @@ export const handlers = [
       ctx.status(200),
       ctx.json({
         id: 123,
-        access_token: dummyJWTToken
+        accessToken: dummyJWTToken
       })
     );
   })

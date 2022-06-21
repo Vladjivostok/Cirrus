@@ -1,21 +1,19 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
-import { User } from '../../../common/types';
-import { LoginService } from '../../../services/loginService';
+import { User, ReduxUser } from '../../../common/types';
 
-import { ResponseErrorCode } from '../../../common/types';
+import { LoginService } from '../../../services/loginService';
+import LocalStorageService from '../../../services/localStorageService';
 
 interface LoginState {
-  user: object | null;
+  user: ReduxUser;
   isError: boolean;
-  isSuccess: boolean;
   isLoading: boolean;
-  message: ResponseErrorCode;
+  message: string;
 }
 
 const initialState: LoginState = {
-  user: { username: '', password: '' },
-  isSuccess: false,
+  user: null,
   isLoading: false,
   isError: false,
   message: ''
@@ -25,7 +23,8 @@ export const login = createAsyncThunk('auth/login', async (userData: User, thunk
   try {
     const token = await LoginService.login(userData);
 
-    localStorage.setItem('user:', JSON.stringify(token));
+    LocalStorageService.setItem({ key: 'user', value: JSON.stringify(token) });
+
     return token;
   } catch (error) {
     let errCode = '';
@@ -33,7 +32,6 @@ export const login = createAsyncThunk('auth/login', async (userData: User, thunk
     if (error instanceof AxiosError) {
       errCode = error.response?.data.message;
     }
-
     return thunkAPI.rejectWithValue(errCode);
   }
 });
@@ -44,9 +42,12 @@ const authSlice = createSlice({
   reducers: {
     reset: (state) => {
       state.isLoading = false;
-      state.isSuccess = false;
       state.isError = false;
       state.message = '';
+    },
+
+    updateUser: (state, action) => {
+      state.user = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -56,7 +57,7 @@ const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.isSuccess = true;
+        state.isError = false;
         state.user = action.payload;
       })
 
@@ -69,6 +70,6 @@ const authSlice = createSlice({
   }
 });
 
-export const { reset } = authSlice.actions;
+export const { reset, updateUser } = authSlice.actions;
 
 export default authSlice.reducer;
