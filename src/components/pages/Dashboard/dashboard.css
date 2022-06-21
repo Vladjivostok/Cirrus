@@ -24,6 +24,11 @@
   border-radius: 0.15rem;
 }
 
+.nav__item:last-child {
+  position: absolute;
+  bottom: 1rem;
+}
+
 .main {
   display: flex;
   flex: 1;

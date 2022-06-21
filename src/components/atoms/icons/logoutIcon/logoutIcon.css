@@ -1,0 +1,8 @@
+.exit {
+  width: 1.5rem;
+  fill: white;
+}
+
+.exit:hover {
+  cursor: pointer;
+}

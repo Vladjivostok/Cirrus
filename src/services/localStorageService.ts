@@ -9,8 +9,8 @@ const LocalStorageService = {
     return localStorage.getItem(item);
   },
 
-  removeItem: () => {
-    localStorage.removeItem('user');
+  removeItem: (item: string) => {
+    localStorage.removeItem(item);
   }
 };
 
