@@ -15,6 +15,7 @@ a {
 }
 
 :root {
+  --toastify-toast-max-height: 800px;
   --button-text-color: white;
   --button-color-primary: #1a73e8;
   --button-color-primary-hover: #0a58be;

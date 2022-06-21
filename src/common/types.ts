@@ -16,13 +16,3 @@ export type UserLoginDataResponse = {
 };
 
 export type ResponseErrorCode = 'err001' | 'err007' | 'err003' | '';
-
-// export type ResponseErrorCode =
-//    {
-//       err001?: string;
-//       err003?: string;
-//       err007?: string;
-//     }
-//   | undefined;
-
-//@Enums

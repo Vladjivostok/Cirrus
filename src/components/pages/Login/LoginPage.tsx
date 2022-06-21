@@ -13,8 +13,11 @@ import Input from '../../atoms/input/Input';
 import Button from '../../atoms/button/Button';
 import FormErrorMessage from '../../atoms/errorMessage/FormErrorMessage';
 import { Hide, Show } from '../../atoms/passwordIcons/Svg';
-import errorMessageDialog from '../../../common/hooks/errorMessageHook';
+
+import { notifyAboutError } from '../../../common/utility';
+
 import './loginPage.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 const LoginScheme = Yup.object().shape({
   username: Yup.string().trim().required('Username required!'),
@@ -27,17 +30,15 @@ const LoginPage: React.FC = () => {
     setToggleShowPassword(!toggleShowPassword);
   };
 
-  const { message, isError, isSuccess } = useAppSelector((state) => state.auth);
-
+  const { message, isError } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    errorMessageDialog(message);
-    if (isSuccess) {
-      alert('Successfully logged in');
+    if (isError) {
+      notifyAboutError(message);
     }
     dispatch(reset());
-  }, [isSuccess, isError, dispatch]);
+  }, [isError, dispatch]);
 
   const formik = useFormik({
     initialValues: {
