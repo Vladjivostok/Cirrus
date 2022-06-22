@@ -15,7 +15,6 @@ import { updateUser } from './store/redux/auth/authSlice';
 import './App.css';
 
 const App: React.FC = () => {
-  console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
   const [state, setState] = useState<{ finishedChecking: boolean; isAuth: boolean }>({
     finishedChecking: false,
     isAuth: false
