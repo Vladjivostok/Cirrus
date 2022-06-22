@@ -13,6 +13,7 @@ import LocalStorageService from './services/localStorageService';
 import { updateUser } from './store/redux/auth/authSlice';
 
 import './App.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App: React.FC = () => {
   const [state, setState] = useState<{ finishedChecking: boolean; isAuth: boolean }>({
