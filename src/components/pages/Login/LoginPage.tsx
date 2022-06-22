@@ -82,7 +82,7 @@ const LoginPage: React.FC = () => {
 
   useEffect(() => {
     if (user?.accessToken && !isLoading && !isError) {
-      navigate('/dashboard');
+      navigate('/dashboard', { replace: true });
     }
   }, [user?.accessToken]);
 
