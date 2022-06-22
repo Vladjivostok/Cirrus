@@ -18,7 +18,6 @@ import { Hide, Show } from '../../atoms/icons/password/PasswordIcon';
 import { notifyAboutError } from '../../../common/utility';
 
 import './loginPage.css';
-import 'react-toastify/dist/ReactToastify.css';
 
 const LoginScheme = Yup.object().shape({
   username: Yup.string().trim().required('Username required!'),

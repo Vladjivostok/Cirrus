@@ -22,6 +22,7 @@
   width: 2.7rem;
   height: 2.7rem;
   border-radius: 0.15rem;
+  background-color: var(--color-light);
 }
 
 .nav__item:last-child {
@@ -33,7 +34,7 @@
   display: flex;
   flex: 1;
   width: 80%;
-  background-color: var(--dashboard-background-color);
+  background-color: var(--color-light);
 }
 
 .main-side {
