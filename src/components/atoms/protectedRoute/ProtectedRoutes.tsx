@@ -7,7 +7,7 @@ type ProtectedRoute = {
 };
 
 const ProtectedRoutes = ({ isEnabled, children }: ProtectedRoute) => {
-  if (!isEnabled) {
+  if (!isEnabled || localStorage.getItem('user') === null) {
     return <Navigate to="/login" />;
   }
 
