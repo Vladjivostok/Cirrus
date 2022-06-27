@@ -14,6 +14,7 @@ export type UserLoginDataResponse =
   | {
       id: number;
       accessToken: string;
+      refreshToken: string;
     }
   | { message: ResponseErrorCode };
 

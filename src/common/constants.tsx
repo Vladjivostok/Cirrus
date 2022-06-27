@@ -1,3 +1,5 @@
-const LOGIN_URL = `/api/v1/login`;
+const LOGIN_URL = 'login';
 
-export { LOGIN_URL };
+const REFRESH_TOKEN_URL = 'refresh';
+
+export { LOGIN_URL, REFRESH_TOKEN_URL };
