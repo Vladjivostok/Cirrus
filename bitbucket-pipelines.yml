@@ -9,27 +9,7 @@ pipelines:
             - node
           script:
             - npm install 
-            - npm run build:prod
-          artifacts:
-            - build/**
-      - step:
-          name: Deploy artifacts using SCP to PROD
-          deployment: production
-          script:
-            - pipe: atlassian/scp-deploy:0.3.3
-              variables:
-                USER: $SERVER_USERNAME
-                SERVER: $SERVER_NAME
-                REMOTE_PATH: './Documents/cirrus/fe-prod'
-                LOCAL_PATH: 'build/*'
-    develop:
-      - step:
-          name: Build and test
-          caches:
-            - node
-          script:
-            - npm install 
-            - npm run build:dev
+            - npm run build
           artifacts:
             - build/**
       - step:
