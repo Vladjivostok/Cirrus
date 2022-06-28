@@ -7,3 +7,10 @@ export const notifyAboutError = (message: ResponseErrorCode) =>
     autoClose: 1500,
     bodyStyle: { height: '3.5rem', fontSize: '1rem' }
   });
+
+export const confirmNotification = (message: string) =>
+  toast.success(message, {
+    theme: 'colored',
+    position: 'top-center',
+    bodyStyle: { height: '5rem', fontSize: '1.5rem' }
+  });

@@ -1,4 +1,4 @@
-.loginPage {
+.loginAndRegistrationPage {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -6,7 +6,7 @@
   max-width: 140rem;
 }
 
-.loginForm {
+.loginAndRegistrationForms {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,7 +16,7 @@
   padding: 3.5rem 2.5rem;
 }
 
-img {
+.cirrusLogo {
   margin-bottom: 2.5rem;
   width: 9rem;
 }

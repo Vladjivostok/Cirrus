@@ -7,10 +7,32 @@ type RequestUser = {
     password: string;
   };
 };
+type RequestRegister = {
+  body: {
+    email: string;
+    username: string;
+    password: string;
+    token: string;
+  };
+};
 
 const validUser = {
   username: 'admin',
   password: 'admin'
+};
+
+const validRegistration = {
+  email: 'admin@domen.com',
+  username: 'admin',
+  password: 'Admin1234$',
+  token: 'token'
+};
+
+const existingUser = {
+  email: 'eadmin@domen.com',
+  username: 'admin',
+  password: 'Admin1234$',
+  token: 'token'
 };
 
 const dummyJWTToken =
@@ -50,6 +72,44 @@ export const handlers = [
       ctx.json({
         accessToken: newAccessToken,
         userId: 1
+      })
+    );
+  }),
+  rest.post(`${process.env.REACT_APP_BASE_API_URL}/register`, (req: RequestRegister, res, ctx) => {
+    const checkIfValid =
+      validRegistration.email == req.body.email &&
+      validRegistration.username == req.body.username &&
+      validRegistration.password == req.body.password &&
+      validRegistration.token == req.body.token;
+
+    const checkIfExists =
+      existingUser.email == req.body.email &&
+      existingUser.username == req.body.username &&
+      existingUser.password == req.body.password &&
+      existingUser.token == req.body.token;
+
+    if (checkIfExists) {
+      return res(
+        ctx.status(409),
+        ctx.json({
+          message: 'err008'
+        })
+      );
+    }
+    if (!checkIfValid) {
+      return res(
+        ctx.status(404),
+        ctx.json({
+          message: 'err006'
+        })
+      );
+    }
+    return res(
+      ctx.status(201),
+      ctx.json({
+        id: 123,
+        username: 'admin',
+        email: 'admin@domen.com'
       })
     );
   })

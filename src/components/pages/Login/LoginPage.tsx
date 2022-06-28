@@ -13,11 +13,12 @@ import logo from '../../../../src/assets/Cirrus.png';
 import Input from '../../atoms/input/Input';
 import Button from '../../atoms/button/Button';
 import FormErrorMessage from '../../atoms/errorMessage/FormErrorMessage';
+
+import '../../../common/styles/loginAndRegistration.css';
 import { Hide, Show } from '../../atoms/icons/password/PasswordIcon';
 
 import { notifyAboutError } from '../../../common/utility';
-
-import './loginPage.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 const LoginScheme = Yup.object().shape({
   username: Yup.string().trim().required('Username required!'),
@@ -87,9 +88,9 @@ const LoginPage: React.FC = () => {
   }, [user?.accessToken]);
 
   return (
-    <div className="loginPage">
-      <form className="loginForm" onSubmit={formik.handleSubmit}>
-        <img src={logo} alt="Cirrus logo missing" />
+    <div className="loginAndRegistrationPage">
+      <form className="loginAndRegistrationForms" onSubmit={formik.handleSubmit}>
+        <img className="cirrusLogo" src={logo} alt="Cirrus logo missing" />
         <div className="inputWrapper">
           <Input
             name="username"

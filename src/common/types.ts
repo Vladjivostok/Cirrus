@@ -1,6 +1,8 @@
 export interface User {
   username: string;
   password: string;
+  email?: string;
+  verificationToken?: string;
 }
 
 //@Types
@@ -8,6 +10,12 @@ export interface User {
 export type OnClickSvgProp = {
   onClick?: React.MouseEventHandler<SVGSVGElement> | undefined;
   title?: string;
+};
+
+export type UserRegisterDataResponse = {
+  userId: number;
+  username: string;
+  email: string;
 };
 
 export type UserLoginDataResponse =
@@ -25,4 +33,11 @@ export type StorageItem = {
   value: string;
 };
 
-export type ResponseErrorCode = 'err001' | 'err007' | 'err003' | string;
+export type ResponseErrorCode =
+  | 'err001'
+  | 'err007'
+  | 'err003'
+  | 'err006'
+  | 'err008'
+  | 'err017'
+  | string;

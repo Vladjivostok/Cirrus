@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
 import LoginPage from './components/pages/Login/LoginPage';
+import RegistrationPage from './components/pages/Registration/RegistrationPage';
 import Dashboard from './components/pages/Dashboard/DashboardPage';
 
 import { useAppDispatch, useAppSelector } from './store/hooks';
@@ -45,6 +46,8 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/registration/:token" element={<RegistrationPage />} />
+          <Route path="*" element={<h1>Error 404: Page not found</h1>} />
           <Route
             path="/dashboard"
             element={
