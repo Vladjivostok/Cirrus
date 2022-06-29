@@ -4,16 +4,17 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { AuthnService } from '../../../services/authnService';
 
 import * as Yup from 'yup';
-import { useFormik, FormikErrors, FormikTouched } from 'formik';
+import { useFormik } from 'formik';
 
 import Input from '../../atoms/input/Input';
 import Button from '../../atoms/button/Button';
 import FormErrorMessage from '../../atoms/errorMessage/FormErrorMessage';
 import { Hide, Show } from '../../atoms/icons/password/PasswordIcon';
 import logo from './../../../assets/Cirrus.png';
-import { confirmNotification, notifyAboutError } from '../../../common/utility';
+import { successToast, errorToast } from '../../../common/utility';
+import { toastMessages } from '../../../common/messages';
 
-import '../../../common/styles/loginAndRegistration.css';
+import '../../../common/styles/formPages.css';
 import { AxiosError } from 'axios';
 
 const RegistrationScheme = Yup.object().shape({
@@ -44,23 +45,6 @@ const RegistrationPage: React.FC = () => {
     }
   };
 
-  interface FormValues {
-    email: string | undefined;
-    username: string | undefined;
-    password: string | undefined;
-    confirmPassword?: string | undefined;
-  }
-
-  const errorMessage = (
-    errors: FormikErrors<FormValues>,
-    touched: FormikTouched<FormValues>,
-    inputType: 'email' | 'username' | 'password' | 'confirmPassword'
-  ) => {
-    if (touched[inputType]) {
-      return <FormErrorMessage>{errors[inputType]}</FormErrorMessage>;
-    }
-  };
-
   const { token } = useParams();
   const navigate = useNavigate();
 
@@ -85,7 +69,7 @@ const RegistrationPage: React.FC = () => {
         const response = await AuthnService.register(values);
         if (response.status == 201) {
           navigate('/login');
-          confirmNotification('Successfully Registered!');
+          successToast(toastMessages.successfulRegistration);
         }
       } catch (error) {
         let errCode = '';
@@ -93,7 +77,7 @@ const RegistrationPage: React.FC = () => {
         if (error instanceof AxiosError) {
           errCode = error.response?.data.message;
         }
-        notifyAboutError(errCode);
+        errorToast(errCode);
       }
       formik.resetForm();
       setToggleShowPassword(false);
@@ -102,8 +86,8 @@ const RegistrationPage: React.FC = () => {
   });
 
   return (
-    <div className="loginAndRegistrationPage">
-      <form className="loginAndRegistrationForms" onSubmit={formik.handleSubmit}>
+    <div className="formPage">
+      <form className="form" onSubmit={formik.handleSubmit}>
         <img className="cirrusLogo" src={logo} alt="Cirrus logo missing" />
         <div className="inputWrapper">
           <Input
@@ -113,7 +97,7 @@ const RegistrationPage: React.FC = () => {
             value={formik.values.email}
             onChange={formik.handleChange}
           />
-          {errorMessage(formik.errors, formik.touched, 'email')}
+          <FormErrorMessage errors={formik.errors} touched={formik.touched} inputType="email" />
         </div>
         <div className="inputWrapper">
           <Input
@@ -123,7 +107,7 @@ const RegistrationPage: React.FC = () => {
             value={formik.values.username}
             onChange={formik.handleChange}
           />
-          {errorMessage(formik.errors, formik.touched, 'username')}
+          <FormErrorMessage errors={formik.errors} touched={formik.touched} inputType="username" />
         </div>
         <div className="inputWrapper">
           <Input
@@ -133,7 +117,7 @@ const RegistrationPage: React.FC = () => {
             value={formik.values.password}
             onChange={formik.handleChange}
           />
-          {errorMessage(formik.errors, formik.touched, 'password')}
+          <FormErrorMessage errors={formik.errors} touched={formik.touched} inputType="password" />
           {toggleIcon()}
         </div>
         <div className="inputWrapper">
@@ -144,10 +128,14 @@ const RegistrationPage: React.FC = () => {
             value={formik.values.confirmPassword}
             onChange={formik.handleChange}
           />
-          {errorMessage(formik.errors, formik.touched, 'confirmPassword')}
+          <FormErrorMessage
+            errors={formik.errors}
+            touched={formik.touched}
+            inputType="confirmPassword"
+          />
           {toggleIcon()}
         </div>
-        <Button type="submit" disabled={formik.isSubmitting} label="Register" />
+        <Button type="submit" className="button" disabled={formik.isSubmitting} label="Register" />
       </form>
     </div>
   );

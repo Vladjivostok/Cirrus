@@ -7,17 +7,17 @@ import { useAppSelector, useAppDispatch } from '../../../store/hooks';
 import { useNavigate } from 'react-router-dom';
 
 import * as Yup from 'yup';
-import { useFormik, FormikErrors, FormikTouched } from 'formik';
+import { useFormik } from 'formik';
 
 import logo from '../../../../src/assets/Cirrus.png';
 import Input from '../../atoms/input/Input';
 import Button from '../../atoms/button/Button';
 import FormErrorMessage from '../../atoms/errorMessage/FormErrorMessage';
 
-import '../../../common/styles/loginAndRegistration.css';
+import '../../../common/styles/formPages.css';
 import { Hide, Show } from '../../atoms/icons/password/PasswordIcon';
 
-import { notifyAboutError } from '../../../common/utility';
+import { errorToast } from '../../../common/utility';
 import 'react-toastify/dist/ReactToastify.css';
 
 const LoginScheme = Yup.object().shape({
@@ -37,7 +37,7 @@ const LoginPage: React.FC = () => {
 
   useEffect(() => {
     if (isError) {
-      notifyAboutError(message);
+      errorToast(message);
     }
     dispatch(reset());
   }, [isError, dispatch]);
@@ -57,28 +57,16 @@ const LoginPage: React.FC = () => {
     }
   });
 
-  interface FormValues {
-    username: string | undefined;
-    password: string | undefined;
-  }
-
-  const errorMessage = (
-    errors: FormikErrors<FormValues>,
-    touched: FormikTouched<FormValues>,
-    inputType: 'username' | 'password'
-  ) => {
-    if (touched.username && inputType === 'username') {
-      return <FormErrorMessage>{errors.username}</FormErrorMessage>;
-    } else if (touched.password && inputType === 'password') {
-      return <FormErrorMessage>{errors.password}</FormErrorMessage>;
-    }
-  };
   const toggleIcon = () => {
     if (!toggleShowPassword) {
       return <Hide onClick={togglePassword}></Hide>;
     } else if (toggleShowPassword) {
       return <Show onClick={togglePassword}></Show>;
     }
+  };
+
+  const forgotPassword = () => {
+    navigate('/forgot-password');
   };
 
   useEffect(() => {
@@ -88,8 +76,8 @@ const LoginPage: React.FC = () => {
   }, [user?.accessToken]);
 
   return (
-    <div className="loginAndRegistrationPage">
-      <form className="loginAndRegistrationForms" onSubmit={formik.handleSubmit}>
+    <div className="formPage">
+      <form className="form" onSubmit={formik.handleSubmit}>
         <img className="cirrusLogo" src={logo} alt="Cirrus logo missing" />
         <div className="inputWrapper">
           <Input
@@ -99,7 +87,7 @@ const LoginPage: React.FC = () => {
             value={formik.values.username}
             onChange={formik.handleChange}
           />
-          {errorMessage(formik.errors, formik.touched, 'username')}
+          <FormErrorMessage errors={formik.errors} touched={formik.touched} inputType="username" />
         </div>
         <div className="inputWrapper">
           <Input
@@ -109,11 +97,19 @@ const LoginPage: React.FC = () => {
             value={formik.values.password}
             onChange={formik.handleChange}
           />
-          {errorMessage(formik.errors, formik.touched, 'password')}
+          <FormErrorMessage errors={formik.errors} touched={formik.touched} inputType="password" />
           {toggleIcon()}
         </div>
-
-        <Button type="submit" disabled={formik.isSubmitting} label="Login" />
+        <div className="buttonWrapper">
+          <Button
+            type="button"
+            className="button invert"
+            disabled={formik.isSubmitting}
+            label="Forgot password?"
+            onClick={forgotPassword}
+          />
+          <Button type="submit" className="button" disabled={formik.isSubmitting} label="Login" />
+        </div>
       </form>
     </div>
   );

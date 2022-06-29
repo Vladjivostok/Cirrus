@@ -1,4 +1,4 @@
-.loginAndRegistrationPage {
+.formPage {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -6,7 +6,7 @@
   max-width: 140rem;
 }
 
-.loginAndRegistrationForms {
+.form {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -19,4 +19,10 @@
 .cirrusLogo {
   margin-bottom: 2.5rem;
   width: 9rem;
+}
+
+.buttonWrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }

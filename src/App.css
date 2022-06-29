@@ -19,6 +19,7 @@ a {
   --button-text-color: #fff;
   --button-color-primary: #1a73e8;
   --button-color-primary-hover: #0a58be;
+  --button-invert-color-primary-hover: #ecf1f7;
   --error-message-color: #d93025;
   --border-color: #ccc;
   --color-light: #f4f7f6;

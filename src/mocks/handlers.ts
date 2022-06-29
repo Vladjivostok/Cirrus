@@ -35,6 +35,10 @@ const existingUser = {
   token: 'token'
 };
 
+const validEmail = {
+  email: 'admin@domen.com'
+};
+
 const dummyJWTToken =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicGFzc3dvcmQiOiJhZG1pbiJ9.rFcqI_6iHyIx450Esqa3yXqyZLhPhKt9eKeHcnjYujQ';
 
@@ -79,8 +83,7 @@ export const handlers = [
     const checkIfValid =
       validRegistration.email == req.body.email &&
       validRegistration.username == req.body.username &&
-      validRegistration.password == req.body.password &&
-      validRegistration.token == req.body.token;
+      validRegistration.password == req.body.password;
 
     const checkIfExists =
       existingUser.email == req.body.email &&
@@ -96,11 +99,19 @@ export const handlers = [
         })
       );
     }
-    if (!checkIfValid) {
+    if (!(validRegistration.token == req.body.token)) {
       return res(
         ctx.status(404),
         ctx.json({
           message: 'err006'
+        })
+      );
+    }
+    if (!checkIfValid) {
+      return res(
+        ctx.status(400),
+        ctx.json({
+          message: 'err017'
         })
       );
     }
@@ -112,5 +123,26 @@ export const handlers = [
         email: 'admin@domen.com'
       })
     );
-  })
+  }),
+  rest.post(
+    `${process.env.REACT_APP_BASE_API_URL}/request-password`,
+    (req: RequestRegister, res, ctx) => {
+      const check = validEmail.email == req.body.email;
+
+      if (!check) {
+        return res(
+          ctx.status(404),
+          ctx.json({
+            message: 'err003'
+          })
+        );
+      }
+      return res(
+        ctx.status(200),
+        ctx.json({
+          userEmail: 'admin@domen.com'
+        })
+      );
+    }
+  )
 ];

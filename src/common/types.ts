@@ -5,6 +5,10 @@ export interface User {
   verificationToken?: string;
 }
 
+export interface UserEmail {
+  email: string;
+}
+
 //@Types
 
 export type OnClickSvgProp = {

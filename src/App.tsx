@@ -6,6 +6,8 @@ import { ToastContainer } from 'react-toastify';
 import LoginPage from './components/pages/Login/LoginPage';
 import RegistrationPage from './components/pages/Registration/RegistrationPage';
 import Dashboard from './components/pages/Dashboard/DashboardPage';
+import RequestPasswordRecovery from './components/pages/RequestPasswordRecovery/RequestPasswordRecovery';
+import PageNotFound from './components/atoms/pageNotFound/PageNotFound';
 
 import { useAppDispatch, useAppSelector } from './store/hooks';
 
@@ -46,8 +48,9 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/forgot-password" element={<RequestPasswordRecovery />} />
           <Route path="/registration/:token" element={<RegistrationPage />} />
-          <Route path="*" element={<h1>Error 404: Page not found</h1>} />
+          <Route path="*" element={<PageNotFound />} />
           <Route
             path="/dashboard"
             element={

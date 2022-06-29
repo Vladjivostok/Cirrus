@@ -1,13 +1,26 @@
 import React from 'react';
+import { FormikErrors, FormikTouched } from 'formik';
 
 import './formErrorMessage.css';
 
-type FormErrorMessageProps = {
-  children: string | undefined;
-};
+interface FormValues {
+  email: string | undefined;
+  username: string | undefined;
+  password: string | undefined;
+  confirmPassword: string | undefined;
+}
 
-const FormErrorMessage = (props: FormErrorMessageProps) => {
-  return <div className="errorMsg">{props.children}</div>;
+interface FormErrorMessageProps {
+  errors: FormikErrors<FormValues>;
+  touched: FormikTouched<FormValues>;
+  inputType: 'email' | 'username' | 'password' | 'confirmPassword';
+}
+
+const FormErrorMessage: React.FC<FormErrorMessageProps> = ({ errors, touched, inputType }) => {
+  if (touched[inputType]) {
+    return <div className="errorMsg">{errors[inputType]}</div>;
+  }
+  return <></>;
 };
 
 export default FormErrorMessage;
