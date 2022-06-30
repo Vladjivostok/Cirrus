@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
@@ -14,12 +14,15 @@ import logo from './../../../assets/Cirrus.png';
 import { toastMessages } from '../../../common/messages';
 
 import '../../../common/styles/formPages.css';
+import { useAppSelector } from '../../../store/hooks';
 
 const RegistraionScheme = Yup.object().shape({
   email: Yup.string().trim().email('Invalid email format').required('Email required')
 });
 
-const RequestPasswordRecovery = () => {
+const RequestPasswordRecovery: React.FC = () => {
+  const { user, isLoading, isError } = useAppSelector((state) => state.auth);
+
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -45,6 +48,12 @@ const RequestPasswordRecovery = () => {
       formik.resetForm();
     }
   });
+
+  useEffect(() => {
+    if (user?.accessToken && !isLoading && !isError) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [user?.accessToken]);
 
   return (
     <div className="formPage">

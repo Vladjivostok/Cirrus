@@ -21,10 +21,16 @@ import 'react-toastify/dist/ReactToastify.css';
 const App: React.FC = () => {
   const [state, setState] = useState<{ finishedChecking: boolean; isAuth: boolean }>({
     finishedChecking: false,
-    isAuth: false
+    isAuth: true
   });
 
   const userStorageToken = LocalStorageService.getItem('user');
+
+  if (!userStorageToken && state.isAuth) {
+    setState((prevState) => {
+      return { ...prevState, isAuth: false };
+    });
+  }
 
   const dispatch = useAppDispatch();
   const loggedUser = useAppSelector((store) => store.auth.user);
