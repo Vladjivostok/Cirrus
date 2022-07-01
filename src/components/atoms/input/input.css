@@ -8,10 +8,27 @@
   font-size: 1rem;
 }
 
+.input:focus {
+  border: 1px solid blue;
+  outline: none;
+}
+
 .inputWrapper {
   position: relative;
 }
 
 .inputWrapper input::-ms-reveal {
   display: none;
+}
+
+.inputWrapper-label {
+  position: absolute;
+  left: 0.5rem;
+  bottom: 5.25rem;
+  padding: 0 0.3rem;
+  font-weight: 400;
+  background-color: var(--color-light);
+  font-family: sans-serif;
+  font-size: 0.9rem;
+  color: var(--dashboard-color-dark-grey);
 }

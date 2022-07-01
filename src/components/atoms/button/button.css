@@ -10,3 +10,11 @@
 .button:hover {
   background-color: var(--button-color-primary-hover);
 }
+.invert {
+  padding: 0.65rem 0.9rem;
+  background-color: white;
+  color: var(--button-color-primary);
+}
+.invert:hover {
+  background-color: var(--button-invert-color-primary-hover);
+}

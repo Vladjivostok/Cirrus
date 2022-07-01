@@ -2,7 +2,7 @@ import React, { ChangeEventHandler } from 'react';
 
 import './input.css';
 
-type InputType = 'text' | 'password';
+type InputType = 'text' | 'password' | 'email' | 'select';
 
 interface InputProps {
   value: string;

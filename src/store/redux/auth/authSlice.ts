@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
+import { AuthnService } from '../../../services/authnService';
 import { User, ReduxUser } from '../../../common/types';
 
-import { LoginService } from '../../../services/loginService';
 import LocalStorageService from '../../../services/localStorageService';
 
 interface LoginState {
@@ -21,7 +21,7 @@ const initialState: LoginState = {
 
 export const login = createAsyncThunk('auth/login', async (userData: User, thunkAPI) => {
   try {
-    const token = await LoginService.login(userData);
+    const token = await AuthnService.login(userData);
 
     LocalStorageService.setItem({ key: 'user', value: JSON.stringify(token) });
 

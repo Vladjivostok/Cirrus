@@ -2,6 +2,6 @@
   position: absolute;
   top: 3.2rem;
   color: var(--error-message-color);
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-family: sans-serif;
 }

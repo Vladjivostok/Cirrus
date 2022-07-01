@@ -1,6 +1,12 @@
 export interface User {
   username: string;
   password: string;
+  email?: string;
+  verificationToken?: string;
+}
+
+export interface UserEmail {
+  email: string;
 }
 
 //@Types
@@ -10,10 +16,17 @@ export type OnClickSvgProp = {
   title?: string;
 };
 
+export type UserRegisterDataResponse = {
+  userId: number;
+  username: string;
+  email: string;
+};
+
 export type UserLoginDataResponse =
   | {
       id: number;
       accessToken: string;
+      refreshToken: string;
     }
   | { message: ResponseErrorCode };
 
@@ -24,4 +37,16 @@ export type StorageItem = {
   value: string;
 };
 
-export type ResponseErrorCode = 'err001' | 'err007' | 'err003' | string;
+export type OptionObjectProp = {
+  label: string;
+  value: string;
+};
+
+export type ResponseErrorCode =
+  | 'err001'
+  | 'err007'
+  | 'err003'
+  | 'err006'
+  | 'err008'
+  | 'err017'
+  | string;

@@ -4,7 +4,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
 import LoginPage from './components/pages/Login/LoginPage';
+import RegistrationPage from './components/pages/Registration/RegistrationPage';
 import Dashboard from './components/pages/Dashboard/DashboardPage';
+import InvitationPage from './components/pages/Invitation/InvitationPage';
+import RequestPasswordRecovery from './components/pages/RequestPasswordRecovery/RequestPasswordRecovery';
+import PageNotFound from './components/atoms/pageNotFound/PageNotFound';
 
 import { useAppDispatch, useAppSelector } from './store/hooks';
 
@@ -18,10 +22,16 @@ import 'react-toastify/dist/ReactToastify.css';
 const App: React.FC = () => {
   const [state, setState] = useState<{ finishedChecking: boolean; isAuth: boolean }>({
     finishedChecking: false,
-    isAuth: false
+    isAuth: true
   });
 
   const userStorageToken = LocalStorageService.getItem('user');
+
+  if (!userStorageToken && state.isAuth) {
+    setState((prevState) => {
+      return { ...prevState, isAuth: false };
+    });
+  }
 
   const dispatch = useAppDispatch();
   const loggedUser = useAppSelector((store) => store.auth.user);
@@ -38,13 +48,17 @@ const App: React.FC = () => {
       setState({ finishedChecking: true, isAuth: true });
     }
   }, [loggedUser]);
+
   return (
-    <>
+    <div className="wrapper">
       <ToastContainer />
       <Router>
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/forgot-password" element={<RequestPasswordRecovery />} />
+          <Route path="/registration/:token" element={<RegistrationPage />} />
+          <Route path="*" element={<PageNotFound />} />
           <Route
             path="/dashboard"
             element={
@@ -53,9 +67,17 @@ const App: React.FC = () => {
               </ProtectedRoutes>
             }
           />
+          <Route
+            path="/admin/user-invitation"
+            element={
+              <ProtectedRoutes isEnabled={state.isAuth}>
+                <InvitationPage />
+              </ProtectedRoutes>
+            }
+          />
         </Routes>
       </Router>
-    </>
+    </div>
   );
 };
 
