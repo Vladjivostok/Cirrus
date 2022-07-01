@@ -4,6 +4,7 @@ import { User, UserLoginDataResponse, UserEmail } from '../common/types';
 import {
   INVITE_USER_URL,
   LOGIN_URL,
+  PASSWORD_CHANGE_URL,
   REGISTER_URL,
   REQUEST_PASSWORD_RECOVERY_URL
 } from '../common/constants';
@@ -26,6 +27,15 @@ export const AuthnService = {
   },
   requestPasswordRecovery: async (userData: UserEmail): Promise<AxiosResponse> => {
     const response = await httpService.post(REQUEST_PASSWORD_RECOVERY_URL, userData);
+    return response;
+  },
+
+  changePassword: async (userData: {
+    username: string;
+    password: string;
+    confirmPassword: string;
+  }): Promise<AxiosResponse> => {
+    const response = await httpService.post(PASSWORD_CHANGE_URL, userData);
     return response;
   }
 };

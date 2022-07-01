@@ -18,6 +18,7 @@ import { updateUser } from './store/redux/auth/authSlice';
 
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
+import PasswordChangePage from './components/pages/PasswordChange/PasswordChangePage';
 
 const App: React.FC = () => {
   const [state, setState] = useState<{ finishedChecking: boolean; isAuth: boolean }>({
@@ -58,6 +59,7 @@ const App: React.FC = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/forgot-password" element={<RequestPasswordRecovery />} />
           <Route path="/registration/:token" element={<RegistrationPage />} />
+          <Route path="/password-change/:token" element={<PasswordChangePage />} />
           <Route path="*" element={<PageNotFound />} />
           <Route
             path="/dashboard"
