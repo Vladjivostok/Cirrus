@@ -11,6 +11,17 @@ export const errorMessageDialog = (message: ResponseErrorCode): string | undefin
   if (message === 'err008') {
     errorMessage = 'User already activated';
   }
+  if (message === 'err005') {
+    errorMessage = 'Invite has already been sent to that email';
+  }
+
+  if (message === 'err004' || message === 'err009') {
+    errorMessage = 'Access denied, you are not authorized!';
+  }
+
+  if (message === 'err018') {
+    errorMessage = 'Role not found';
+  }
   if (message === 'oops, something went wrong') {
     errorMessage = message;
   }

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import { errorToast, successToast } from '../../../common/utility';
+
 import { AxiosError } from 'axios';
 import { AuthnService } from '../../../services/authnService';
 import { useNavigate } from 'react-router-dom';
@@ -11,13 +11,17 @@ import Input from '../../atoms/input/Input';
 import Button from '../../atoms/button/Button';
 import FormErrorMessage from '../../atoms/errorMessage/FormErrorMessage';
 import logo from './../../../assets/Cirrus.png';
+
+import { errorToast, successToast } from '../../../common/utility';
+import { yupValidation } from '../../../common/utility';
+
 import { toastMessages } from '../../../common/messages';
 
 import '../../../common/styles/formPages.css';
 import { useAppSelector } from '../../../store/hooks';
 
 const RegistraionScheme = Yup.object().shape({
-  email: Yup.string().trim().email('Invalid email format').required('Email required')
+  email: yupValidation.yupEmail
 });
 
 const RequestPasswordRecovery: React.FC = () => {

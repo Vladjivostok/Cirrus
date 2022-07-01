@@ -6,6 +6,7 @@ import { ToastContainer } from 'react-toastify';
 import LoginPage from './components/pages/Login/LoginPage';
 import RegistrationPage from './components/pages/Registration/RegistrationPage';
 import Dashboard from './components/pages/Dashboard/DashboardPage';
+import InvitationPage from './components/pages/Invitation/InvitationPage';
 import RequestPasswordRecovery from './components/pages/RequestPasswordRecovery/RequestPasswordRecovery';
 import PageNotFound from './components/atoms/pageNotFound/PageNotFound';
 
@@ -47,8 +48,9 @@ const App: React.FC = () => {
       setState({ finishedChecking: true, isAuth: true });
     }
   }, [loggedUser]);
+
   return (
-    <>
+    <div className="wrapper">
       <ToastContainer />
       <Router>
         <Routes>
@@ -65,9 +67,17 @@ const App: React.FC = () => {
               </ProtectedRoutes>
             }
           />
+          <Route
+            path="/admin/user-invitation"
+            element={
+              <ProtectedRoutes isEnabled={state.isAuth}>
+                <InvitationPage />
+              </ProtectedRoutes>
+            }
+          />
         </Routes>
       </Router>
-    </>
+    </div>
   );
 };
 

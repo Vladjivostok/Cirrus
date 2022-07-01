@@ -11,24 +11,20 @@ import Button from '../../atoms/button/Button';
 import FormErrorMessage from '../../atoms/errorMessage/FormErrorMessage';
 import { Hide, Show } from '../../atoms/icons/password/PasswordIcon';
 import logo from './../../../assets/Cirrus.png';
+
 import { successToast, errorToast } from '../../../common/utility';
+import { yupValidation } from '../../../common/utility';
+
 import { toastMessages } from '../../../common/messages';
 
 import '../../../common/styles/formPages.css';
 import { AxiosError } from 'axios';
 
 const RegistrationScheme = Yup.object().shape({
-  email: Yup.string().trim().email('Invalid email format').required('Email required'),
-  username: Yup.string().trim().required('Username required'),
-  password: Yup.string()
-    .required('Password required')
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/,
-      'Must contain at least 10 Characters, 1 Number, Symbol(@$!%*?&), Lowercase and Uppercase'
-    ),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref('password'), ''], 'Passwords must match')
-    .required('Confirm password required')
+  email: yupValidation.yupEmail,
+  username: yupValidation.yupUsername,
+  password: yupValidation.yupPasswordCreation,
+  confirmPassword: yupValidation.yupConfirmPassword
 });
 
 const RegistrationPage: React.FC = () => {

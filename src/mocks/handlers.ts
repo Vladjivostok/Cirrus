@@ -1,5 +1,5 @@
 import { rest } from 'msw';
-import { LOGIN_URL, REFRESH_TOKEN_URL } from '../common/constants';
+import { INVITE_USER_URL, LOGIN_URL, REFRESH_TOKEN_URL } from '../common/constants';
 
 type RequestUser = {
   body: {
@@ -123,6 +123,23 @@ export const handlers = [
         email: 'admin@domen.com'
       })
     );
+  }),
+
+  rest.post(`${process.env.REACT_APP_BASE_API_URL}/${INVITE_USER_URL}`, (req, res, ctx) => {
+    if (typeof req === 'string') {
+      const reqObject = JSON.parse(req);
+
+      if (!reqObject.email || !reqObject.role) {
+        return res(
+          ctx.status(401),
+          ctx.json({
+            message: 'err004'
+          })
+        );
+      }
+    }
+
+    return res(ctx.status(200));
   }),
   rest.post(
     `${process.env.REACT_APP_BASE_API_URL}/request-password`,

@@ -1,0 +1,38 @@
+.nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 4rem;
+  height: 100%;
+  background-color: var(--dashboard-color-dark-grey);
+  position: relative;
+}
+
+.nav__item:not(:first-child) {
+  margin-top: 1rem;
+  width: 1.5rem;
+}
+
+.nav__item svg {
+  fill: var(--color-light);
+}
+.nav__item {
+  cursor: pointer;
+}
+
+.nav__item--logo {
+  margin-top: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.nav__item--logo img {
+  width: 2.7rem;
+  height: 2.7rem;
+  border-radius: 0.15rem;
+  background-color: var(--color-light);
+}
+
+.nav__item--bottom {
+  position: absolute;
+  bottom: 1rem;
+}

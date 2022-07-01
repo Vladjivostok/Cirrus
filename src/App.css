@@ -27,3 +27,13 @@ a {
   --dashboard-color-dark-grey: #22252b;
   --icon-color-white: #fff;
 }
+
+.wrapper {
+  position: relative;
+  display: flex;
+  height: 100vh;
+}
+
+.wrapper .breadCrumbs {
+  top: 0;
+}

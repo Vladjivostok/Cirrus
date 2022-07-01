@@ -18,11 +18,14 @@ import '../../../common/styles/formPages.css';
 import { Hide, Show } from '../../atoms/icons/password/PasswordIcon';
 
 import { errorToast } from '../../../common/utility';
+import { yupValidation } from '../../../common/utility';
 import 'react-toastify/dist/ReactToastify.css';
+import '../../../common/styles/formPages.css';
+import BreadCrumbs from '../../atoms/breadCrumbs/BreadCrumbs';
 
 const LoginScheme = Yup.object().shape({
-  username: Yup.string().trim().required('Username required!'),
-  password: Yup.string().trim().required('Password required!')
+  username: yupValidation.yupUsername,
+  password: yupValidation.yupPassword
 });
 
 const LoginPage: React.FC = () => {
@@ -111,6 +114,7 @@ const LoginPage: React.FC = () => {
           <Button type="submit" className="button" disabled={formik.isSubmitting} label="Login" />
         </div>
       </form>
+      <BreadCrumbs />
     </div>
   );
 };

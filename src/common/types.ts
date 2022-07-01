@@ -37,6 +37,11 @@ export type StorageItem = {
   value: string;
 };
 
+export type OptionObjectProp = {
+  label: string;
+  value: string;
+};
+
 export type ResponseErrorCode =
   | 'err001'
   | 'err007'

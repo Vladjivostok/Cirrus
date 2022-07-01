@@ -8,12 +8,13 @@ interface FormValues {
   username: string | undefined;
   password: string | undefined;
   confirmPassword: string | undefined;
+  select: string | undefined;
 }
 
 interface FormErrorMessageProps {
   errors: FormikErrors<FormValues>;
   touched: FormikTouched<FormValues>;
-  inputType: 'email' | 'username' | 'password' | 'confirmPassword';
+  inputType: 'email' | 'username' | 'password' | 'confirmPassword' | 'select';
 }
 
 const FormErrorMessage: React.FC<FormErrorMessageProps> = ({ errors, touched, inputType }) => {

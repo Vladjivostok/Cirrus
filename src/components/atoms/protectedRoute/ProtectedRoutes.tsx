@@ -2,6 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 import LocalStorageService from '../../../services/localStorageService';
+import NavBar from '../../molecules/navBar/NavBar';
 
 type ProtectedRoute = {
   isEnabled: boolean;
@@ -13,7 +14,12 @@ const ProtectedRoutes = ({ isEnabled, children }: ProtectedRoute) => {
     return <Navigate to="/login" />;
   }
 
-  return children;
+  return (
+    <>
+      <NavBar />
+      {children}
+    </>
+  );
 };
 
 export default ProtectedRoutes;

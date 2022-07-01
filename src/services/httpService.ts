@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { REFRESH_TOKEN_URL } from '../common/constants';
+import { INVITE_USER_URL, REFRESH_TOKEN_URL } from '../common/constants';
 
 import LocalStorageService from './localStorageService';
 
@@ -7,14 +7,19 @@ const instance = axios.create({
   baseURL: process.env.REACT_APP_BASE_API_URL
 });
 
-const protectedRoutes = [`${process.env.REACT_APP_BASE_API_URL}/${REFRESH_TOKEN_URL}`];
+const protectedRoutes = [
+  `${process.env.REACT_APP_BASE_API_URL}/${REFRESH_TOKEN_URL}`,
+  `${process.env.REACT_APP_BASE_API_URL}/${INVITE_USER_URL}`
+];
 
 instance.interceptors.request.use(
   function (config) {
     let token;
     const user = LocalStorageService.getItem('user');
 
-    const filteredRoute = protectedRoutes.find((route) => route === config.url);
+    const filteredRoute = protectedRoutes.find(
+      (route) => route === `${process.env.REACT_APP_BASE_API_URL}/${config.url}`
+    );
 
     if (typeof user === 'string') {
       token = JSON.parse(user).accessToken;
