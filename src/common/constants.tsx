@@ -1,6 +1,6 @@
 const LOGIN_URL = 'login';
 const REGISTER_URL = 'registration';
-const REQUEST_PASSWORD_RECOVERY_URL = 'request-password';
+const REQUEST_PASSWORD_RECOVERY_URL = 'forgot-password';
 const REFRESH_TOKEN_URL = 'refresh';
 const INVITE_USER_URL = 'admin/user-invitation';
 
