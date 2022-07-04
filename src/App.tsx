@@ -58,7 +58,6 @@ const App: React.FC = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/forgot-password" element={<RequestPasswordRecovery />} />
           <Route path="/registration/:token" element={<RegistrationPage />} />
-
           <Route path="*" element={<PageNotFound />} />
           <Route
             path="/dashboard"
