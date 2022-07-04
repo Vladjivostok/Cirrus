@@ -1,10 +1,5 @@
 import { rest } from 'msw';
-import {
-  INVITE_USER_URL,
-  LOGIN_URL,
-  PASSWORD_CHANGE_URL,
-  REFRESH_TOKEN_URL
-} from '../common/constants';
+import { INVITE_USER_URL, LOGIN_URL, REFRESH_TOKEN_URL } from '../common/constants';
 
 type RequestUser = {
   body: {
@@ -17,15 +12,6 @@ type RequestRegister = {
     email: string;
     username: string;
     password: string;
-    token: string;
-  };
-};
-
-type RequestPasswordChange = {
-  body: {
-    username: string;
-    password: string;
-    confirmPassword: string;
     token: string;
   };
 };
@@ -174,13 +160,6 @@ export const handlers = [
           userEmail: 'admin@domen.com'
         })
       );
-    }
-  ),
-
-  rest.post(
-    `${process.env.REACT_APP_BASE_API_URL}/${PASSWORD_CHANGE_URL}`,
-    (req: RequestPasswordChange, res, ctx) => {
-      return res(ctx.status(200), ctx.json(req.body.token));
     }
   )
 ];

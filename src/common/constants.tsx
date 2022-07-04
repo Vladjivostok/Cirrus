@@ -4,8 +4,6 @@ const REQUEST_PASSWORD_RECOVERY_URL = 'forgot-password';
 const REFRESH_TOKEN_URL = 'refresh';
 const INVITE_USER_URL = 'admin/user-invitation';
 
-const PASSWORD_CHANGE_URL = 'password-recovery';
-
 const roles = {
   user: 'ROLE_USER',
   admin: 'ROLE_ADMIN'
@@ -17,6 +15,5 @@ export {
   REGISTER_URL,
   INVITE_USER_URL,
   REQUEST_PASSWORD_RECOVERY_URL,
-  PASSWORD_CHANGE_URL,
   roles
 };
