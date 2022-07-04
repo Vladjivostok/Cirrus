@@ -57,10 +57,10 @@ const RegistrationPage: React.FC = () => {
       username: string;
       password: string;
       confirmPassword: string;
-      token?: string;
+      verificationToken?: string;
     }) => {
       formik.setSubmitting(true);
-      values.token = token;
+      values.verificationToken = token;
       try {
         const response = await AuthnService.register(values);
         if (response.status == 201) {

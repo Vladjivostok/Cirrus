@@ -30,14 +30,6 @@ const InvitationPage = () => {
     { label: 'admin', value: `${roles.admin}` }
   ];
 
-  // const optionsArray = [
-
-  //   ['user', `${roles.user}`],
-
-  //   ['admin', `${roles.admin}`]
-
-  //   ];
-
   const formik = useFormik({
     initialValues: {
       email: '',
