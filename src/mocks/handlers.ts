@@ -153,7 +153,12 @@ export const handlers = [
       }
     }
 
-    return res(ctx.status(200));
+    return res(
+      ctx.status(401),
+      ctx.json({
+        message: 'err004'
+      })
+    );
   }),
   rest.post(
     `${process.env.REACT_APP_BASE_API_URL}/request-password`,
@@ -180,7 +185,7 @@ export const handlers = [
   rest.post(
     `${process.env.REACT_APP_BASE_API_URL}/${PASSWORD_CHANGE_URL}`,
     (req: RequestPasswordChange, res, ctx) => {
-      return res(ctx.status(200), ctx.json(req.body.token));
+      return res(ctx.status(200));
     }
   )
 ];
