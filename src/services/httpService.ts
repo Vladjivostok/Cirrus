@@ -53,6 +53,7 @@ instance.interceptors.response.use(
       !originalConfig._retry
     ) {
       originalConfig._retry = true;
+
       try {
         const response = await instance.get(`/${REFRESH_TOKEN_URL}`);
         const { accessToken } = response.data;
@@ -60,11 +61,15 @@ instance.interceptors.response.use(
           key: 'user',
           value: JSON.stringify({ accessToken: accessToken })
         });
+
         return instance(originalConfig);
-      } catch (_error) {
-        return Promise.reject(_error);
+      } catch (_err) {
+        if (!err) {
+          Promise.reject(_err);
+        }
       }
     }
+
     return Promise.reject(err);
   }
 );
