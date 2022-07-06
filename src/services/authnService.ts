@@ -2,6 +2,7 @@ import httpService from './httpService';
 
 import { User, UserLoginDataResponse, UserEmail } from '../common/types';
 import {
+  GET_USER_URL,
   INVITE_USER_URL,
   LOGIN_URL,
   PASSWORD_CHANGE_URL,
@@ -47,5 +48,11 @@ export const AuthnService = {
   changePassword: async (userData: ChangePasswordProps): Promise<AxiosResponse> => {
     const response = await httpService.post(PASSWORD_CHANGE_URL, userData);
     return response;
+  },
+
+  getUser: async (): Promise<AxiosResponse> => {
+    const response = await httpService.get(`${GET_USER_URL}`);
+
+    return await response.data;
   }
 };

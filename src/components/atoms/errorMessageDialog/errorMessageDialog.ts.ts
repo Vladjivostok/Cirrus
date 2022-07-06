@@ -19,9 +19,14 @@ export const errorMessageDialog = (message: ResponseErrorCode): string | undefin
     errorMessage = 'Access denied, you are not authorized!';
   }
 
+  if (message === 'err019') {
+    errorMessage = 'Username already taken';
+  }
+
   if (message === 'err018') {
     errorMessage = 'Role not found';
   }
+
   if (message === 'oops, something went wrong') {
     errorMessage = message;
   }

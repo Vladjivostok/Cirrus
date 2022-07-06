@@ -1,9 +1,11 @@
-const LOGIN_URL = 'login';
-const REGISTER_URL = 'registration';
-const REQUEST_PASSWORD_RECOVERY_URL = 'forgot-password';
+const LOGIN_URL = '/login';
+const REGISTER_URL = '/registration';
+const REQUEST_PASSWORD_RECOVERY_URL = '/forgot-password';
 const REFRESH_TOKEN_URL = 'refresh';
+const INVITE_USER_URL = '/admin/user-invitation';
 
-const INVITE_USER_URL = 'admin/user-invitation';
+const GET_USER_URL = '/users/me';
+
 const PASSWORD_CHANGE_URL = 'password-recovery';
 
 export {
@@ -12,5 +14,6 @@ export {
   REGISTER_URL,
   INVITE_USER_URL,
   REQUEST_PASSWORD_RECOVERY_URL,
+  GET_USER_URL,
   PASSWORD_CHANGE_URL
 };

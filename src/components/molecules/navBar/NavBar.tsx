@@ -19,6 +19,8 @@ const NavBar = () => {
 
   const logout = () => {
     LocalStorageService.removeItem('user');
+    LocalStorageService.removeItem('userData');
+
     if (LocalStorageService.getItem('user') === null) {
       dispatch(updateUser(null));
       navigate('/login');

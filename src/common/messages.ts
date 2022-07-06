@@ -1,6 +1,6 @@
 export const toastMessages = {
   successfulRegistration: 'Successfully Registered!',
-  successfulEmailSent: 'Successfully sent an email! Please check your email',
-  successfulInvitation: 'Invitation successfuly sent!',
-  successfulPasswordChange: 'Password successfuly changed!'
+  successfulEmailSent: 'Email sent successfully! Please check your email',
+  successfulInvitation: 'Invitation sent successfully!',
+  successfulPasswordChange: 'Password changed successfully!'
 };
