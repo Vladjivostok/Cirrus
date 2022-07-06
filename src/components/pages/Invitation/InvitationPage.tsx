@@ -10,15 +10,22 @@ import FormErrorMessage from '../../atoms/errorMessage/FormErrorMessage';
 import Select from '../../atoms/select/Select';
 import BreadCrumbs from '../../atoms/breadCrumbs/BreadCrumbs';
 
+import { roles } from '../../../common/constants';
+
 import { AuthnService } from '../../../services/authnService';
 
-import { roles } from '../../../common/constants';
 import { toastMessages } from '../../../common/messages';
 import { yupValidation } from '../../../common/utility';
 import { errorToast, successToast } from '../../../common/utility';
 
 import logo from './../../../assets/Cirrus.png';
 import '../../../common/styles/formPages.css';
+import { Role } from '../../../common/types';
+
+type InviteUserFormikValues = {
+  email: string;
+  role: Role;
+};
 
 const RegistraionScheme = Yup.object().shape({
   email: yupValidation.yupEmail
@@ -30,10 +37,10 @@ const InvitationPage = () => {
     { label: 'admin', value: `${roles.admin}` }
   ];
 
-  const formik = useFormik({
+  const formik = useFormik<InviteUserFormikValues>({
     initialValues: {
       email: '',
-      role: roles.user
+      role: 'ROLE_USER'
     },
     validationSchema: RegistraionScheme,
     onSubmit: async (values) => {

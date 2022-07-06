@@ -42,6 +42,15 @@ export type OptionObjectProp = {
   value: string;
 };
 
+export type Role = 'ROLE_ADMIN' | 'ROLE_USER';
+
+export type GetUserResponse = {
+  email: string;
+  id: number | null;
+  roles: [];
+  username: string;
+};
+
 export type ResponseErrorCode =
   | 'err001'
   | 'err007'

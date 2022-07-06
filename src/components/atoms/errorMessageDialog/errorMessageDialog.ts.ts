@@ -15,13 +15,18 @@ export const errorMessageDialog = (message: ResponseErrorCode): string | undefin
     errorMessage = 'Invite has already been sent to that email';
   }
 
-  if (message === 'err004' || message === 'err009') {
+  if (message === 'err004' || message === 'err009' || message === 'err015') {
     errorMessage = 'Access denied, you are not authorized!';
+  }
+
+  if (message === 'err019') {
+    errorMessage = 'Username already taken';
   }
 
   if (message === 'err018') {
     errorMessage = 'Role not found';
   }
+
   if (message === 'oops, something went wrong') {
     errorMessage = message;
   }

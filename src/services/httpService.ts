@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { INVITE_USER_URL, REFRESH_TOKEN_URL } from '../common/constants';
+import { GET_USER_URL, INVITE_USER_URL, REFRESH_TOKEN_URL } from '../common/constants';
 
 import LocalStorageService from './localStorageService';
 
@@ -8,28 +8,44 @@ const instance = axios.create({
 });
 
 const protectedRoutes = [
-  `${process.env.REACT_APP_BASE_API_URL}/${REFRESH_TOKEN_URL}`,
-  `${process.env.REACT_APP_BASE_API_URL}/${INVITE_USER_URL}`
+  `${process.env.REACT_APP_BASE_API_URL}${REFRESH_TOKEN_URL}`,
+  `${process.env.REACT_APP_BASE_API_URL}${INVITE_USER_URL}`,
+  `${process.env.REACT_APP_BASE_API_URL}${GET_USER_URL}`,
+  `${process.env.REACT_APP_BASE_API_URL}/${REFRESH_TOKEN_URL}`
 ];
 
 instance.interceptors.request.use(
   function (config) {
-    let token;
     const user = LocalStorageService.getItem('user');
+    let refreshToken;
+    let accessToken;
 
     const filteredRoute = protectedRoutes.find(
-      (route) => route === `${process.env.REACT_APP_BASE_API_URL}/${config.url}`
+      (route) => route === `${process.env.REACT_APP_BASE_API_URL}${config.url}`
     );
 
     if (typeof user === 'string') {
-      token = JSON.parse(user).accessToken;
+      refreshToken = JSON.parse(user).refreshToken;
+      accessToken = JSON.parse(user).accessToken;
     }
 
-    if (token && config.headers && filteredRoute?.length) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+    if (
+      refreshToken &&
+      config.headers &&
+      filteredRoute === `${process.env.REACT_APP_BASE_API_URL}/${REFRESH_TOKEN_URL}`
+    ) {
+      config.headers['Authorization'] = `Bearer ${refreshToken}`;
     }
 
-    if (!token || !config.headers || filteredRoute === undefined) {
+    if (
+      accessToken &&
+      config.headers &&
+      filteredRoute !== `${process.env.REACT_APP_BASE_API_URL}/${REFRESH_TOKEN_URL}`
+    ) {
+      config.headers['Authorization'] = `Bearer ${accessToken}`;
+    }
+
+    if ((!refreshToken && !accessToken) || !config.headers || filteredRoute === undefined) {
       config.headers = {};
     }
 
@@ -45,7 +61,9 @@ instance.interceptors.response.use(
     return res;
   },
   async (err) => {
+    const user = LocalStorageService.getItem('user');
     const originalConfig = err.config;
+
     if (
       originalConfig.url !== `${process.env.REACT_APP_BASE_API_URL}/${REFRESH_TOKEN_URL}` &&
       err.response &&
@@ -53,18 +71,27 @@ instance.interceptors.response.use(
       !originalConfig._retry
     ) {
       originalConfig._retry = true;
+
       try {
+        let refreshToken;
+        if (typeof user === 'string') {
+          refreshToken = JSON.parse(user).refreshToken;
+        }
         const response = await instance.get(`/${REFRESH_TOKEN_URL}`);
         const { accessToken } = response.data;
         LocalStorageService.setItem({
           key: 'user',
-          value: JSON.stringify({ accessToken: accessToken })
+          value: JSON.stringify({ refreshToken, accessToken: accessToken })
         });
+
         return instance(originalConfig);
-      } catch (_error) {
-        return Promise.reject(_error);
+      } catch (_err) {
+        if (!err) {
+          Promise.reject(_err);
+        }
       }
     }
+
     return Promise.reject(err);
   }
 );
