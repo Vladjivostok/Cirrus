@@ -1,6 +1,6 @@
 import httpService from './httpService';
 
-import { User, UserLoginDataResponse, UserEmail } from '../common/types';
+import { User, UserLoginDataResponse, UserEmail, GetUserResponse } from '../common/types';
 import {
   GET_USER_URL,
   INVITE_USER_URL,
@@ -50,7 +50,7 @@ export const AuthnService = {
     return response;
   },
 
-  getUser: async (): Promise<AxiosResponse> => {
+  getUser: async (): Promise<GetUserResponse> => {
     const response = await httpService.get(`${GET_USER_URL}`);
 
     return await response.data;

@@ -8,6 +8,11 @@ const GET_USER_URL = '/users/me';
 
 const PASSWORD_CHANGE_URL = 'password-recovery';
 
+const roles = {
+  user: 'ROLE_USER',
+  admin: 'ROLE_ADMIN'
+};
+
 export {
   LOGIN_URL,
   REFRESH_TOKEN_URL,
@@ -15,5 +20,6 @@ export {
   INVITE_USER_URL,
   REQUEST_PASSWORD_RECOVERY_URL,
   GET_USER_URL,
+  roles,
   PASSWORD_CHANGE_URL
 };
