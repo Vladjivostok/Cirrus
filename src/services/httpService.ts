@@ -1,5 +1,10 @@
 import axios from 'axios';
-import { GET_USER_URL, INVITE_USER_URL, REFRESH_TOKEN_URL } from '../common/constants';
+import {
+  GET_ORGANIZATIONS_URL,
+  GET_USER_URL,
+  INVITE_USER_URL,
+  REFRESH_TOKEN_URL
+} from '../common/constants';
 
 import LocalStorageService from './localStorageService';
 
@@ -11,6 +16,7 @@ const protectedRoutes = [
   `${process.env.REACT_APP_BASE_API_URL}${REFRESH_TOKEN_URL}`,
   `${process.env.REACT_APP_BASE_API_URL}${INVITE_USER_URL}`,
   `${process.env.REACT_APP_BASE_API_URL}${GET_USER_URL}`,
+  `${process.env.REACT_APP_BASE_API_URL}${GET_ORGANIZATIONS_URL}`,
   `${process.env.REACT_APP_BASE_API_URL}/${REFRESH_TOKEN_URL}`
 ];
 

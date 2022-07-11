@@ -1,22 +1,35 @@
 .folder {
-  position: relative;
+  height: 3.2rem;
   overflow: visible;
-  width: 3.7rem;
-  height: 3.7rem;
+  position: relative;
+  width: 100%;
+  display: flex;
+  background-color: var(--dashboard-color-dark-grey);
+  border-radius: 0.2rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  border: none;
+}
+
+.folder:hover,
+.focused {
+  background: linear-gradient(135deg, var(--button-color-primary) 70%, rgb(0, 0, 0) 60%);
+  box-shadow: -5px 5px 4px 0px rgba(0, 0, 0, 0.33);
+  transform: translateX(0.4rem);
 }
 
 .folder__icon {
   object-fit: cover;
-  fill: var(--dashboard-color-dark-grey);
+  fill: var(--color-light);
+  width: 2rem;
+  margin-left: 1rem;
 }
 
 .folder__title {
+  color: var(--color-light);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-left: 3.4rem;
   position: absolute;
-  top: 1.6rem;
-  left: 3.8rem;
-  text-align: center;
-  font-size: 0.77rem;
-  color: var(--dashboard-color-dark-grey);
-  font-weight: 500;
-  white-space: pre;
 }

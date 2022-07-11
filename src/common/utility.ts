@@ -37,3 +37,9 @@ export const yupValidation = {
     .oneOf([Yup.ref('password'), ''], 'Passwords must match')
     .required('Confirm password required')
 };
+
+export const truncateString = (stringValue: string, checkValue: number) => {
+  if (stringValue.length > checkValue) stringValue = stringValue.substr(0, checkValue - 1) + '...';
+
+  return stringValue;
+};

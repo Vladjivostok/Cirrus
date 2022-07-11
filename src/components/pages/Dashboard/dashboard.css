@@ -14,7 +14,7 @@
 .main-side {
   display: flex;
   flex-direction: column;
-  width: 10rem;
+  width: 12rem;
   height: 100%;
 }
 
