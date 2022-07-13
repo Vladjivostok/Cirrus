@@ -1,0 +1,10 @@
+.modalHeader {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cancel {
+  position: absolute;
+  right: 0.3rem;
+  top: 0.3rem;
+}

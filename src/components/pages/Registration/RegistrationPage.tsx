@@ -19,6 +19,7 @@ import { toastMessages } from '../../../common/messages';
 
 import '../../../common/styles/formPages.css';
 import { AxiosError } from 'axios';
+import { ResponseErrorCode } from '../../../common/types';
 
 const RegistrationScheme = Yup.object().shape({
   email: yupValidation.yupEmail,
@@ -68,7 +69,7 @@ const RegistrationPage: React.FC = () => {
           successToast(toastMessages.successfulRegistration);
         }
       } catch (error) {
-        let errCode = '';
+        let errCode: ResponseErrorCode = '';
 
         if (error instanceof AxiosError) {
           errCode = error.response?.data.message;

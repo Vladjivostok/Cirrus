@@ -68,10 +68,23 @@ export type OrganizationResponse = {
 };
 
 export type ResponseErrorCode =
+  | ''
   | 'err001'
-  | 'err007'
   | 'err003'
+  | 'err004'
+  | 'err005'
   | 'err006'
+  | 'err007'
   | 'err008'
+  | 'err009'
+  | 'err015'
+  | 'err016'
   | 'err017'
-  | string;
+  | 'err018'
+  | 'err019'
+  | 'err100'
+  | 'err101'
+  | 'err102'
+  | 'err103'
+  | 'err104'
+  | 'err105';

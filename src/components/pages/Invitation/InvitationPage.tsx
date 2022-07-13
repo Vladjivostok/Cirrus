@@ -20,7 +20,7 @@ import { errorToast, successToast } from '../../../common/utility';
 
 import logo from './../../../assets/Cirrus.png';
 import '../../../common/styles/formPages.css';
-import { Role } from '../../../common/types';
+import { ResponseErrorCode, Role } from '../../../common/types';
 
 type InviteUserFormikValues = {
   email: string;
@@ -53,7 +53,7 @@ const InvitationPage = () => {
           successToast(toastMessages.successfulInvitation);
         }
       } catch (error) {
-        let errCode = '';
+        let errCode: ResponseErrorCode = '';
 
         if (error instanceof AxiosError) {
           errCode = error.response?.data.message;

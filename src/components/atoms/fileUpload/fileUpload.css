@@ -1,0 +1,35 @@
+.fileUpload {
+  font-size: 1.2rem;
+}
+
+.fileUpload__title {
+  margin-bottom: 1.5rem;
+}
+
+.fileUpload__dropzone {
+  padding: 3rem;
+  border: 1px dashed black;
+}
+
+.fileUpload__dropzone:hover {
+  background-color: var(--button-invert-color-primary-hover);
+}
+
+.fileUpload__upload-info {
+  margin: 1rem 0;
+}
+
+.fileUpload__button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.fileUpload__errMsg,
+.fileUpload__fileList-error {
+  color: var(--error-message-color);
+  font-family: sans-serif;
+}
+
+.fileUpload__fileList {
+  list-style: none;
+}

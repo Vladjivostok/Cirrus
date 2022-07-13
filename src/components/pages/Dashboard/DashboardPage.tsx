@@ -4,6 +4,7 @@ import BreadCrumbs from '../../atoms/breadCrumbs/BreadCrumbs';
 
 import { UserIcon } from '../../atoms/icons/user/UserIcon';
 import { FolderIcon } from '../../atoms/icons/folder/Folder';
+import Button from '../../atoms/button/Button';
 
 import { truncateString } from '../../../common/utility';
 
@@ -18,6 +19,8 @@ import { setCurrentFolder } from '../../../store/redux/fileManagement/files&Fold
 import classNames from 'classnames';
 
 import './dashboard.css';
+import PopUp from '../../molecules/popUp/PopUp';
+import FileUpload from '../../atoms/fileUpload/FileUpload';
 
 const Dashboard = () => {
   const dispatch = useAppDispatch();
@@ -28,6 +31,16 @@ const Dashboard = () => {
 
   const username = userData?.username;
   const email = userData?.email;
+
+  const [modalIsOpen, setModalIsOpen] = React.useState(false);
+
+  function openModal() {
+    setModalIsOpen(true);
+  }
+
+  function closeModal() {
+    setModalIsOpen(false);
+  }
 
   useEffect(() => {
     if (folders) {
@@ -84,10 +97,19 @@ const Dashboard = () => {
         <div className="main-side-folders__container">{myFolders}</div>
       </aside>
       <div className="main-content">
+        <Button
+          onClick={openModal}
+          className="button upload small"
+          type="button"
+          label={'Upload file'}
+        />
         <div className="files"></div>
         <div className="dynamic-info"></div>
       </div>
       <BreadCrumbs />
+      <PopUp label={'Upload File'} isOpen={modalIsOpen} closeModal={closeModal}>
+        <FileUpload closePopUp={setModalIsOpen} />
+      </PopUp>
     </div>
   );
 };

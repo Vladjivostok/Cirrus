@@ -49,10 +49,8 @@ export const AuthnService = {
     const response = await httpService.post(PASSWORD_CHANGE_URL, userData);
     return response;
   },
-
   getUser: async (): Promise<GetUserResponse> => {
     const response = await httpService.get(`${GET_USER_URL}`);
-
     return await response.data;
   }
 };
