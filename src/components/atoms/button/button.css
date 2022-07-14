@@ -1,15 +1,17 @@
 .button {
   transition-duration: 0.1s;
   border: 0;
-  border-radius: 0.4rem;
+  border-radius: 0.3rem;
   padding: 0.65rem 1.5rem;
   background-color: var(--button-color-primary);
   color: var(--button-text-color);
   font-size: 1.1rem;
+  cursor: pointer;
 }
 .button:hover {
   background-color: var(--button-color-primary-hover);
 }
+
 .invert {
   padding: 0.65rem 0.9rem;
   background-color: white;
@@ -17,4 +19,30 @@
 }
 .invert:hover {
   background-color: var(--button-invert-color-primary-hover);
+}
+
+.upload {
+  border: 1px solid var(--dashboard-color-dark-grey);
+  background-color: transparent;
+  color: var(--dashboard-color-dark-grey);
+}
+
+.upload:hover {
+  background-color: var(--button-invert-color-primary-hover);
+}
+
+.small {
+  padding: 0.3rem 0.8rem;
+  font-size: 1.05rem;
+  margin-top: 3rem;
+}
+
+.button__spinner-wrapper {
+  position: relative;
+}
+
+.button__spinner {
+  position: absolute;
+  right: 3.65rem;
+  top: 0.2rem;
 }

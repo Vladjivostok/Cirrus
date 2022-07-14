@@ -1,19 +1,23 @@
-export interface User {
+export type User = {
   username: string;
   password: string;
   email?: string;
   verificationToken?: string;
-}
+};
 
-export interface UserEmail {
+export type UserEmail = {
   email: string;
-}
-
-//@Types
+};
 
 export type OnClickSvgProp = {
   onClick?: React.MouseEventHandler<SVGSVGElement> | undefined;
+};
+
+export type FolderIconProps = {
+  onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
   title?: string;
+  id?: number | undefined;
+  className?: string;
 };
 
 export type UserRegisterDataResponse = {
@@ -51,11 +55,37 @@ export type GetUserResponse = {
   username: string;
 };
 
+export type Organization = {
+  organization: {
+    id: number;
+    name: string;
+  };
+  permission: string;
+};
+
+export type OrganizationResponse = {
+  userOrganizations: Organization[];
+};
+
 export type ResponseErrorCode =
+  | ''
   | 'err001'
-  | 'err007'
   | 'err003'
+  | 'err004'
+  | 'err005'
   | 'err006'
+  | 'err007'
   | 'err008'
+  | 'err009'
+  | 'err015'
+  | 'err016'
   | 'err017'
-  | string;
+  | 'err018'
+  | 'err019'
+  | 'err100'
+  | 'err101'
+  | 'err102'
+  | 'err103'
+  | 'err104'
+  | 'err105'
+  | 'err106';

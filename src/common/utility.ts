@@ -6,9 +6,6 @@ import errorMessageDialog from '../components/atoms/errorMessageDialog/errorMess
 import * as Yup from 'yup';
 
 export const errorToast = (message: ResponseErrorCode) => {
-  if (message == undefined || message == '') {
-    message = 'oops, something went wrong';
-  }
   toast.error(errorMessageDialog(message), {
     autoClose: 1500,
     bodyStyle: { height: '3.5rem', fontSize: '1rem' }
@@ -36,4 +33,14 @@ export const yupValidation = {
   yupConfirmPassword: Yup.string()
     .oneOf([Yup.ref('password'), ''], 'Passwords must match')
     .required('Confirm password required')
+};
+
+export const truncateString = (stringValue: string, checkValue: number) => {
+  if (stringValue.length > checkValue) stringValue = stringValue.substr(0, checkValue - 1) + '...';
+
+  return stringValue;
+};
+
+export const convertSizeToMB = (size: number) => {
+  return (size / 1048576).toFixed(2) + ' MB';
 };

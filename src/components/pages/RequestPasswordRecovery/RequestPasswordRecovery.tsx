@@ -19,8 +19,9 @@ import { toastMessages } from '../../../common/messages';
 
 import '../../../common/styles/formPages.css';
 import { useAppSelector } from '../../../store/hooks';
+import { ResponseErrorCode } from '../../../common/types';
 
-const RegistraionScheme = Yup.object().shape({
+const RegistrationScheme = Yup.object().shape({
   email: yupValidation.yupEmail
 });
 
@@ -33,7 +34,7 @@ const RequestPasswordRecovery: React.FC = () => {
     initialValues: {
       email: ''
     },
-    validationSchema: RegistraionScheme,
+    validationSchema: RegistrationScheme,
     onSubmit: async (values) => {
       formik.setSubmitting(true);
       try {
@@ -43,7 +44,7 @@ const RequestPasswordRecovery: React.FC = () => {
           navigate('/login');
         }
       } catch (error) {
-        let errCode = '';
+        let errCode: ResponseErrorCode = '';
         if (error instanceof AxiosError) {
           errCode = error.response?.data.message;
         }

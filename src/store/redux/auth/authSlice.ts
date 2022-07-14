@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 import { AuthnService } from '../../../services/authnService';
-import { User, ReduxUser } from '../../../common/types';
+import { User, ReduxUser, ResponseErrorCode } from '../../../common/types';
 
 import LocalStorageService from '../../../services/localStorageService';
 
@@ -16,7 +16,7 @@ interface LoginState {
   user: ReduxUser;
   isError: boolean;
   isLoading: boolean;
-  message: string;
+  message: ResponseErrorCode;
   userData: userDataProps;
 }
 
