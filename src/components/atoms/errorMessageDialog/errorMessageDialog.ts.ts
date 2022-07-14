@@ -48,6 +48,10 @@ export const errorMessageDialog = (message: ResponseErrorCode): string | undefin
     errorMessage = 'The type of file isnt supported';
   }
 
+  if (message === 'err106') {
+    errorMessage = 'File with this name already exist, rename the file and try again';
+  }
+
   if (message == undefined || message == '' || message == null) {
     errorMessage = 'Oops, something went wrong, try again later';
   }

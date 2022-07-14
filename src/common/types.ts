@@ -87,4 +87,5 @@ export type ResponseErrorCode =
   | 'err102'
   | 'err103'
   | 'err104'
-  | 'err105';
+  | 'err105'
+  | 'err106';
