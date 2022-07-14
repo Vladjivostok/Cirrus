@@ -64,7 +64,7 @@ const dummyRefreshToken = 'xs123nR5cCI6IkpXVCJ9.eyJ1c2Vybm213dsax';
 const newAccessToken = 'New AccessToken from the backend! ';
 
 export const handlers = [
-  rest.get(`${process.env.REACT_APP_BASE_API_URL}${GET_USER_URL}`, (req, res, ctx) => {
+  rest.get(`${process.env.REACT_APP_BASE_USER_API_URL}${GET_USER_URL}`, (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
@@ -76,30 +76,33 @@ export const handlers = [
     );
   }),
 
-  rest.post(`${process.env.REACT_APP_BASE_API_URL}${LOGIN_URL}`, (req: RequestUser, res, ctx) => {
-    const check =
-      validUser.password == req.body.password && validUser.username == req.body.username;
+  rest.post(
+    `${process.env.REACT_APP_BASE_USER_API_URL}${LOGIN_URL}`,
+    (req: RequestUser, res, ctx) => {
+      const check =
+        validUser.password == req.body.password && validUser.username == req.body.username;
 
-    if (!check) {
+      if (!check) {
+        return res(
+          ctx.status(400),
+          ctx.json({
+            message: 'err003'
+          })
+        );
+      }
+
       return res(
-        ctx.status(400),
+        ctx.status(200),
         ctx.json({
-          message: 'err003'
+          id: 123,
+          accessToken: dummyJWTToken,
+          refreshToken: dummyRefreshToken
         })
       );
     }
+  ),
 
-    return res(
-      ctx.status(200),
-      ctx.json({
-        id: 123,
-        accessToken: dummyJWTToken,
-        refreshToken: dummyRefreshToken
-      })
-    );
-  }),
-
-  rest.get(`${process.env.REACT_APP_BASE_API_URL}/${REFRESH_TOKEN_URL}`, (req, res, ctx) => {
+  rest.get(`${process.env.REACT_APP_BASE_USER_API_URL}/${REFRESH_TOKEN_URL}`, (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
@@ -109,7 +112,7 @@ export const handlers = [
     );
   }),
   rest.post(
-    `${process.env.REACT_APP_BASE_API_URL}/registration`,
+    `${process.env.REACT_APP_BASE_USER_API_URL}/registration`,
     (req: RequestRegister, res, ctx) => {
       const checkIfValid =
         validRegistration.email == req.body.email &&
@@ -157,7 +160,7 @@ export const handlers = [
     }
   ),
 
-  rest.post(`${process.env.REACT_APP_BASE_API_URL}/${INVITE_USER_URL}`, (req, res, ctx) => {
+  rest.post(`${process.env.REACT_APP_BASE_USER_API_URL}/${INVITE_USER_URL}`, (req, res, ctx) => {
     if (typeof req === 'string') {
       const reqObject = JSON.parse(req);
 
@@ -179,7 +182,7 @@ export const handlers = [
     );
   }),
   rest.post(
-    `${process.env.REACT_APP_BASE_API_URL}/forgot-password`,
+    `${process.env.REACT_APP_BASE_USER_API_URL}/forgot-password`,
     (req: RequestRegister, res, ctx) => {
       const check = validEmail.email == req.body.email;
 
@@ -201,43 +204,49 @@ export const handlers = [
   ),
 
   rest.post(
-    `${process.env.REACT_APP_BASE_API_URL}/${PASSWORD_CHANGE_URL}`,
+    `${process.env.REACT_APP_BASE_USER_API_URL}${PASSWORD_CHANGE_URL}`,
     (req: RequestPasswordChange, res, ctx) => {
       return res(ctx.status(200));
     }
   ),
 
-  rest.post(`${process.env.REACT_APP_BASE_API_URL}${UPLOAD_FILE_URL}`, (req, res, ctx) => {
-    const check =
-      '1' == req.url.searchParams.get('UserId') &&
-      '1' == req.url.searchParams.get('organizationId') &&
-      'Knjaz Milos DOO' == req.url.searchParams.get('organizationName');
+  rest.post(
+    `${process.env.REACT_APP_BASE_FILE_MANAGEMENT_API_URL}${UPLOAD_FILE_URL}`,
+    (req, res, ctx) => {
+      const check =
+        '1' == req.url.searchParams.get('UserId') &&
+        '1' == req.url.searchParams.get('organizationId') &&
+        'Knjaz Milos DOO' == req.url.searchParams.get('organizationName');
 
-    if (check) {
-      return res(ctx.status(200));
+      if (check) {
+        return res(ctx.status(200));
+      }
+      return res(
+        ctx.status(403),
+        ctx.json({
+          message: 'err104'
+        })
+      );
     }
-    return res(
-      ctx.status(403),
-      ctx.json({
-        message: 'err104'
-      })
-    );
-  }),
+  ),
 
-  rest.get(`${process.env.REACT_APP_BASE_API_URL}${GET_ORGANIZATIONS_URL}`, (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        userOrganizations: [
-          {
-            organization: {
-              id: 1,
-              name: 'Knjaz Milos DOO'
-            },
-            permission: 'OWNERS'
-          }
-        ]
-      })
-    );
-  })
+  rest.get(
+    `${process.env.REACT_APP_BASE_FILE_MANAGEMENT_API_URL}${GET_ORGANIZATIONS_URL}`,
+    (req, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          userOrganizations: [
+            {
+              organization: {
+                id: 1,
+                name: 'Knjaz Milos DOO'
+              },
+              permission: 'OWNERS'
+            }
+          ]
+        })
+      );
+    }
+  )
 ];

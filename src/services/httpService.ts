@@ -9,17 +9,15 @@ import {
 
 import LocalStorageService from './localStorageService';
 
-const instance = axios.create({
-  baseURL: process.env.REACT_APP_BASE_API_URL
-});
+const instance = axios.create({});
 
 const protectedRoutes = [
-  `${process.env.REACT_APP_BASE_API_URL}${REFRESH_TOKEN_URL}`,
-  `${process.env.REACT_APP_BASE_API_URL}${INVITE_USER_URL}`,
-  `${process.env.REACT_APP_BASE_API_URL}${GET_USER_URL}`,
-  `${process.env.REACT_APP_BASE_API_URL}${GET_ORGANIZATIONS_URL}`,
-  `${process.env.REACT_APP_BASE_API_URL}${UPLOAD_FILE_URL}`,
-  `${process.env.REACT_APP_BASE_API_URL}/${REFRESH_TOKEN_URL}`
+  `${process.env.REACT_APP_BASE_USER_API_URL}${REFRESH_TOKEN_URL}`,
+  `${process.env.REACT_APP_BASE_USER_API_URL}${INVITE_USER_URL}`,
+  `${process.env.REACT_APP_BASE_USER_API_URL}${GET_USER_URL}`,
+  `${process.env.REACT_APP_BASE_FILE_MANAGEMENT_API_URL}${GET_ORGANIZATIONS_URL}`,
+  `${process.env.REACT_APP_BASE_FILE_MANAGEMENT_API_URL}${UPLOAD_FILE_URL}`,
+  `${process.env.REACT_APP_BASE_USER_API_URL}/${REFRESH_TOKEN_URL}`
 ];
 
 instance.interceptors.request.use(
@@ -28,9 +26,7 @@ instance.interceptors.request.use(
     let refreshToken;
     let accessToken;
 
-    const filteredRoute = protectedRoutes.find(
-      (route) => route === `${process.env.REACT_APP_BASE_API_URL}${config.url}`
-    );
+    const filteredRoute = protectedRoutes.find((route) => route === `${config.url}`);
 
     if (typeof user === 'string') {
       refreshToken = JSON.parse(user).refreshToken;
@@ -40,7 +36,7 @@ instance.interceptors.request.use(
     if (
       refreshToken &&
       config.headers &&
-      filteredRoute === `${process.env.REACT_APP_BASE_API_URL}/${REFRESH_TOKEN_URL}`
+      filteredRoute === `${process.env.REACT_APP_BASE_USER_API_URL}/${REFRESH_TOKEN_URL}`
     ) {
       config.headers['Authorization'] = `Bearer ${refreshToken}`;
     }
@@ -48,7 +44,7 @@ instance.interceptors.request.use(
     if (
       accessToken &&
       config.headers &&
-      filteredRoute !== `${process.env.REACT_APP_BASE_API_URL}/${REFRESH_TOKEN_URL}`
+      filteredRoute !== `${process.env.REACT_APP_BASE_USER_API_URL}/${REFRESH_TOKEN_URL}`
     ) {
       config.headers['Authorization'] = `Bearer ${accessToken}`;
     }
@@ -73,7 +69,7 @@ instance.interceptors.response.use(
     const originalConfig = err.config;
 
     if (
-      originalConfig.url !== `${process.env.REACT_APP_BASE_API_URL}/${REFRESH_TOKEN_URL}` &&
+      originalConfig.url !== `${process.env.REACT_APP_BASE_USER_API_URL}/${REFRESH_TOKEN_URL}` &&
       err.response &&
       err.response.status === 401 &&
       !originalConfig._retry
@@ -85,7 +81,9 @@ instance.interceptors.response.use(
         if (typeof user === 'string') {
           refreshToken = JSON.parse(user).refreshToken;
         }
-        const response = await instance.get(`/${REFRESH_TOKEN_URL}`);
+        const response = await instance.get(
+          `${process.env.REACT_APP_BASE_USER_API_URL}/${REFRESH_TOKEN_URL}`
+        );
         const { accessToken } = response.data;
         LocalStorageService.setItem({
           key: 'user',

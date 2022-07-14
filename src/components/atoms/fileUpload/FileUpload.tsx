@@ -61,8 +61,10 @@ const FileUpload: React.FC<FileUploadProps> = ({ closePopUp }) => {
         if (response.status == 200) {
           successToast(toastMessages.successfulUpload);
           closePopUp(false);
+          setIsLoading(false);
         }
       } catch (error) {
+        setIsLoading(false);
         let errCode: ResponseErrorCode = '';
         if (error instanceof AxiosError) {
           errCode = error.response?.data.message;
@@ -72,7 +74,6 @@ const FileUpload: React.FC<FileUploadProps> = ({ closePopUp }) => {
     } else {
       setIsFileSelected(true);
     }
-    setIsLoading(false);
   };
 
   useEffect(() => {

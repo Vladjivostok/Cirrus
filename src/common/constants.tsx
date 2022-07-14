@@ -4,9 +4,9 @@ const REQUEST_PASSWORD_RECOVERY_URL = '/forgot-password';
 const REFRESH_TOKEN_URL = 'refresh';
 const UPLOAD_FILE_URL = '/users/files/upload';
 const INVITE_USER_URL = '/admin/user-invitation';
-const PASSWORD_CHANGE_URL = 'password-recovery';
+const PASSWORD_CHANGE_URL = '/password-recovery';
 const GET_USER_URL = '/users/me';
-const GET_ORGANIZATIONS_URL = '/users/my/organizations';
+const GET_ORGANIZATIONS_URL = '/organizations';
 
 const roles = {
   user: 'ROLE_USER',

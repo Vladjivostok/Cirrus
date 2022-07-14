@@ -6,7 +6,9 @@ import { AxiosResponse } from 'axios';
 
 const fileManagementService = {
   getOrganizations: async (): Promise<OrganizationResponse> => {
-    const response = await httpService.get(GET_ORGANIZATIONS_URL);
+    const response = await httpService.get(
+      `${process.env.REACT_APP_BASE_FILE_MANAGEMENT_API_URL}${GET_ORGANIZATIONS_URL}`
+    );
     return response.data;
   },
 
@@ -16,13 +18,16 @@ const fileManagementService = {
     organizationId: number | undefined,
     organizationName: string | undefined
   ): Promise<AxiosResponse> => {
-    const response = await httpService.post(UPLOAD_FILE_URL, file, {
-      params: {
-        UserId: userId,
-        organizationId: organizationId,
-        organizationName: organizationName
-      }
-    });
+    const data = new FormData();
+    data.append('file', file[0]);
+    data.append(
+      'request',
+      `{\n"appUserId": ${userId},\n"organizationId": ${organizationId},\n"organizationName": "${organizationName}"\n}`
+    );
+    const response = await httpService.post(
+      `${process.env.REACT_APP_BASE_FILE_MANAGEMENT_API_URL}${UPLOAD_FILE_URL}`,
+      data
+    );
     return response;
   }
 };
