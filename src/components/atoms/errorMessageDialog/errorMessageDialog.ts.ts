@@ -1,4 +1,6 @@
 import { ResponseErrorCode } from '../../../common/types';
+import { maxUploadSize } from '../../../common/fileUtils';
+import { convertSizeToMB } from '../../../common/utility';
 
 export const errorMessageDialog = (message: ResponseErrorCode): string | undefined => {
   let errorMessage;
@@ -50,6 +52,12 @@ export const errorMessageDialog = (message: ResponseErrorCode): string | undefin
 
   if (message === 'err106') {
     errorMessage = 'File with this name already exist, rename the file and try again';
+  }
+
+  if (message === 'err107') {
+    errorMessage = `File too large to upload, maximum upload size is ${convertSizeToMB(
+      maxUploadSize
+    )}`;
   }
 
   if (message == undefined || message == '' || message == null) {

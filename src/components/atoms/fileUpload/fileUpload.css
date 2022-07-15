@@ -27,9 +27,13 @@
 .fileUpload__errMsg,
 .fileUpload__fileList-error {
   color: var(--error-message-color);
-  font-family: sans-serif;
 }
 
-.fileUpload__fileList {
+.fileUpload__errMsg {
+  margin: 1rem 0;
+}
+
+.fileUpload__fileList,
+.fileUpload__fileList-error {
   list-style: none;
 }
