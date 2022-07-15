@@ -1,9 +1,9 @@
 import { AxiosError } from 'axios';
 import React, { useEffect, useState, Dispatch, SetStateAction } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { uploadFileTypes } from '../../../common/acceptedFileTypes';
+import { maxUploadFiles, maxUploadSize, uploadFileTypes } from '../../../common/fileUtils';
 import { toastMessages } from '../../../common/messages';
-import { ResponseErrorCode } from '../../../common/types';
+import { ErrorsForUpload, ResponseErrorCode } from '../../../common/types';
 import { convertSizeToMB, errorToast, successToast } from '../../../common/utility';
 import fileManagementService from '../../../services/fileManagementService';
 import { useAppSelector } from '../../../store/hooks';
@@ -18,8 +18,8 @@ type FileUploadProps = {
 const FileUpload: React.FC<FileUploadProps> = ({ closePopUp }) => {
   const { getRootProps, getInputProps, acceptedFiles, fileRejections } = useDropzone({
     accept: uploadFileTypes,
-    maxFiles: 1,
-    maxSize: 52428800,
+    maxFiles: maxUploadFiles,
+    maxSize: maxUploadSize,
     multiple: false
   });
 
@@ -32,13 +32,22 @@ const FileUpload: React.FC<FileUploadProps> = ({ closePopUp }) => {
     </li>
   ));
 
+  const uploadError = (err: string) => {
+    if (err === ErrorsForUpload.invalidType) {
+      return 'Cant upload this type of file';
+    } else if (err === ErrorsForUpload.tooBig) {
+      return `File too large, maximum upload size is ${convertSizeToMB(maxUploadSize)}`;
+    }
+    return 'Cant upload this file';
+  };
+
   const fileRejectionItems = fileRejections.map(({ file, errors }) => (
     <li className="fileUpload__fileList" key={file.name}>
-      <h4>Rejected:</h4>- {file.name}
+      <h4>Rejected:</h4>- {file.name} - {convertSizeToMB(file.size)}
       <ul>
         {errors.map((e) => (
           <li className="fileUpload__fileList-error" key={e.code}>
-            Cant upload this type of file
+            {uploadError(e.code)}
           </li>
         ))}
       </ul>
@@ -49,8 +58,8 @@ const FileUpload: React.FC<FileUploadProps> = ({ closePopUp }) => {
   const currentFolder = useAppSelector((state) => state.fileManage.selectedFolder);
 
   const uploadHandler = async () => {
-    setIsLoading(true);
     if (acceptedFiles.length !== 0) {
+      setIsLoading(true);
       try {
         const response = await fileManagementService.uploadFile(
           acceptedFiles,

@@ -32,6 +32,15 @@ const Dashboard = () => {
   const username = userData?.username;
   const email = userData?.email;
 
+  const breakEmail = (email: string | undefined) => {
+    let splitEmail: string[] | undefined;
+    if (email != undefined && email.length > 15) {
+      splitEmail = email.split('@');
+      return splitEmail[0] + '\n@' + splitEmail[1];
+    }
+    return email;
+  };
+
   const [modalIsOpen, setModalIsOpen] = React.useState(false);
 
   function openModal() {
@@ -91,7 +100,7 @@ const Dashboard = () => {
           </div>
           <div className="main-side-user-info">
             <span className="main-side-user-info__username">{username}</span>
-            <span className="main-side-user-info__email">{email}</span>
+            <span className="main-side-user-info__email">{breakEmail(email)}</span>
           </div>
         </div>
         <div className="main-side-folders__container">{myFolders}</div>

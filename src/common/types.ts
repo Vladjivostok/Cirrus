@@ -88,4 +88,12 @@ export type ResponseErrorCode =
   | 'err103'
   | 'err104'
   | 'err105'
-  | 'err106';
+  | 'err106'
+  | 'err107';
+
+export type ErrorForUpload = 'file-invalid-type' | 'file-too-large';
+
+export const ErrorsForUpload: Record<string, ErrorForUpload> = {
+  invalidType: 'file-invalid-type',
+  tooBig: 'file-too-large'
+};

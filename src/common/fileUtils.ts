@@ -7,3 +7,7 @@ export const uploadFileTypes = {
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'],
   'text/x-python': ['.py']
 };
+
+export const maxUploadSize = 52428800;
+
+export const maxUploadFiles = 1;
