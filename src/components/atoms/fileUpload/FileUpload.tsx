@@ -34,11 +34,11 @@ const FileUpload: React.FC<FileUploadProps> = ({ closePopUp }) => {
 
   const uploadError = (err: string) => {
     if (err === ErrorsForUpload.invalidType) {
-      return 'Cant upload this type of file';
+      return 'Cannot upload this type of file';
     } else if (err === ErrorsForUpload.tooBig) {
       return `File too large, maximum upload size is ${convertSizeToMB(maxUploadSize)}`;
     }
-    return 'Cant upload this file';
+    return 'Cannot upload this file';
   };
 
   const fileRejectionItems = fileRejections.map(({ file, errors }) => (

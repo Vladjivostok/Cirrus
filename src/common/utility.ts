@@ -35,8 +35,9 @@ export const yupValidation = {
     .required('Confirm password required')
 };
 
-export const truncateString = (stringValue: string, checkValue: number) => {
-  if (stringValue.length > checkValue) stringValue = stringValue.substr(0, checkValue - 1) + '...';
+export const truncateString = (stringValue: string | undefined, checkValue: number) => {
+  if (stringValue != undefined && stringValue.length > checkValue)
+    stringValue = stringValue.substr(0, checkValue - 1) + '...';
 
   return stringValue;
 };
@@ -44,3 +45,5 @@ export const truncateString = (stringValue: string, checkValue: number) => {
 export const convertSizeToMB = (size: number) => {
   return (size / 1048576).toFixed(2) + ' MB';
 };
+
+export const folderTitleMaxLength = 15;

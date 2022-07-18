@@ -6,8 +6,6 @@ import { UserIcon } from '../../atoms/icons/user/UserIcon';
 import { FolderIcon } from '../../atoms/icons/folder/Folder';
 import Button from '../../atoms/button/Button';
 
-import { truncateString } from '../../../common/utility';
-
 import { useAppDispatch } from '../../../store/hooks';
 import { useAppSelector } from '../../../store/hooks';
 
@@ -70,19 +68,15 @@ const Dashboard = () => {
   };
 
   const myFolders = folders?.map((organizationData) => {
-    const title = organizationData.organization.name;
-
     const folderButtonClassName = classNames({
       folder: true,
       focused:
         currentFolder !== null && organizationData.organization.id === currentFolder.organization.id
     });
 
-    const shortenedTitles = truncateString(title, 15);
-
     return (
       <FolderIcon
-        title={shortenedTitles}
+        title={organizationData.organization.name}
         className={folderButtonClassName}
         id={organizationData.organization.id}
         key={organizationData.organization.id}
