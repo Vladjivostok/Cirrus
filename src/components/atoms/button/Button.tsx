@@ -14,15 +14,25 @@ interface ButtonProps {
   className: string;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   loading?: boolean;
+  svg?: JSX.Element;
 }
 
-const Button: React.FC<ButtonProps> = ({ label, disabled, type, className, onClick, loading }) => {
+const Button: React.FC<ButtonProps> = ({
+  label,
+  disabled,
+  type,
+  className,
+  onClick,
+  loading,
+  svg
+}) => {
   return (
     <button className={className} disabled={disabled} type={type} onClick={onClick}>
       <div className="button__spinner-wrapper">
         {loading && <Spinner boxSize={14} className="button__spinner" />}
       </div>
       {label}
+      {svg}
     </button>
   );
 };

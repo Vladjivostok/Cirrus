@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {
   GET_ORGANIZATIONS_URL,
+  GET_ORGANIZATION_FILES_URL,
   GET_USER_URL,
   INVITE_USER_URL,
   REFRESH_TOKEN_URL,
@@ -12,11 +13,12 @@ import LocalStorageService from './localStorageService';
 const instance = axios.create({});
 
 const protectedRoutes = [
-  `${process.env.REACT_APP_BASE_USER_API_URL}${REFRESH_TOKEN_URL}`,
+  `${process.env.REACT_APP_BASE_FILE_MANAGEMENT_API_URL}${GET_ORGANIZATION_FILES_URL}`,
   `${process.env.REACT_APP_BASE_USER_API_URL}${INVITE_USER_URL}`,
   `${process.env.REACT_APP_BASE_USER_API_URL}${GET_USER_URL}`,
   `${process.env.REACT_APP_BASE_FILE_MANAGEMENT_API_URL}${GET_ORGANIZATIONS_URL}`,
   `${process.env.REACT_APP_BASE_FILE_MANAGEMENT_API_URL}${UPLOAD_FILE_URL}`,
+  `${process.env.REACT_APP_BASE_USER_API_URL}${REFRESH_TOKEN_URL}`,
   `${process.env.REACT_APP_BASE_USER_API_URL}/${REFRESH_TOKEN_URL}`
 ];
 
