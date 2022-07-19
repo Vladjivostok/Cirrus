@@ -7,8 +7,9 @@ import { folderTitleMaxLength, truncateString } from '../../../../common/utility
 
 export const FolderIcon: React.FC<FolderIconProps> = ({ onClick, title, id, className }) => {
   const shortenedTitle = truncateString(title, folderTitleMaxLength);
+
   return (
-    <button className={className} id={JSON.stringify(id)} onClick={onClick} title={title}>
+    <button className={className} id={JSON.stringify(id)} onClick={() => onClick(id)} title={title}>
       <Folder className="folder__icon" />
       <div className="folder__title">{shortenedTitle}</div>
     </button>

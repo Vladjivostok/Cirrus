@@ -1,11 +1,13 @@
 import { rest } from 'msw';
 import {
+  GET_ORGANIZATION_FILES_URL,
   GET_ORGANIZATIONS_URL,
   GET_USER_URL,
   INVITE_USER_URL,
   LOGIN_URL,
   PASSWORD_CHANGE_URL,
   REFRESH_TOKEN_URL,
+  REGISTER_URL,
   UPLOAD_FILE_URL
 } from '../common/constants';
 
@@ -112,7 +114,7 @@ export const handlers = [
     );
   }),
   rest.post(
-    `${process.env.REACT_APP_BASE_USER_API_URL}/registration`,
+    `${process.env.REACT_APP_BASE_USER_API_URL}${REGISTER_URL}`,
     (req: RequestRegister, res, ctx) => {
       const checkIfValid =
         validRegistration.email == req.body.email &&
@@ -243,8 +245,69 @@ export const handlers = [
                 name: 'Knjaz Milos DOO'
               },
               permission: 'OWNERS'
+            },
+            {
+              organization: {
+                id: 7,
+                name: 'New folder'
+              },
+              permission: 'OWNERS'
             }
           ]
+        })
+      );
+    }
+  ),
+
+  rest.get(
+    `${process.env.REACT_APP_BASE_FILE_MANAGEMENT_API_URL}${GET_ORGANIZATION_FILES_URL}`,
+    (req, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          content: [
+            {
+              id: 1,
+              name: 'desktop1.jpg',
+              fileSize: 237000,
+              createdAt: [2022, 7, 13, 12, 17, 23, 436823000],
+              appUserId: 1,
+              fileType: 'STANDARD'
+            },
+            {
+              id: 2,
+              name: 'desktop2.py',
+              fileSize: 237000,
+              createdAt: [2022, 7, 13, 12, 17, 23, 436823000],
+              appUserId: 1,
+              fileType: 'CODE'
+            }
+          ],
+          pageable: {
+            sort: {
+              empty: true,
+              sorted: false,
+              unsorted: true
+            },
+            offset: 0,
+            pageSize: 1,
+            pageNumber: 0,
+            paged: true,
+            unpaged: false
+          },
+          last: false,
+          totalElements: 10,
+          totalPages: 10,
+          size: 1,
+          number: 0,
+          sort: {
+            empty: true,
+            sorted: false,
+            unsorted: true
+          },
+          first: true,
+          numberOfElements: 1,
+          empty: false
         })
       );
     }

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import BreadCrumbs from '../../atoms/breadCrumbs/BreadCrumbs';
 
@@ -6,29 +6,59 @@ import { UserIcon } from '../../atoms/icons/user/UserIcon';
 import { FolderIcon } from '../../atoms/icons/folder/Folder';
 import Button from '../../atoms/button/Button';
 
+import { convertSizeToMB, removeExtension, truncateFileDate } from '../../../common/utility';
+import { columns } from '../../../common/constants';
+
 import { useAppDispatch } from '../../../store/hooks';
 import { useAppSelector } from '../../../store/hooks';
 
 import { getLocalUser } from '../../../store/redux/auth/authSlice';
-import { getUserFolders } from '../../../store/redux/fileManagement/files&FoldersSlice';
+import {
+  getOrganizationFiles,
+  getUserFolders
+} from '../../../store/redux/fileManagement/files&FoldersSlice';
 
 import { setCurrentFolder } from '../../../store/redux/fileManagement/files&FoldersSlice';
+
+import { DataGrid } from '@mui/x-data-grid';
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
 
 import classNames from 'classnames';
 
 import './dashboard.css';
+import '../../../common/styles/muiStyles.css';
 import PopUp from '../../molecules/popUp/PopUp';
 import FileUpload from '../../atoms/fileUpload/FileUpload';
+import FileUploadIcon from '../../atoms/icons/fileUpload/FileUploadIcon';
 
 const Dashboard = () => {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [rowsData, setRowsData] = useState<object[]>([]);
   const dispatch = useAppDispatch();
   const userData = useAppSelector((state) => state.auth.userData);
   const folders = useAppSelector((state) => state.fileManage.myOrganizations);
 
   const currentFolder = useAppSelector((state) => state.fileManage.selectedFolder);
+  const organizationFiles = useAppSelector((state) => state.fileManage.organizationFiles);
 
   const username = userData?.username;
   const email = userData?.email;
+
+  useEffect(() => {
+    if (organizationFiles?.content.length) {
+      setRowsData(
+        organizationFiles?.content.map((item) => ({
+          id: item.id,
+          file: removeExtension(item.name),
+          creationDate: truncateFileDate(item.createdAt),
+          fileSize: convertSizeToMB(item.fileSize)
+        }))
+      );
+    } else {
+      setRowsData([]);
+    }
+  }, [organizationFiles]);
 
   const breakEmail = (email: string | undefined) => {
     let splitEmail: string[] | undefined;
@@ -39,7 +69,15 @@ const Dashboard = () => {
     return email;
   };
 
-  const [modalIsOpen, setModalIsOpen] = React.useState(false);
+  const muiCache = createCache({
+    key: 'mui',
+    prepend: true
+  });
+
+  const selectFolder = (id: number | undefined) => {
+    const folder = folders?.find((folder) => folder.organization.id === id);
+    dispatch(setCurrentFolder(folder));
+  };
 
   function openModal() {
     setModalIsOpen(true);
@@ -53,7 +91,6 @@ const Dashboard = () => {
     if (folders) {
       dispatch(setCurrentFolder(folders[0]));
     }
-
     return;
   }, [folders]);
 
@@ -62,10 +99,9 @@ const Dashboard = () => {
     dispatch(getUserFolders());
   }, []);
 
-  const selectFolder = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const folder = folders?.find((folder) => folder.organization.id === +event.currentTarget.id);
-    dispatch(setCurrentFolder(folder));
-  };
+  useEffect(() => {
+    if (folders) dispatch(getOrganizationFiles(currentFolder?.organization.id));
+  }, [currentFolder]);
 
   const myFolders = folders?.map((organizationData) => {
     const folderButtonClassName = classNames({
@@ -97,16 +133,34 @@ const Dashboard = () => {
             <span className="main-side-user-info__email">{breakEmail(email)}</span>
           </div>
         </div>
-        <div className="main-side-folders__container">{myFolders}</div>
-      </aside>
-      <div className="main-content">
         <Button
           onClick={openModal}
           className="button upload small"
           type="button"
           label={'Upload file'}
+          svg={<FileUploadIcon />}
         />
-        <div className="files"></div>
+        <div className="main-side-folders__container">{myFolders}</div>
+      </aside>
+      <div className="main-content">
+        <div className="files">
+          <CacheProvider value={muiCache}>
+            {rowsData.length ? (
+              <DataGrid
+                rows={rowsData}
+                columns={columns}
+                pagination
+                pageSize={10}
+                autoHeight={true}
+                disableSelectionOnClick
+                autoPageSize={true}
+                disableColumnMenu
+              />
+            ) : (
+              ''
+            )}
+          </CacheProvider>
+        </div>
         <div className="dynamic-info"></div>
       </div>
       <BreadCrumbs />

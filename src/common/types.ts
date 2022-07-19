@@ -9,12 +9,21 @@ export type UserEmail = {
   email: string;
 };
 
+export type FileContent = {
+  id: number;
+  name: string;
+  fileSize: number;
+  createdAt: number[];
+  appUserId: number;
+  fileType: 'CODE' | 'STANDARD';
+};
+
 export type OnClickSvgProp = {
   onClick?: React.MouseEventHandler<SVGSVGElement> | undefined;
 };
 
 export type FolderIconProps = {
-  onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
+  onClick: (id: number | undefined) => void;
   title?: string;
   id?: number | undefined;
   className?: string;
@@ -67,6 +76,13 @@ export type OrganizationResponse = {
   userOrganizations: Organization[];
 };
 
+export type ErrorForUpload = 'file-invalid-type' | 'file-too-large';
+
+export const ErrorsForUpload: Record<string, ErrorForUpload> = {
+  invalidType: 'file-invalid-type',
+  tooBig: 'file-too-large'
+};
+
 export type ResponseErrorCode =
   | ''
   | 'err001'
@@ -91,9 +107,31 @@ export type ResponseErrorCode =
   | 'err106'
   | 'err107';
 
-export type ErrorForUpload = 'file-invalid-type' | 'file-too-large';
-
-export const ErrorsForUpload: Record<string, ErrorForUpload> = {
-  invalidType: 'file-invalid-type',
-  tooBig: 'file-too-large'
+export type GetFilesResponse = {
+  content: FileContent[];
+  pageable: {
+    sort: {
+      empty: boolean;
+      sorted: boolean;
+      unsorted: boolean;
+    };
+    offset: number;
+    pageSize: number;
+    pageNumber: number;
+    paged: boolean;
+    unpaged: boolean;
+  };
+  last: boolean;
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  number: number;
+  sort: {
+    empty: boolean;
+    sorted: boolean;
+    unsorted: boolean;
+  };
+  first: boolean;
+  numberOfElements: 1;
+  empty: boolean;
 };

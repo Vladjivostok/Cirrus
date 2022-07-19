@@ -42,8 +42,25 @@ export const truncateString = (stringValue: string | undefined, checkValue: numb
   return stringValue;
 };
 
+export const truncateFileDate = (date: number[] | string) => {
+  date = `${date[2]}.${date[1].toString().length === 1 ? '0' + date[1] : date[1]}.${date[0]} / ${
+    date[3]
+  }:${date[4]}`.toString();
+  return date;
+};
+
 export const convertSizeToMB = (size: number) => {
-  return (size / 1048576).toFixed(2) + ' MB';
+  return (size / 1048576).toFixed(2) + ' mb';
+};
+
+export const removeExtension = (stringWithExtension: string) => {
+  stringWithExtension = `${stringWithExtension.replace(/\.[^/.]+$/, '')}`;
+
+  if (stringWithExtension.length > 29) {
+    stringWithExtension = stringWithExtension.substr(0, 29) + '...';
+  }
+
+  return stringWithExtension;
 };
 
 export const folderTitleMaxLength = 15;

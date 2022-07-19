@@ -1,0 +1,27 @@
+.MuiDataGrid-root {
+  height: 74%;
+  border: none;
+  position: absolute;
+  top: 10rem;
+  width: 100%;
+  padding: 0 2rem;
+}
+
+.MuiDataGrid-columnHeaders {
+  background-color: #fff;
+
+  font-size: 16;
+}
+
+.MuiDataGrid-columnSeparator {
+  visibility: hidden;
+}
+
+.MuiDataGrid-root .MuiDataGrid-cell:focus {
+  outline: none;
+  background: transparent;
+}
+
+.MuiDataGrid-root .MuiDataGrid-columnHeader:focus {
+  outline: none;
+}

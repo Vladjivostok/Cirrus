@@ -1,13 +1,25 @@
 import httpService from '../services/httpService';
 
-import { OrganizationResponse } from '../common/types';
-import { GET_ORGANIZATIONS_URL, UPLOAD_FILE_URL } from '../common/constants';
+import { GetFilesResponse, OrganizationResponse } from '../common/types';
+import {
+  GET_ORGANIZATIONS_URL,
+  GET_ORGANIZATION_FILES_URL,
+  UPLOAD_FILE_URL
+} from '../common/constants';
 import { AxiosResponse } from 'axios';
 
 const fileManagementService = {
   getOrganizations: async (): Promise<OrganizationResponse> => {
     const response = await httpService.get(
       `${process.env.REACT_APP_BASE_FILE_MANAGEMENT_API_URL}${GET_ORGANIZATIONS_URL}`
+    );
+    return response.data;
+  },
+
+  getFiles: async (organizationId: number | undefined): Promise<GetFilesResponse> => {
+    const response = await httpService.get(
+      `${process.env.REACT_APP_BASE_FILE_MANAGEMENT_API_URL}${GET_ORGANIZATION_FILES_URL}`,
+      { params: { organizationId } }
     );
     return response.data;
   },
