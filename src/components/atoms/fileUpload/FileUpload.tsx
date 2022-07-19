@@ -6,7 +6,8 @@ import { toastMessages } from '../../../common/messages';
 import { ErrorsForUpload, ResponseErrorCode } from '../../../common/types';
 import { convertSizeToMB, errorToast, successToast } from '../../../common/utility';
 import fileManagementService from '../../../services/fileManagementService';
-import { useAppSelector } from '../../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { getOrganizationFiles } from '../../../store/redux/fileManagement/files&FoldersSlice';
 import Button from '../button/Button';
 
 import './fileUpload.css';
@@ -25,6 +26,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ closePopUp }) => {
 
   const [isFileSelected, setIsFileSelected] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useAppDispatch();
 
   const files = acceptedFiles.map((file) => (
     <li className="fileUpload__fileList" key={file.name}>
@@ -69,6 +71,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ closePopUp }) => {
         );
         if (response.status == 200) {
           successToast(toastMessages.successfulUpload);
+          dispatch(getOrganizationFiles(currentFolder?.organization.id));
           closePopUp(false);
           setIsLoading(false);
         }
