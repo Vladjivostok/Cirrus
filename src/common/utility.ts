@@ -45,12 +45,12 @@ export const truncateString = (stringValue: string | undefined, checkValue: numb
 export const truncateFileDate = (date: number[] | string) => {
   date = `${date[2]}.${date[1].toString().length === 1 ? '0' + date[1] : date[1]}.${date[0]} / ${
     date[3]
-  }:${date[4]}`.toString();
+  }:${date[4].toString().length === 1 ? '0' + date[4] : date[4]}`.toString();
   return date;
 };
 
 export const convertSizeToMB = (size: number) => {
-  return (size / 1048576).toFixed(2) + ' mb';
+  return (size / 1048576).toFixed(2) + ' MB';
 };
 
 export const removeExtension = (stringWithExtension: string) => {
