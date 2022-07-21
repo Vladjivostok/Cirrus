@@ -1,6 +1,6 @@
 import httpService from '../services/httpService';
 
-import { GetFilesResponse, OrganizationResponse } from '../common/types';
+import { DeleteFileResponse, GetFilesResponse, OrganizationResponse } from '../common/types';
 import {
   GET_ORGANIZATIONS_URL,
   GET_ORGANIZATION_FILES_URL,
@@ -41,6 +41,14 @@ const fileManagementService = {
       data
     );
     return response;
+  },
+
+  deleteFile: async (fileInfoId: number | undefined): Promise<DeleteFileResponse> => {
+    const response = await httpService.delete(
+      `${process.env.REACT_APP_BASE_FILE_MANAGEMENT_API_URL}${GET_ORGANIZATION_FILES_URL}`,
+      { params: { fileInfoId } }
+    );
+    return response.data;
   }
 };
 

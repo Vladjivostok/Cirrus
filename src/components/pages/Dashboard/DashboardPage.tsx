@@ -6,7 +6,12 @@ import { UserIcon } from '../../atoms/icons/user/UserIcon';
 import { FolderIcon } from '../../atoms/icons/folder/Folder';
 import Button from '../../atoms/button/Button';
 
-import { convertSizeToMB, removeExtension, truncateFileDate } from '../../../common/utility';
+import {
+  convertSizeToMB,
+  errorToast,
+  removeExtension,
+  truncateFileDate
+} from '../../../common/utility';
 
 import { useAppDispatch } from '../../../store/hooks';
 import { useAppSelector } from '../../../store/hooks';
@@ -19,7 +24,9 @@ import {
 
 import { setCurrentFolder } from '../../../store/redux/fileManagement/files&FoldersSlice';
 
-import { DataGrid } from '@mui/x-data-grid';
+import fileManagementService from '../../../services/fileManagementService';
+
+import { DataGrid, GridCellParams } from '@mui/x-data-grid';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 
@@ -31,10 +38,19 @@ import PopUp from '../../molecules/popUp/PopUp';
 import FileUpload from '../../atoms/fileUpload/FileUpload';
 import FileUploadIcon from '../../atoms/icons/fileUpload/FileUploadIcon';
 
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+
+import Box from '@mui/material/Box';
+import { ResponseErrorCode } from '../../../common/types';
+import { AxiosError } from 'axios';
+
 const Dashboard = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [rowsData, setRowsData] = useState<object[]>([]);
 
+  const [paramsId, setParamsId] = useState<null | string>(null);
   const dispatch = useAppDispatch();
   const userData = useAppSelector((state) => state.auth.userData);
   const folders = useAppSelector((state) => state.fileManage.myOrganizations);
@@ -122,29 +138,87 @@ const Dashboard = () => {
     );
   });
 
-  const columnsData = [
-    {
-      id: 1,
-      field: 'file',
-      headerName: 'File',
-      flex: 1,
-      sortable: false
-    },
-    {
-      id: 2,
-      field: 'creationDate',
-      headerName: 'Creation date',
-      flex: 1,
-      sortable: false
-    },
-    {
-      id: 3,
-      field: 'fileSize',
-      headerName: 'File size',
-      flex: 1,
-      sortable: false
+  const generateColumns = () => {
+    const columnsData = [
+      {
+        id: 1,
+        field: 'file',
+        headerName: 'File',
+        flex: 1,
+        sortable: false
+      },
+      {
+        id: 2,
+        field: 'creationDate',
+        headerName: 'Creation date',
+        flex: 1,
+        sortable: false
+      },
+      {
+        id: 3,
+        field: 'fileSize',
+        headerName: 'File size',
+        flex: 1,
+        sortable: false
+      },
+      {
+        id: 4,
+        field: 'actions',
+        headerName: '',
+        width: 120,
+        sortable: false,
+        disableColumnMenu: true,
+        renderCell: (params: GridCellParams) => {
+          return (
+            <Box
+              sx={{
+                outline: 'none',
+                border: 'none',
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+              <IconButton
+                onClick={() => {
+                  openDeleteFileModal();
+                  setParamsId(JSON.stringify(params.id));
+                  return params.id;
+                }}>
+                <DeleteIcon />
+              </IconButton>
+            </Box>
+          );
+        }
+      }
+    ];
+    return columnsData;
+  };
+
+  const closeDeleteFileModal = () => setDeleteModalIsOpen(false);
+  const openDeleteFileModal = () => setDeleteModalIsOpen(true);
+
+  const deleteFile = async (): Promise<void> => {
+    if (organizationFiles && paramsId !== null) {
+      const fileForDelete = organizationFiles.content.find((file) => file.id === +paramsId);
+      try {
+        if (fileForDelete !== undefined) {
+          const response = await fileManagementService.deleteFile(fileForDelete.id);
+          if (response.deleted) {
+            dispatch(getOrganizationFiles(currentFolder?.organization.id));
+            setDeleteModalIsOpen(false);
+          }
+        }
+      } catch (error) {
+        let errCode: ResponseErrorCode = '';
+        if (error instanceof AxiosError) {
+          errCode = error.response?.data.message;
+        }
+        errorToast(errCode);
+      }
     }
-  ];
+  };
 
   return (
     <div className="dashboard">
@@ -173,7 +247,7 @@ const Dashboard = () => {
             {rowsData && (
               <DataGrid
                 rows={rowsData}
-                columns={columnsData}
+                columns={generateColumns()}
                 pagination
                 pageSize={10}
                 autoHeight={true}
@@ -190,6 +264,29 @@ const Dashboard = () => {
 
       <PopUp label={'Upload File'} isOpen={modalIsOpen} closeModal={closeModal}>
         <FileUpload closePopUp={setModalIsOpen} />
+      </PopUp>
+
+      <PopUp label={'Delete File'} isOpen={deleteModalIsOpen} closeModal={closeDeleteFileModal}>
+        <div className="deleteFile-wrapper">
+          <div className="deleteFile-wrapper--message">
+            Are you sure, you want to delete this file?
+          </div>
+
+          <div>
+            <Button
+              onClick={deleteFile}
+              className="button upload delete"
+              type="button"
+              label={'Delete File'}
+            />
+            <Button
+              onClick={closeDeleteFileModal}
+              className="button upload delete"
+              type="button"
+              label="Cancel"
+            />
+          </div>
+        </div>
       </PopUp>
     </div>
   );

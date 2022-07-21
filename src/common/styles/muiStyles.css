@@ -25,3 +25,18 @@
 .MuiDataGrid-root .MuiDataGrid-columnHeader:focus {
   outline: none;
 }
+
+.MuiBox-root:focus {
+  outline: none;
+  outline-color: transparent;
+  outline-style: none;
+  outline-width: 0;
+}
+
+.MuiDataGrid-root .MuiDataGrid-cell:focus-within {
+  outline: none;
+}
+
+.MuiDataGrid-root .MuiDataGrid-cell .MuiSvgIcon-root:hover {
+  fill: var(--error-message-color);
+}
