@@ -7,7 +7,6 @@ import { FolderIcon } from '../../atoms/icons/folder/Folder';
 import Button from '../../atoms/button/Button';
 
 import { convertSizeToMB, removeExtension, truncateFileDate } from '../../../common/utility';
-import { columns } from '../../../common/constants';
 
 import { useAppDispatch } from '../../../store/hooks';
 import { useAppSelector } from '../../../store/hooks';
@@ -35,6 +34,7 @@ import FileUploadIcon from '../../atoms/icons/fileUpload/FileUploadIcon';
 const Dashboard = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [rowsData, setRowsData] = useState<object[]>([]);
+
   const dispatch = useAppDispatch();
   const userData = useAppSelector((state) => state.auth.userData);
   const folders = useAppSelector((state) => state.fileManage.myOrganizations);
@@ -91,6 +91,7 @@ const Dashboard = () => {
     if (folders) {
       dispatch(setCurrentFolder(folders[0]));
     }
+
     return;
   }, [folders]);
 
@@ -121,6 +122,30 @@ const Dashboard = () => {
     );
   });
 
+  const columnsData = [
+    {
+      id: 1,
+      field: 'file',
+      headerName: 'File',
+      flex: 1,
+      sortable: false
+    },
+    {
+      id: 2,
+      field: 'creationDate',
+      headerName: 'Creation date',
+      flex: 1,
+      sortable: false
+    },
+    {
+      id: 3,
+      field: 'fileSize',
+      headerName: 'File size',
+      flex: 1,
+      sortable: false
+    }
+  ];
+
   return (
     <div className="dashboard">
       <aside className="main-side">
@@ -145,10 +170,10 @@ const Dashboard = () => {
       <div className="main-content">
         <div className="files">
           <CacheProvider value={muiCache}>
-            {rowsData.length ? (
+            {rowsData && (
               <DataGrid
                 rows={rowsData}
-                columns={columns}
+                columns={columnsData}
                 pagination
                 pageSize={10}
                 autoHeight={true}
@@ -156,14 +181,13 @@ const Dashboard = () => {
                 autoPageSize={true}
                 disableColumnMenu
               />
-            ) : (
-              ''
             )}
           </CacheProvider>
         </div>
         <div className="dynamic-info"></div>
       </div>
       <BreadCrumbs />
+
       <PopUp label={'Upload File'} isOpen={modalIsOpen} closeModal={closeModal}>
         <FileUpload closePopUp={setModalIsOpen} />
       </PopUp>

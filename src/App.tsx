@@ -20,6 +20,7 @@ import LocalStorageService from './services/localStorageService';
 
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
+import { roles } from './common/constants';
 
 const App: React.FC = () => {
   const [state, setState] = useState<{ finishedChecking: boolean; isAuth: boolean }>({
@@ -37,6 +38,13 @@ const App: React.FC = () => {
 
   const dispatch = useAppDispatch();
   const loggedUser = useAppSelector((store) => store.auth.user);
+  const userData = useAppSelector((state) => state.auth.userData);
+
+  let role;
+
+  if (userData?.roles[0]) {
+    role = userData?.roles[0].name;
+  }
 
   useEffect(() => {
     if (userStorageToken) {
@@ -56,11 +64,31 @@ const App: React.FC = () => {
       <ToastContainer />
       <Router>
         <Routes>
-          <Route path="/" element={<LoginPage />} />
+          <Route
+            path="/"
+            element={
+              role === roles.admin || !userStorageToken ? (
+                <LoginPage />
+              ) : (
+                <ProtectedRoutes isEnabled={state.isAuth}>
+                  <Dashboard />
+                </ProtectedRoutes>
+              )
+            }
+          />
+
           <Route path="/login" element={<LoginPage />} />
           <Route path="/forgot-password" element={<RequestPasswordRecovery />} />
           <Route path="/registration/:token" element={<RegistrationPage />} />
           <Route path="/password-recovery/:token" element={<PasswordChangePage />} />
+          <Route
+            path="/admin/user-invitation"
+            element={
+              <ProtectedRoutes isEnabled={role === roles.admin}>
+                <InvitationPage />
+              </ProtectedRoutes>
+            }
+          />
 
           <Route path="*" element={<PageNotFound />} />
           <Route
@@ -68,14 +96,6 @@ const App: React.FC = () => {
             element={
               <ProtectedRoutes isEnabled={state.isAuth}>
                 <Dashboard />
-              </ProtectedRoutes>
-            }
-          />
-          <Route
-            path="/admin/user-invitation"
-            element={
-              <ProtectedRoutes isEnabled={state.isAuth}>
-                <InvitationPage />
               </ProtectedRoutes>
             }
           />

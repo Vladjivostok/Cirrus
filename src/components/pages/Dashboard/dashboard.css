@@ -91,3 +91,7 @@
 .dynamic-info {
   width: 30%;
 }
+
+.ReactModal__Overlay {
+  z-index: 3;
+}

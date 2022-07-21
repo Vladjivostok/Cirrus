@@ -5,13 +5,13 @@ import LocalStorageService from '../../../services/localStorageService';
 import NavBar from '../../molecules/navBar/NavBar';
 
 type ProtectedRoute = {
-  isEnabled: boolean;
+  isEnabled?: boolean;
   children: JSX.Element;
 };
 
 const ProtectedRoutes = ({ isEnabled, children }: ProtectedRoute) => {
   if (!isEnabled || LocalStorageService.getItem('user') === null) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/" />;
   }
 
   return (

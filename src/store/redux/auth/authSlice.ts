@@ -5,10 +5,13 @@ import { User, ReduxUser, ResponseErrorCode } from '../../../common/types';
 
 import LocalStorageService from '../../../services/localStorageService';
 
+type UserRoles = {
+  name: 'ROLE_ADMIN' | 'ROLE_USER';
+};
 type userDataProps = {
   email: string;
   id: number | null;
-  roles: [];
+  roles: UserRoles[];
   username: string;
 } | null;
 
