@@ -135,3 +135,8 @@ export type GetFilesResponse = {
   numberOfElements: 1;
   empty: boolean;
 };
+
+export type DeleteFileResponse = {
+  message: string;
+  deleted: boolean;
+};

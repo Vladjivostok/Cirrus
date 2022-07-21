@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 
 import { updateUser } from '../../../store/redux/auth/authSlice';
 import { LogoutIcon } from '../../atoms/icons/logoutIcon/LogoutIcon';
@@ -14,8 +14,8 @@ import './navBar.css';
 
 const NavBar = () => {
   const dispatch = useAppDispatch();
-
   const navigate = useNavigate();
+  const userData = useAppSelector((state) => state.auth.userData);
 
   const logout = () => {
     LocalStorageService.removeItem('user');
@@ -38,14 +38,23 @@ const NavBar = () => {
     }
   };
 
+  let role;
+
+  if (userData?.roles[0]) {
+    role = userData?.roles[0].name;
+  }
+
   return (
     <div className="nav">
       <div className="nav__item nav__item--logo">
         <img onClick={navigateHome} src={logo} alt="logo" />
       </div>
-      <div className="nav__item">
-        <InviteUserIcon onClick={navigateToInviteUserPage} />
-      </div>
+      {role === 'ROLE_ADMIN' && (
+        <div className="nav__item">
+          <InviteUserIcon onClick={navigateToInviteUserPage} />
+        </div>
+      )}
+
       <div className="nav__item nav__item--bottom">
         <LogoutIcon onClick={logout}></LogoutIcon>
       </div>
