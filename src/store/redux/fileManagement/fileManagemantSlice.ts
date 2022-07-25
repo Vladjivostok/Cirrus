@@ -43,11 +43,16 @@ export const getUserFolders = createAsyncThunk('fileManage/getFolders', async (_
   }
 });
 
+type myType = {
+  organizationId: number | undefined;
+  pageNumber?: number | undefined;
+};
+
 export const getOrganizationFiles = createAsyncThunk(
   'fileManage/getFiles',
-  async (organizationId: number | undefined, thunkAPI) => {
+  async ({ organizationId, pageNumber }: myType, thunkAPI) => {
     try {
-      const response = await fileManagementService.getFiles(organizationId);
+      const response = await fileManagementService.getFiles(organizationId, pageNumber);
       return response;
     } catch (error) {
       let errCode = '';
@@ -73,6 +78,9 @@ export const fileManagementSlice = createSlice({
         state.isLoading = false;
         state.isError = false;
         state.myOrganizations = action.payload;
+      })
+      .addCase(getOrganizationFiles.pending, (state) => {
+        state.isLoading = true;
       })
       .addCase(getOrganizationFiles.fulfilled, (state, action) => {
         state.isLoading = false;
