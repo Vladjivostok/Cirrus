@@ -33,7 +33,3 @@ a {
   display: flex;
   height: 100vh;
 }
-
-.wrapper .breadCrumbs {
-  top: 0;
-}

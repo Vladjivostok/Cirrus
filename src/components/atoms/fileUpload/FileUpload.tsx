@@ -7,16 +7,17 @@ import { ErrorsForUpload, ResponseErrorCode } from '../../../common/types';
 import { convertSizeToMB, errorToast, successToast } from '../../../common/utility';
 import fileManagementService from '../../../services/fileManagementService';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { getOrganizationFiles } from '../../../store/redux/fileManagement/files&FoldersSlice';
+import { getOrganizationFiles } from '../../../store/redux/fileManagement/fileManagemantSlice';
 import Button from '../button/Button';
 
 import './fileUpload.css';
 
 type FileUploadProps = {
   closePopUp: Dispatch<SetStateAction<boolean>>;
+  setPageIndex: Dispatch<SetStateAction<number>>;
 };
 
-const FileUpload: React.FC<FileUploadProps> = ({ closePopUp }) => {
+const FileUpload: React.FC<FileUploadProps> = ({ closePopUp, setPageIndex }) => {
   const { getRootProps, getInputProps, acceptedFiles, fileRejections } = useDropzone({
     accept: uploadFileTypes,
     maxFiles: maxUploadFiles,
@@ -71,7 +72,8 @@ const FileUpload: React.FC<FileUploadProps> = ({ closePopUp }) => {
         );
         if (response.status == 200) {
           successToast(toastMessages.successfulUpload);
-          dispatch(getOrganizationFiles(currentFolder?.organization.id));
+          setPageIndex(1);
+          dispatch(getOrganizationFiles({ organizationId: currentFolder?.organization.id }));
           closePopUp(false);
           setIsLoading(false);
         }
@@ -96,7 +98,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ closePopUp }) => {
 
   return (
     <div className="fileUpload">
-      <h3 className="fileUpload__title">Chose a file to upload</h3>
+      <h3 className="fileUpload__title">Choose a file to upload</h3>
       <div className="fileUpload__dropzone" {...getRootProps()}>
         <input {...getInputProps()} />
         <p>Drag and drop a file here, or click to select a file</p>

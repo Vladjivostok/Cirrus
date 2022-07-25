@@ -72,6 +72,12 @@ instance.interceptors.response.use(
     const originalConfig = err.config;
 
     if (
+      originalConfig.url === `${process.env.REACT_APP_BASE_USER_API_URL}/${REFRESH_TOKEN_URL}` &&
+      err.response.status === 401
+    ) {
+      LocalStorageService.removeItem('user');
+    }
+    if (
       originalConfig.url !== `${process.env.REACT_APP_BASE_USER_API_URL}/${REFRESH_TOKEN_URL}` &&
       err.response &&
       err.response.status === 401 &&
