@@ -9,8 +9,8 @@ import Button from '../../atoms/button/Button';
 import {
   convertSizeToMB,
   errorToast,
-  removeExtension,
-  truncateFileDate
+  truncateFileDate,
+  truncateString
 } from '../../../common/utility';
 
 import { useAppDispatch } from '../../../store/hooks';
@@ -20,9 +20,9 @@ import { getLocalUser } from '../../../store/redux/auth/authSlice';
 import {
   getOrganizationFiles,
   getUserFolders
-} from '../../../store/redux/fileManagement/files&FoldersSlice';
+} from '../../../store/redux/fileManagement/fileManagemantSlice';
 
-import { setCurrentFolder } from '../../../store/redux/fileManagement/files&FoldersSlice';
+import { setCurrentFolder } from '../../../store/redux/fileManagement/fileManagemantSlice';
 
 import fileManagementService from '../../../services/fileManagementService';
 
@@ -46,27 +46,30 @@ import { ResponseErrorCode } from '../../../common/types';
 import { AxiosError } from 'axios';
 
 const Dashboard = () => {
+  const {
+    isLoading,
+    selectedFolder,
+    myOrganizations: folders,
+    organizationFiles: files
+  } = useAppSelector((state) => state.fileManage);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [rowsData, setRowsData] = useState<object[]>([]);
-
   const [paramsId, setParamsId] = useState<null | string>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+
   const dispatch = useAppDispatch();
   const userData = useAppSelector((state) => state.auth.userData);
-  const folders = useAppSelector((state) => state.fileManage.myOrganizations);
-
-  const currentFolder = useAppSelector((state) => state.fileManage.selectedFolder);
-  const organizationFiles = useAppSelector((state) => state.fileManage.organizationFiles);
 
   const username = userData?.username;
   const email = userData?.email;
 
   useEffect(() => {
-    if (organizationFiles?.content.length) {
+    if (files?.content.length) {
       setRowsData(
-        organizationFiles?.content.map((item) => ({
+        files?.content.map((item) => ({
           id: item.id,
-          file: removeExtension(item.name),
+          file: item.name,
           creationDate: truncateFileDate(item.createdAt),
           fileSize: convertSizeToMB(item.fileSize)
         }))
@@ -74,7 +77,7 @@ const Dashboard = () => {
     } else {
       setRowsData([]);
     }
-  }, [organizationFiles]);
+  }, [files]);
 
   const breakEmail = (email: string | undefined) => {
     let splitEmail: string[] | undefined;
@@ -117,14 +120,16 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    if (folders) dispatch(getOrganizationFiles(currentFolder?.organization.id));
-  }, [currentFolder]);
+    if (selectedFolder)
+      dispatch(getOrganizationFiles({ organizationId: selectedFolder?.organization.id }));
+  }, [selectedFolder]);
 
   const myFolders = folders?.map((organizationData) => {
     const folderButtonClassName = classNames({
       folder: true,
       focused:
-        currentFolder !== null && organizationData.organization.id === currentFolder.organization.id
+        selectedFolder !== null &&
+        organizationData.organization.id === selectedFolder.organization.id
     });
 
     return (
@@ -138,6 +143,19 @@ const Dashboard = () => {
     );
   });
 
+  const handlePageChange = (pageNumberProp: number) => {
+    const pageNumber = pageNumberProp + 1;
+
+    setCurrentPage(pageNumber);
+
+    dispatch(
+      getOrganizationFiles({
+        organizationId: selectedFolder?.organization.id,
+        pageNumber
+      })
+    );
+  };
+
   const generateColumns = () => {
     const columnsData = [
       {
@@ -145,7 +163,10 @@ const Dashboard = () => {
         field: 'file',
         headerName: 'File',
         flex: 1,
-        sortable: false
+        sortable: false,
+        renderCell: (params: GridCellParams) => {
+          return <div title={params.row.file}>{truncateString(params.row.file, 29)}</div>;
+        }
       },
       {
         id: 2,
@@ -200,13 +221,14 @@ const Dashboard = () => {
   const openDeleteFileModal = () => setDeleteModalIsOpen(true);
 
   const deleteFile = async (): Promise<void> => {
-    if (organizationFiles && paramsId !== null) {
-      const fileForDelete = organizationFiles.content.find((file) => file.id === +paramsId);
+    if (files && paramsId !== null) {
+      const fileForDelete = files.content.find((file) => file.id === +paramsId);
       try {
         if (fileForDelete !== undefined) {
           const response = await fileManagementService.deleteFile(fileForDelete.id);
           if (response.deleted) {
-            dispatch(getOrganizationFiles(currentFolder?.organization.id));
+            setCurrentPage(1);
+            dispatch(getOrganizationFiles({ organizationId: selectedFolder?.organization.id }));
             setDeleteModalIsOpen(false);
           }
         }
@@ -244,26 +266,53 @@ const Dashboard = () => {
       <div className="main-content">
         <div className="files">
           <CacheProvider value={muiCache}>
-            {rowsData && (
+            {rowsData && files && (
               <DataGrid
                 rows={rowsData}
+                loading={isLoading}
                 columns={generateColumns()}
                 pagination
+                onPageChange={handlePageChange}
                 pageSize={10}
-                autoHeight={true}
+                page={currentPage - 1}
+                autoHeight={false}
                 disableSelectionOnClick
+                rowCount={files?.totalElements}
+                paginationMode="server"
                 autoPageSize={true}
                 disableColumnMenu
               />
             )}
           </CacheProvider>
         </div>
-        <div className="dynamic-info"></div>
       </div>
       <BreadCrumbs />
 
       <PopUp label={'Upload File'} isOpen={modalIsOpen} closeModal={closeModal}>
-        <FileUpload closePopUp={setModalIsOpen} />
+        <FileUpload closePopUp={setModalIsOpen} setPageIndex={setCurrentPage} />
+      </PopUp>
+
+      <PopUp label={'Delete File'} isOpen={deleteModalIsOpen} closeModal={closeDeleteFileModal}>
+        <div className="deleteFile-wrapper">
+          <div className="deleteFile-wrapper--message">
+            Are you sure you want to delete this file?
+          </div>
+
+          <div>
+            <Button
+              onClick={deleteFile}
+              className="button upload delete left"
+              type="button"
+              label={'Delete File'}
+            />
+            <Button
+              onClick={closeDeleteFileModal}
+              className="button upload delete right"
+              type="button"
+              label="Cancel"
+            />
+          </div>
+        </div>
       </PopUp>
 
       <PopUp label={'Delete File'} isOpen={deleteModalIsOpen} closeModal={closeDeleteFileModal}>

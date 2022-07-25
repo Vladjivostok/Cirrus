@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import authSlice from './redux/auth/authSlice';
-import fileManagementSlice from './redux/fileManagement/files&FoldersSlice';
+import fileManagementSlice from './redux/fileManagement/fileManagemantSlice';
 
 export const store = configureStore({
   reducer: {

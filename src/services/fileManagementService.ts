@@ -16,10 +16,13 @@ const fileManagementService = {
     return response.data;
   },
 
-  getFiles: async (organizationId: number | undefined): Promise<GetFilesResponse> => {
+  getFiles: async (
+    organizationId: number | undefined,
+    pageNumber?: number | undefined
+  ): Promise<GetFilesResponse> => {
     const response = await httpService.get(
       `${process.env.REACT_APP_BASE_FILE_MANAGEMENT_API_URL}${GET_ORGANIZATION_FILES_URL}`,
-      { params: { organizationId } }
+      { params: { organizationId, pageNumber } }
     );
     return response.data;
   },
