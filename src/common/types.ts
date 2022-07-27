@@ -64,7 +64,34 @@ export type Organization = {
 };
 
 export type OrganizationResponse = {
-  userOrganizations: Organization[];
+  userOrganizations: {
+    content: Organization[];
+    pageable: {
+      sort: {
+        empty: boolean;
+        sorted: boolean;
+        unsorted: boolean;
+      };
+      offset: number;
+      pageSize: number;
+      pageNumber: number;
+      paged: boolean;
+      unpaged: boolean;
+    };
+    last: boolean;
+    totalElements: number;
+    totalPages: number;
+    size: number;
+    number: number;
+    sort: {
+      empty: boolean;
+      sorted: boolean;
+      unsorted: boolean;
+    };
+    first: boolean;
+    numberOfElements: 1;
+    empty: boolean;
+  };
 };
 
 export type ErrorForUpload = 'file-invalid-type' | 'file-too-large';
