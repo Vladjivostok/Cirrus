@@ -400,28 +400,6 @@ const Dashboard = () => {
           </div>
         </div>
       </PopUp>
-      <PopUp label={'Delete File'} isOpen={deleteModalIsOpen} closeModal={closeDeleteFileModal}>
-        <div className="deleteFile-wrapper">
-          <div className="deleteFile-wrapper--message">
-            Are you sure, you want to delete this file?
-          </div>
-
-          <div>
-            <Button
-              onClick={deleteFile}
-              className="button upload delete"
-              type="button"
-              label={'Delete File'}
-            />
-            <Button
-              onClick={closeDeleteFileModal}
-              className="button upload delete"
-              type="button"
-              label="Cancel"
-            />
-          </div>
-        </div>
-      </PopUp>
     </div>
   );
 };
