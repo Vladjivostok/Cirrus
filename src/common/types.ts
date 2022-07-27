@@ -9,15 +9,6 @@ export type UserEmail = {
   email: string;
 };
 
-export type FileContent = {
-  id: number;
-  name: string;
-  fileSize: number;
-  createdAt: number[];
-  appUserId: number;
-  fileType: 'CODE' | 'STANDARD';
-};
-
 export type OnClickSvgProp = {
   onClick?: React.MouseEventHandler<SVGSVGElement> | undefined;
 };
@@ -98,6 +89,7 @@ export type ResponseErrorCode =
   | 'err017'
   | 'err018'
   | 'err019'
+  | 'err021'
   | 'err100'
   | 'err101'
   | 'err102'
@@ -105,7 +97,61 @@ export type ResponseErrorCode =
   | 'err104'
   | 'err105'
   | 'err106'
-  | 'err107';
+  | 'err107'
+  | 'err201'
+  | 'err202'
+  | 'err203'
+  | 'err204'
+  | 'err205'
+  | 'err206'
+  | 'err207';
+
+export type FileContentFromServer = {
+  id: number;
+  name: string;
+  fileSize: number;
+  createdAtMillis: number;
+  appUserId: number;
+  fileType: 'CODE' | 'STANDARD';
+};
+
+export type FileContent = {
+  id: number;
+  name: string;
+  fileSize: number;
+  createdAt: Date;
+  appUserId: number;
+  fileType: 'CODE' | 'STANDARD';
+};
+
+export type GetFilesResponseFromServer = {
+  content: FileContentFromServer[];
+  pageable: {
+    sort: {
+      empty: boolean;
+      sorted: boolean;
+      unsorted: boolean;
+    };
+    offset: number;
+    pageSize: number;
+    pageNumber: number;
+    paged: boolean;
+    unpaged: boolean;
+  };
+  last: boolean;
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  number: number;
+  sort: {
+    empty: boolean;
+    sorted: boolean;
+    unsorted: boolean;
+  };
+  first: boolean;
+  numberOfElements: 1;
+  empty: boolean;
+};
 
 export type GetFilesResponse = {
   content: FileContent[];
@@ -140,3 +186,26 @@ export type DeleteFileResponse = {
   message: string;
   deleted: boolean;
 };
+
+export type MyTabs = {
+  label?: string;
+  component?: JSX.Element;
+};
+
+export type BasicTabsProps = {
+  tabs: MyTabs[];
+  executionInfo: ExecutionInfo[];
+  currentFileId: number | undefined;
+};
+
+export interface ExecutionInfo {
+  executionInfo: {
+    fileName: string | undefined;
+    organizationId: number | undefined;
+    organizationName: string | undefined;
+    response: string | undefined;
+    time: string | undefined;
+  } | null;
+  fileId: number | undefined;
+  loading: boolean;
+}

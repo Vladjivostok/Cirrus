@@ -1,0 +1,10 @@
+.MuiBox-root .MuiTabs-root .MuiTab-root {
+  text-transform: none;
+  height: 3.5rem;
+}
+
+.MuiTabs-root {
+  height: 3.5rem;
+  border-top-right-radius: 0.2rem;
+  border-top-left-radius: 0.2rem;
+}

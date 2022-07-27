@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from 'react';
-
 import BreadCrumbs from '../../atoms/breadCrumbs/BreadCrumbs';
-
 import { UserIcon } from '../../atoms/icons/user/UserIcon';
 import { FolderIcon } from '../../atoms/icons/folder/Folder';
 import Button from '../../atoms/button/Button';
-
 import {
+  breakEmail,
   convertSizeToMB,
   errorToast,
-  truncateFileDate,
+  getCurrentDateAndTime,
+  runCommandTooltip,
+  showToastError,
+  transformDateAndTime,
   truncateString
 } from '../../../common/utility';
-
-import { useAppDispatch } from '../../../store/hooks';
-import { useAppSelector } from '../../../store/hooks';
-
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { getLocalUser } from '../../../store/redux/auth/authSlice';
 import {
   getOrganizationFiles,
@@ -25,25 +23,25 @@ import {
 import { setCurrentFolder } from '../../../store/redux/fileManagement/fileManagemantSlice';
 
 import fileManagementService from '../../../services/fileManagementService';
-
 import { DataGrid, GridCellParams } from '@mui/x-data-grid';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
-
 import classNames from 'classnames';
-
 import './dashboard.css';
 import '../../../common/styles/muiStyles.css';
 import PopUp from '../../molecules/popUp/PopUp';
 import FileUpload from '../../atoms/fileUpload/FileUpload';
+import DynamicInfo from '../../atoms/dynamicInfo/DynamicInfo';
 import FileUploadIcon from '../../atoms/icons/fileUpload/FileUploadIcon';
-
+import BasicTabs from '../../atoms/tabs/Tabs';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import PlayArrow from '@mui/icons-material/PlayArrow';
 import Box from '@mui/material/Box';
-import { ResponseErrorCode } from '../../../common/types';
+import { MyTabs, ResponseErrorCode, ExecutionInfo } from '../../../common/types';
 import { AxiosError } from 'axios';
+import codeExecutionService from '../../../services/codeExecutionService';
+import Tooltip from '@mui/material/Tooltip';
 
 const Dashboard = () => {
   const {
@@ -54,12 +52,17 @@ const Dashboard = () => {
   } = useAppSelector((state) => state.fileManage);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+  const [disableRunButton, setDisableRunButton] = useState(false);
+  const [currentFileId, setCurrentFileId] = useState<number>();
+  const [executionFileInfo, setExecutionFileInfo] = useState<ExecutionInfo[]>([]);
   const [rowsData, setRowsData] = useState<object[]>([]);
   const [paramsId, setParamsId] = useState<null | string>(null);
   const [currentPage, setCurrentPage] = useState(1);
 
   const dispatch = useAppDispatch();
+
   const userData = useAppSelector((state) => state.auth.userData);
+  const currentFolder = useAppSelector((state) => state.fileManage.selectedFolder);
 
   const username = userData?.username;
   const email = userData?.email;
@@ -70,7 +73,7 @@ const Dashboard = () => {
         files?.content.map((item) => ({
           id: item.id,
           file: item.name,
-          creationDate: truncateFileDate(item.createdAt),
+          creationDate: transformDateAndTime(item.createdAt, false),
           fileSize: convertSizeToMB(item.fileSize)
         }))
       );
@@ -78,15 +81,6 @@ const Dashboard = () => {
       setRowsData([]);
     }
   }, [files]);
-
-  const breakEmail = (email: string | undefined) => {
-    let splitEmail: string[] | undefined;
-    if (email != undefined && email.length > 15) {
-      splitEmail = email.split('@');
-      return splitEmail[0] + '\n@' + splitEmail[1];
-    }
-    return email;
-  };
 
   const muiCache = createCache({
     key: 'mui',
@@ -143,6 +137,61 @@ const Dashboard = () => {
     );
   });
 
+  const checkType = (fileId: number) => {
+    return files?.content.find((element) => element.id === fileId && element.fileType === 'CODE');
+  };
+
+  const runHandler = async (params: GridCellParams) => {
+    setCurrentFileId(params.row.id);
+    setDisableRunButton(true);
+    setExecutionFileInfo((oldArray) => [
+      ...oldArray,
+      {
+        executionInfo: null,
+        fileId: params.row.id,
+        loading: true
+      }
+    ]);
+
+    codeExecutionService
+      .userDemandExecute(
+        params.row.id,
+        params.row.file,
+        currentFolder?.organization.id,
+        currentFolder?.organization.name
+      )
+      .then((response) => {
+        const executeTime = getCurrentDateAndTime();
+
+        setExecutionFileInfo((oldArray) =>
+          oldArray.filter((_, index) => index !== executionFileInfo.length)
+        );
+
+        setExecutionFileInfo((oldArray) => [
+          ...oldArray,
+          {
+            executionInfo: {
+              fileName: params.row.file,
+              organizationId: currentFolder?.organization.id,
+              organizationName: currentFolder?.organization.name,
+              response: JSON.stringify(response),
+              time: transformDateAndTime(executeTime, true)
+            },
+            fileId: params.row.id,
+            loading: false
+          }
+        ]);
+        setDisableRunButton(false);
+      })
+      .catch((error) => {
+        setExecutionFileInfo((oldArray) =>
+          oldArray.filter((_, index) => index !== executionFileInfo.length)
+        );
+        setDisableRunButton(false);
+        showToastError(error);
+      });
+  };
+
   const handlePageChange = (pageNumberProp: number) => {
     const pageNumber = pageNumberProp + 1;
 
@@ -186,7 +235,7 @@ const Dashboard = () => {
         id: 4,
         field: 'actions',
         headerName: '',
-        width: 120,
+        width: 150,
         sortable: false,
         disableColumnMenu: true,
         renderCell: (params: GridCellParams) => {
@@ -198,16 +247,32 @@ const Dashboard = () => {
                 width: '100%',
                 height: '100%',
                 display: 'flex',
-                justifyContent: 'center',
+                justifyContent: 'flex-end',
                 alignItems: 'center'
               }}>
+              {checkType(params.row.id) && (
+                <IconButton
+                  sx={{
+                    marginRight: 2
+                  }}
+                  disabled={disableRunButton}
+                  onClick={async () => {
+                    runHandler(params);
+                  }}>
+                  <Tooltip title={runCommandTooltip}>
+                    <PlayArrow className="playArrow" />
+                  </Tooltip>
+                </IconButton>
+              )}
+
               <IconButton
+                sx={{ marginRight: 2 }}
                 onClick={() => {
                   openDeleteFileModal();
                   setParamsId(JSON.stringify(params.id));
                   return params.id;
                 }}>
-                <DeleteIcon />
+                <DeleteIcon className="deleteIcon" />
               </IconButton>
             </Box>
           );
@@ -226,6 +291,7 @@ const Dashboard = () => {
       try {
         if (fileForDelete !== undefined) {
           const response = await fileManagementService.deleteFile(fileForDelete.id);
+
           if (response.deleted) {
             setCurrentPage(1);
             dispatch(getOrganizationFiles({ organizationId: selectedFolder?.organization.id }));
@@ -241,6 +307,25 @@ const Dashboard = () => {
       }
     }
   };
+
+  const executeResponseTabRendering = (label: string, component: JSX.Element) => {
+    tabs.push({
+      label: label,
+      component: component
+    });
+  };
+
+  const tabs: MyTabs[] = [];
+
+  executeResponseTabRendering(
+    'Execute Response',
+    <DynamicInfo
+      executionInfo={executionFileInfo}
+      setExecutionInfo={setExecutionFileInfo}
+      setDisableRunButton={setDisableRunButton}
+      disableRunButton={disableRunButton}
+      currentFileId={currentFileId}></DynamicInfo>
+  );
 
   return (
     <div className="dashboard">
@@ -268,6 +353,7 @@ const Dashboard = () => {
           <CacheProvider value={muiCache}>
             {rowsData && files && (
               <DataGrid
+                onRowClick={(param) => setCurrentFileId(parseInt(JSON.stringify(param.id)))}
                 rows={rowsData}
                 loading={isLoading}
                 columns={generateColumns()}
@@ -285,9 +371,9 @@ const Dashboard = () => {
             )}
           </CacheProvider>
         </div>
+        <BasicTabs tabs={tabs} executionInfo={executionFileInfo} currentFileId={currentFileId} />
       </div>
       <BreadCrumbs />
-
       <PopUp label={'Upload File'} isOpen={modalIsOpen} closeModal={closeModal}>
         <FileUpload closePopUp={setModalIsOpen} setPageIndex={setCurrentPage} />
       </PopUp>
@@ -314,7 +400,6 @@ const Dashboard = () => {
           </div>
         </div>
       </PopUp>
-
       <PopUp label={'Delete File'} isOpen={deleteModalIsOpen} closeModal={closeDeleteFileModal}>
         <div className="deleteFile-wrapper">
           <div className="deleteFile-wrapper--message">

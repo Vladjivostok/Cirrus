@@ -7,7 +7,14 @@ export const store = configureStore({
   reducer: {
     auth: authSlice,
     fileManage: fileManagementSlice
-  }
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ['fileManage/getFiles/fulfilled'],
+        ignoredPaths: ['fileManage.organizationFiles']
+      }
+    })
 });
 
 export type RootState = ReturnType<typeof store.getState>;

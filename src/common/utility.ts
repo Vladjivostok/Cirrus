@@ -4,6 +4,7 @@ import { ResponseErrorCode } from './types';
 import errorMessageDialog from '../components/atoms/errorMessageDialog/errorMessageDialog.ts';
 
 import * as Yup from 'yup';
+import { AxiosError } from 'axios';
 
 export const errorToast = (message: ResponseErrorCode) => {
   toast.error(errorMessageDialog(message), {
@@ -42,25 +43,45 @@ export const truncateString = (stringValue: string | undefined, checkValue: numb
   return stringValue;
 };
 
-export const truncateFileDate = (date: number[] | string) => {
-  date = `${date[2]}.${date[1].toString().length === 1 ? '0' + date[1] : date[1]}.${date[0]} / ${
-    date[3]
-  }:${date[4].toString().length === 1 ? '0' + date[4] : date[4]}`.toString();
-  return date;
+export const getCurrentDateAndTime = () => {
+  return new Date();
+};
+
+const AddZero = (num: number) => {
+  return num >= 0 && num < 10 ? '0' + num : num + '';
+};
+
+export const transformDateAndTime = (date: Date, showSeconds: boolean) => {
+  return [
+    [AddZero(date.getDate()), AddZero(date.getMonth() + 1), date.getFullYear()].join('/'),
+    `${AddZero(date.getHours())}:${AddZero(date.getMinutes())}${
+      showSeconds ? ':' + AddZero(date.getSeconds()) : ''
+    }`
+  ].join(' / ');
 };
 
 export const convertSizeToMB = (size: number) => {
   return (size / 1048576).toFixed(2) + ' MB';
 };
 
-export const removeExtension = (stringWithExtension: string) => {
-  stringWithExtension = `${stringWithExtension.replace(/\.[^/.]+$/, '')}`;
+export const folderTitleMaxLength = 15;
 
-  if (stringWithExtension.length > 29) {
-    stringWithExtension = stringWithExtension.substr(0, 29) + '...';
+export const breakEmail = (email: string | undefined) => {
+  let splitEmail: string[] | undefined;
+  if (email != undefined && email.length > 15) {
+    splitEmail = email.split('@');
+    return splitEmail[0] + '\n@' + splitEmail[1];
   }
-
-  return stringWithExtension;
+  return email;
 };
 
-export const folderTitleMaxLength = 15;
+export const showToastError = (error: AxiosError) => {
+  let errCode: ResponseErrorCode = '';
+
+  if (error instanceof AxiosError) {
+    errCode = error.response?.data.message;
+  }
+  errorToast(errCode);
+};
+
+export const runCommandTooltip = 'Execute function';

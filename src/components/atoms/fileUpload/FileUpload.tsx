@@ -18,16 +18,19 @@ type FileUploadProps = {
 };
 
 const FileUpload: React.FC<FileUploadProps> = ({ closePopUp, setPageIndex }) => {
+  const user = useAppSelector((state) => state.auth.userData);
+  const currentFolder = useAppSelector((state) => state.fileManage.selectedFolder);
+
+  const [isFileSelected, setIsFileSelected] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useAppDispatch();
+
   const { getRootProps, getInputProps, acceptedFiles, fileRejections } = useDropzone({
     accept: uploadFileTypes,
     maxFiles: maxUploadFiles,
     maxSize: maxUploadSize,
     multiple: false
   });
-
-  const [isFileSelected, setIsFileSelected] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const dispatch = useAppDispatch();
 
   const files = acceptedFiles.map((file) => (
     <li className="fileUpload__fileList" key={file.name}>
@@ -56,9 +59,6 @@ const FileUpload: React.FC<FileUploadProps> = ({ closePopUp, setPageIndex }) => 
       </ul>
     </li>
   ));
-
-  const user = useAppSelector((state) => state.auth.userData);
-  const currentFolder = useAppSelector((state) => state.fileManage.selectedFolder);
 
   const uploadHandler = async () => {
     if (acceptedFiles.length !== 0) {
