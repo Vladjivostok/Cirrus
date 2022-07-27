@@ -30,7 +30,7 @@ const initialState: FileManagementState = {
 
 export const getUserFolders = createAsyncThunk('fileManage/getFolders', async (_, thunkAPI) => {
   try {
-    const response = (await fileManagementService.getOrganizations()).userOrganizations;
+    const response = (await fileManagementService.getOrganizations()).userOrganizations.content;
 
     return response;
   } catch (error) {
