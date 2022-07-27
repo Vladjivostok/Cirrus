@@ -4,11 +4,12 @@
   margin-top: 7.1rem;
   height: 68%;
   padding: 0 2rem;
+  height: 59.367%;
+  margin-top: 14.6rem;
 }
 
 .MuiDataGrid-columnHeaders {
   background-color: #fff;
-
   font-size: 16;
 }
 
@@ -36,7 +37,15 @@
   outline: none;
 }
 
-.MuiDataGrid-root .MuiDataGrid-cell .MuiSvgIcon-root:hover {
+.playArrow {
+  font-size: 2rem;
+}
+
+.playArrow:hover {
+  fill: green;
+}
+
+.deleteIcon:hover {
   fill: var(--error-message-color);
 }
 
@@ -52,7 +61,7 @@
   width: 100%;
   left: 0;
   height: 0.2rem;
-  top: 0.4rem;
+  top: 0.2rem;
   border-bottom-left-radius: 1.5rem;
   border-bottom-right-radius: 1.5rem;
   background-image: linear-gradient(360deg, #dee1e1 10%, #f4f4f4 360%);

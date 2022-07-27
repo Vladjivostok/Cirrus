@@ -1,0 +1,32 @@
+.dynamic-info {
+  font-size: 1rem;
+  height: 50vh;
+  overflow-y: auto;
+}
+
+.dynamic-info__container-wrapper {
+  margin-bottom: 0.25rem;
+  width: 95%;
+}
+
+.dynamic-info__container {
+  border-bottom: 1px solid gray;
+}
+
+.dynamic-info__code-response {
+  word-wrap: break-word;
+  margin-bottom: 1rem;
+}
+
+.dynamic-info__file-name,
+.dynamic-info__organization-name {
+  margin-bottom: 0.3rem;
+}
+
+.dynamic-info__timestamp {
+  margin-bottom: 1rem;
+}
+
+.dynamic-info__name-spans {
+  font-weight: 600;
+}

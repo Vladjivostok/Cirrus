@@ -1,12 +1,31 @@
 import httpService from '../services/httpService';
 
-import { DeleteFileResponse, GetFilesResponse, OrganizationResponse } from '../common/types';
+import {
+  DeleteFileResponse,
+  GetFilesResponse,
+  GetFilesResponseFromServer,
+  OrganizationResponse
+} from '../common/types';
 import {
   GET_ORGANIZATIONS_URL,
   GET_ORGANIZATION_FILES_URL,
   UPLOAD_FILE_URL
 } from '../common/constants';
 import { AxiosResponse } from 'axios';
+
+const convertDate = (date: number): Date => {
+  return new Date(date);
+};
+
+const convertResponse = (response: GetFilesResponseFromServer): GetFilesResponse => {
+  const newResponse = {
+    ...response,
+    content: response.content.map((element) => {
+      return { ...element, createdAt: convertDate(element.createdAtMillis) };
+    })
+  };
+  return newResponse;
+};
 
 const fileManagementService = {
   getOrganizations: async (): Promise<OrganizationResponse> => {
@@ -24,7 +43,7 @@ const fileManagementService = {
       `${process.env.REACT_APP_BASE_FILE_MANAGEMENT_API_URL}${GET_ORGANIZATION_FILES_URL}`,
       { params: { organizationId, pageNumber } }
     );
-    return response.data;
+    return convertResponse(response.data);
   },
 
   uploadFile: async (

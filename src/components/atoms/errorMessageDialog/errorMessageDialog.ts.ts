@@ -24,12 +24,22 @@ export const errorMessageDialog = (message: ResponseErrorCode): string | undefin
     errorMessage = 'Access denied, you are not authorized!';
   }
 
+  if (message === 'err021') {
+    errorMessage = 'Username cannot be longer then 50 characters';
+  }
+
   if (
     message === 'err016' ||
     message === 'err101' ||
     message === 'err102' ||
     message === 'err104' ||
-    message === 'err105'
+    message === 'err105' ||
+    message === 'err201' ||
+    message === 'err202' ||
+    message === 'err203' ||
+    message === 'err204' ||
+    message === 'err205' ||
+    message === 'err206'
   ) {
     errorMessage = 'Oops, something went wrong';
   }
@@ -58,6 +68,10 @@ export const errorMessageDialog = (message: ResponseErrorCode): string | undefin
     errorMessage = `File too large to upload, maximum upload size is ${convertSizeToMB(
       maxUploadSize
     )}`;
+  }
+
+  if (message === 'err207') {
+    errorMessage = 'Function execution failed';
   }
 
   if (message == undefined || message == '' || message == null) {
