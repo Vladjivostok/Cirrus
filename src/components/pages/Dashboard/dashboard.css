@@ -88,6 +88,8 @@
   width: 100%;
   height: 5rem;
   align-items: center;
+  margin-left: auto;
+  margin-right: 22.5rem;
 }
 
 .deleteFile-wrapper--message {
