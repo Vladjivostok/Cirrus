@@ -31,8 +31,8 @@ const Button: React.FC<ButtonProps> = ({
       <div className="button__spinner-wrapper">
         {loading && <Spinner boxSize={14} className="button__spinner" />}
       </div>
-      {label}
       {svg}
+      {label}
     </button>
   );
 };

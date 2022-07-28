@@ -9,6 +9,15 @@ export type UserEmail = {
   email: string;
 };
 
+export type FileContent = {
+  id: number;
+  name: string;
+  fileSize: number;
+  createdAt: Date;
+  appUserId: number;
+  fileType: 'CODE' | 'STANDARD';
+};
+
 export type OnClickSvgProp = {
   onClick?: React.MouseEventHandler<SVGSVGElement> | undefined;
 };
@@ -111,7 +120,9 @@ export type ResponseErrorCode =
   | 'err007'
   | 'err008'
   | 'err009'
+  | 'err010'
   | 'err015'
+  | 'err014'
   | 'err016'
   | 'err017'
   | 'err018'
@@ -125,6 +136,8 @@ export type ResponseErrorCode =
   | 'err105'
   | 'err106'
   | 'err107'
+  | 'err108'
+  | 'err110'
   | 'err201'
   | 'err202'
   | 'err203'
@@ -138,15 +151,6 @@ export type FileContentFromServer = {
   name: string;
   fileSize: number;
   createdAtMillis: number;
-  appUserId: number;
-  fileType: 'CODE' | 'STANDARD';
-};
-
-export type FileContent = {
-  id: number;
-  name: string;
-  fileSize: number;
-  createdAt: Date;
   appUserId: number;
   fileType: 'CODE' | 'STANDARD';
 };
@@ -214,6 +218,10 @@ export type DeleteFileResponse = {
   deleted: boolean;
 };
 
+export type CreateOrganizationResponse = {
+  userId: number;
+  name: string;
+};
 export type MyTabs = {
   label?: string;
   component?: JSX.Element;

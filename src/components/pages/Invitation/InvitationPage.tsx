@@ -77,16 +77,18 @@ const InvitationPage = () => {
             type="email"
             value={formik.values.email}
             onChange={formik.handleChange}
+            inputWrapperClassname="inputWrapper-label--invitationPage"
           />
           <FormErrorMessage errors={formik.errors} touched={formik.touched} inputType="email" />
         </div>
         <div className="inputWrapper">
-          <div className="inputWrapper-label">Pick a role</div>
           <Select
             defaultValue={formik.initialValues.role}
             name="role"
             onChange={formik.handleChange}
             optionsArray={optionsArray}
+            placeholder="Select a role"
+            inputWrapperClassname="inputWrapper-label--invitationPage"
           />
           <FormErrorMessage errors={formik.errors} touched={formik.touched} inputType="select" />
         </div>

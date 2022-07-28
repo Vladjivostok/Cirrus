@@ -13,6 +13,12 @@
   outline: none;
 }
 
+.input-fluid {
+  margin: 0;
+
+  width: 100%;
+}
+
 .inputWrapper {
   position: relative;
 }
@@ -21,13 +27,20 @@
   display: none;
 }
 
-.inputWrapper-label {
-  position: absolute;
-  left: 0.5rem;
-  bottom: 5.25rem;
-  padding: 0 0.3rem;
-  font-weight: 400;
-  background-color: var(--color-light);
-  font-size: 0.9rem;
-  color: var(--dashboard-color-dark-grey);
+.folder-name {
+  bottom: 9.1rem;
+  left: 3.6rem;
+  background-color: #ffffff;
+}
+
+.inputWrapper-label--login {
+  bottom: 5.2rem;
+  left: 1rem;
+  background-color: #fff;
+}
+
+.inputWrapper-label--invitationPage {
+  bottom: 5.2rem;
+  left: 1rem;
+  background-color: #f4f7f6;
 }

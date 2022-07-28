@@ -89,6 +89,7 @@ const LoginPage: React.FC = () => {
             type="text"
             value={formik.values.username}
             onChange={formik.handleChange}
+            inputWrapperClassname="inputWrapper-label--login"
           />
           <FormErrorMessage errors={formik.errors} touched={formik.touched} inputType="username" />
         </div>
@@ -99,6 +100,7 @@ const LoginPage: React.FC = () => {
             type={toggleShowPassword ? 'text' : 'password'}
             value={formik.values.password}
             onChange={formik.handleChange}
+            inputWrapperClassname="inputWrapper-label--login"
           />
           <FormErrorMessage errors={formik.errors} touched={formik.touched} inputType="password" />
           {toggleIcon()}
