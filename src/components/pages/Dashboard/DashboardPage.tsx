@@ -1,8 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEventHandler, FormEventHandler, useEffect, useState } from 'react';
+
 import BreadCrumbs from '../../atoms/breadCrumbs/BreadCrumbs';
+import Button from '../../atoms/button/Button';
+import FileUpload from '../../atoms/fileUpload/FileUpload';
+import DynamicInfo from '../../atoms/dynamicInfo/DynamicInfo';
+import BasicTabs from '../../atoms/tabs/Tabs';
+
+import FileUploadIcon from '../../atoms/icons/fileUpload/FileUploadIcon';
+import CreateFolderIcon from '../../atoms/icons/createFolder/CreateFolder';
+import Input from '../../atoms/input/Input';
 import { UserIcon } from '../../atoms/icons/user/UserIcon';
 import { FolderIcon } from '../../atoms/icons/folder/Folder';
-import Button from '../../atoms/button/Button';
+
+import { MyTabs, ResponseErrorCode, ExecutionInfo } from '../../../common/types';
 import {
   breakEmail,
   convertSizeToMB,
@@ -23,26 +33,26 @@ import {
 import { setCurrentFolder } from '../../../store/redux/fileManagement/fileManagemantSlice';
 
 import fileManagementService from '../../../services/fileManagementService';
+
 import { DataGrid, GridCellParams } from '@mui/x-data-grid';
-import { CacheProvider } from '@emotion/react';
-import createCache from '@emotion/cache';
-import classNames from 'classnames';
-import './dashboard.css';
-import '../../../common/styles/muiStyles.css';
-import PopUp from '../../molecules/popUp/PopUp';
-import FileUpload from '../../atoms/fileUpload/FileUpload';
-import DynamicInfo from '../../atoms/dynamicInfo/DynamicInfo';
-import FileUploadIcon from '../../atoms/icons/fileUpload/FileUploadIcon';
-import BasicTabs from '../../atoms/tabs/Tabs';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PlayArrow from '@mui/icons-material/PlayArrow';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import Box from '@mui/material/Box';
-import { MyTabs, ResponseErrorCode, ExecutionInfo } from '../../../common/types';
+import Tooltip from '@mui/material/Tooltip';
+
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
+
+import PopUp from '../../molecules/popUp/PopUp';
+
 import { AxiosError } from 'axios';
 import codeExecutionService from '../../../services/codeExecutionService';
-import Tooltip from '@mui/material/Tooltip';
+
+import classNames from 'classnames';
+import './dashboard.css';
+import '../../../common/styles/muiStyles.css';
 
 const Dashboard = () => {
   const {
@@ -52,6 +62,7 @@ const Dashboard = () => {
     organizationFiles: files
   } = useAppSelector((state) => state.fileManage);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [createModalIsOpen, setCreateModalIsOpen] = useState(false);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [disableRunButton, setDisableRunButton] = useState(false);
   const [currentFileId, setCurrentFileId] = useState<number>();
@@ -59,6 +70,7 @@ const Dashboard = () => {
   const [rowsData, setRowsData] = useState<object[]>([]);
   const [paramsId, setParamsId] = useState<null | string>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [inputValue, setInputValue] = useState('');
 
   const dispatch = useAppDispatch();
 
@@ -111,7 +123,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch(getLocalUser());
-    dispatch(getUserFolders());
+    dispatch(getUserFolders({ pageSize: 10 }));
   }, []);
 
   useEffect(() => {
@@ -222,6 +234,25 @@ const Dashboard = () => {
     );
   };
 
+  const inputValueHandler: ChangeEventHandler<HTMLInputElement> = (event) =>
+    setInputValue(event.target.value);
+  const submitHandler: FormEventHandler<HTMLFormElement> = async (event) => {
+    event.preventDefault();
+
+    try {
+      await fileManagementService.createOrganization(inputValue);
+      setCreateModalIsOpen(false);
+      dispatch(getUserFolders({ pageSize: 10 }));
+    } catch (error) {
+      let errCode: ResponseErrorCode = '';
+      console.log(error);
+      if (error instanceof AxiosError) {
+        errCode = error.response?.data.message;
+      }
+      errorToast(errCode);
+    }
+  };
+
   const generateColumns = () => {
     const columnsData = [
       {
@@ -230,6 +261,7 @@ const Dashboard = () => {
         headerName: 'File',
         flex: 2,
         sortable: false,
+
         renderCell: (params: GridCellParams) => {
           return <div title={params.row.file}>{truncateString(params.row.file, 29)}</div>;
         }
@@ -255,6 +287,7 @@ const Dashboard = () => {
         width: 200,
         sortable: false,
         disableColumnMenu: true,
+
         renderCell: (params: GridCellParams) => {
           return (
             <Box
@@ -314,6 +347,9 @@ const Dashboard = () => {
   const closeDeleteFileModal = () => setDeleteModalIsOpen(false);
   const openDeleteFileModal = () => setDeleteModalIsOpen(true);
 
+  const closeCreateModal = () => setCreateModalIsOpen(false);
+  const openCreateModal = () => setCreateModalIsOpen(true);
+
   const deleteFile = async (): Promise<void> => {
     if (files && paramsId !== null) {
       const fileForDelete = files.content.find((file) => file.id === +paramsId);
@@ -369,16 +405,25 @@ const Dashboard = () => {
           </div>
         </div>
         <Button
-          onClick={openModal}
-          className="button upload small"
+          onClick={openCreateModal}
+          className="button create"
           type="button"
-          label={'Upload file'}
-          svg={<FileUploadIcon />}
+          label={'Create folder'}
+          svg={<CreateFolderIcon />}
         />
         <div className="main-side-folders__container">{myFolders}</div>
       </aside>
       <div className="main-content">
         <div className="files">
+          <div className="files-upload">
+            <Button
+              onClick={openModal}
+              className="button upload small"
+              type="button"
+              label={'Upload file'}
+              svg={<FileUploadIcon />}
+            />
+          </div>
           <CacheProvider value={muiCache}>
             {rowsData && files && (
               <DataGrid
@@ -407,6 +452,20 @@ const Dashboard = () => {
         <FileUpload closePopUp={setModalIsOpen} setPageIndex={setCurrentPage} />
       </PopUp>
 
+      <PopUp label={'Upload File'} isOpen={createModalIsOpen} closeModal={closeCreateModal}>
+        <form onSubmit={submitHandler}>
+          <Input
+            type="text"
+            name="add"
+            className="input-fluid"
+            placeholder="Choose folder name"
+            onChange={inputValueHandler}
+            inputWrapperClassname="folder-name"
+          />
+          <Button label="Submit" type="submit" className="button btn-fluid" />
+        </form>
+      </PopUp>
+
       <PopUp label={'Delete File'} isOpen={deleteModalIsOpen} closeModal={closeDeleteFileModal}>
         <div className="deleteFile-wrapper">
           <div className="deleteFile-wrapper--message">
@@ -423,6 +482,28 @@ const Dashboard = () => {
             <Button
               onClick={closeDeleteFileModal}
               className="button upload delete right"
+              type="button"
+              label="Cancel"
+            />
+          </div>
+        </div>
+      </PopUp>
+      <PopUp label={'Delete File'} isOpen={deleteModalIsOpen} closeModal={closeDeleteFileModal}>
+        <div className="deleteFile-wrapper">
+          <div className="deleteFile-wrapper--message">
+            Are you sure, you want to delete this file?
+          </div>
+
+          <div>
+            <Button
+              onClick={deleteFile}
+              className="button delete left"
+              type="button"
+              label={'Delete File'}
+            />
+            <Button
+              onClick={closeDeleteFileModal}
+              className="button delete right"
               type="button"
               label="Cancel"
             />

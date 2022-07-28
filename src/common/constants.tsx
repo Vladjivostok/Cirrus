@@ -5,6 +5,7 @@ const REFRESH_TOKEN_URL = 'refresh';
 const UPLOAD_FILE_URL = '/files/upload';
 const INVITE_USER_URL = '/admin/user-invitation';
 const GET_ORGANIZATION_FILES_URL = '/files';
+const CREATE_ORGANIZATION = '/organizations';
 const DELETE_FILE_URL = '/files';
 const DOWNLOAD_FILE_URL = '/files/download';
 const PASSWORD_CHANGE_URL = '/password-recovery';
@@ -27,6 +28,7 @@ export {
   GET_USER_URL,
   DELETE_FILE_URL,
   roles,
+  CREATE_ORGANIZATION,
   GET_ORGANIZATIONS_URL,
   PASSWORD_CHANGE_URL,
   GET_ORGANIZATION_FILES_URL,

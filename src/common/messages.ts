@@ -3,5 +3,6 @@ export const toastMessages = {
   successfulEmailSent: 'Email sent successfully! Please check your email',
   successfulInvitation: 'Invitation sent successfully!',
   successfulPasswordChange: 'Password changed successfully!',
-  successfulUpload: 'File uploaded successfully!'
+  successfulUpload: 'File uploaded successfully!',
+  successfulFolderCreation: 'Your folder has successfully been created'
 };

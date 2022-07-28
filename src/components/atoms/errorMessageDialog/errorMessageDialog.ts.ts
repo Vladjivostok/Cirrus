@@ -20,7 +20,16 @@ export const errorMessageDialog = (message: ResponseErrorCode): string | undefin
     errorMessage = 'User already activated';
   }
 
-  if (message === 'err004' || message === 'err009' || message === 'err015') {
+  if (message === 'err010') {
+    errorMessage = 'Folder with that name already exists';
+  }
+
+  if (
+    message === 'err004' ||
+    message === 'err009' ||
+    message === 'err015' ||
+    message === 'err014'
+  ) {
     errorMessage = 'Access denied, you are not authorized!';
   }
 
