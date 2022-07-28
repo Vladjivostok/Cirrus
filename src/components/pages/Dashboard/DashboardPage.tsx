@@ -37,6 +37,7 @@ import BasicTabs from '../../atoms/tabs/Tabs';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PlayArrow from '@mui/icons-material/PlayArrow';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import Box from '@mui/material/Box';
 import { MyTabs, ResponseErrorCode, ExecutionInfo } from '../../../common/types';
 import { AxiosError } from 'axios';
@@ -192,6 +193,22 @@ const Dashboard = () => {
       });
   };
 
+  const downloadHandle = (params: GridCellParams) => {
+    fileManagementService
+      .downloadFile(params.row.id)
+      .then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', params.row.file);
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch((error) => {
+        errorToast(error);
+      });
+  };
+
   const handlePageChange = (pageNumberProp: number) => {
     const pageNumber = pageNumberProp + 1;
 
@@ -211,7 +228,7 @@ const Dashboard = () => {
         id: 1,
         field: 'file',
         headerName: 'File',
-        flex: 1,
+        flex: 2,
         sortable: false,
         renderCell: (params: GridCellParams) => {
           return <div title={params.row.file}>{truncateString(params.row.file, 29)}</div>;
@@ -221,7 +238,7 @@ const Dashboard = () => {
         id: 2,
         field: 'creationDate',
         headerName: 'Creation date',
-        flex: 1,
+        flex: 2,
         sortable: false
       },
       {
@@ -235,7 +252,7 @@ const Dashboard = () => {
         id: 4,
         field: 'actions',
         headerName: '',
-        width: 150,
+        width: 200,
         sortable: false,
         disableColumnMenu: true,
         renderCell: (params: GridCellParams) => {
@@ -268,11 +285,23 @@ const Dashboard = () => {
               <IconButton
                 sx={{ marginRight: 2 }}
                 onClick={() => {
+                  downloadHandle(params);
+                }}>
+                <Tooltip title="Download File">
+                  <CloudDownloadIcon className="cloudDownloadIcon" />
+                </Tooltip>
+              </IconButton>
+
+              <IconButton
+                sx={{ marginRight: 2 }}
+                onClick={() => {
                   openDeleteFileModal();
                   setParamsId(JSON.stringify(params.id));
                   return params.id;
                 }}>
-                <DeleteIcon className="deleteIcon" />
+                <Tooltip title={'Delete File'}>
+                  <DeleteIcon className="deleteIcon" />
+                </Tooltip>
               </IconButton>
             </Box>
           );

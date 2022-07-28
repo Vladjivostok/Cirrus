@@ -9,7 +9,8 @@ import {
 import {
   GET_ORGANIZATIONS_URL,
   GET_ORGANIZATION_FILES_URL,
-  UPLOAD_FILE_URL
+  UPLOAD_FILE_URL,
+  DOWNLOAD_FILE_URL
 } from '../common/constants';
 import { AxiosResponse } from 'axios';
 
@@ -68,6 +69,14 @@ const fileManagementService = {
   deleteFile: async (fileInfoId: number | undefined): Promise<DeleteFileResponse> => {
     const response = await httpService.delete(
       `${process.env.REACT_APP_BASE_FILE_MANAGEMENT_API_URL}${GET_ORGANIZATION_FILES_URL}`,
+      { params: { fileInfoId } }
+    );
+    return response.data;
+  },
+
+  downloadFile: async (fileInfoId: number | undefined): Promise<Blob> => {
+    const response = await httpService.get(
+      `${process.env.REACT_APP_BASE_FILE_MANAGEMENT_API_URL}${DOWNLOAD_FILE_URL}`,
       { params: { fileInfoId } }
     );
     return response.data;

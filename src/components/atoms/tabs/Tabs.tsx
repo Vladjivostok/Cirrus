@@ -42,7 +42,7 @@ const BasicTabs: React.FC<BasicTabsProps> = ({ tabs, executionInfo, currentFileI
 
   if (tabs.length > 0) {
     return (
-      <Box sx={{ width: '30%', marginTop: '14.6rem' }}>
+      <Box sx={{ width: '40%', marginTop: '14.6rem' }}>
         <div>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs

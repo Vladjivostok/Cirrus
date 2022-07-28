@@ -125,6 +125,8 @@ export type ResponseErrorCode =
   | 'err105'
   | 'err106'
   | 'err107'
+  | 'err108'
+  | 'err110'
   | 'err201'
   | 'err202'
   | 'err203'

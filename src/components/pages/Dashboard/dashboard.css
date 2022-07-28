@@ -77,7 +77,7 @@
 .files {
   background-color: var(--color-light);
   height: 100%;
-  width: 70%;
+  width: 60%;
   display: flex;
   position: relative;
 }

@@ -34,6 +34,7 @@ export const errorMessageDialog = (message: ResponseErrorCode): string | undefin
     message === 'err102' ||
     message === 'err104' ||
     message === 'err105' ||
+    message === 'err108' ||
     message === 'err201' ||
     message === 'err202' ||
     message === 'err203' ||
@@ -68,6 +69,10 @@ export const errorMessageDialog = (message: ResponseErrorCode): string | undefin
     errorMessage = `File too large to upload, maximum upload size is ${convertSizeToMB(
       maxUploadSize
     )}`;
+  }
+
+  if (message === 'err110') {
+    errorMessage = 'File does not exist';
   }
 
   if (message === 'err207') {

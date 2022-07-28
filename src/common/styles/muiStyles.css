@@ -2,7 +2,7 @@
   border: none;
   width: 100%;
   margin-top: 7.1rem;
-  height: 68%;
+  height: 64.1%;
   padding: 0 2rem;
   height: 59.367%;
   margin-top: 14.6rem;
@@ -43,6 +43,10 @@
 
 .playArrow:hover {
   fill: green;
+}
+
+.cloudDownloadIcon:hover {
+  fill: var(--button-color-primary);
 }
 
 .deleteIcon:hover {
