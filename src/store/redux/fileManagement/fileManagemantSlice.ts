@@ -10,6 +10,17 @@ type SelectedFolderType = {
   permission: string;
 };
 
+type getUserFoldersProps = {
+  pageNumber?: number | undefined;
+  pageSize?: number | undefined;
+};
+
+type getUserFilesProps = {
+  organizationId?: number | undefined;
+  pageNumber?: number | undefined;
+  pageSize?: number | undefined;
+};
+
 interface FileManagementState {
   myOrganizations: Organization[] | null;
   organizationFiles: GetFilesResponse | null;
@@ -28,29 +39,28 @@ const initialState: FileManagementState = {
   message: ''
 };
 
-export const getUserFolders = createAsyncThunk('fileManage/getFolders', async (_, thunkAPI) => {
-  try {
-    const response = (await fileManagementService.getOrganizations()).userOrganizations.content;
+export const getUserFolders = createAsyncThunk(
+  'fileManage/getFolders',
+  async ({ pageSize }: getUserFoldersProps, thunkAPI) => {
+    try {
+      const response = (await fileManagementService.getOrganizations(pageSize)).userOrganizations
+        .content;
 
-    return response;
-  } catch (error) {
-    let errCode = '';
+      return response;
+    } catch (error) {
+      let errCode = '';
 
-    if (error instanceof AxiosError) {
-      errCode = error.response?.data.message;
+      if (error instanceof AxiosError) {
+        errCode = error.response?.data.message;
+      }
+      return thunkAPI.rejectWithValue(errCode);
     }
-    return thunkAPI.rejectWithValue(errCode);
   }
-});
-
-type myType = {
-  organizationId: number | undefined;
-  pageNumber?: number | undefined;
-};
+);
 
 export const getOrganizationFiles = createAsyncThunk(
   'fileManage/getFiles',
-  async ({ organizationId, pageNumber }: myType, thunkAPI) => {
+  async ({ organizationId, pageNumber }: getUserFilesProps, thunkAPI) => {
     try {
       const response = await fileManagementService.getFiles(organizationId, pageNumber);
       return response;

@@ -22,32 +22,53 @@
   background-color: var(--button-invert-color-primary-hover);
 }
 
-.upload {
-  border: 1px solid var(--dashboard-color-dark-grey);
-  background-color: transparent;
-  color: var(--dashboard-color-dark-grey);
-}
-
-.upload:hover {
-  background-color: var(--button-invert-color-primary-hover);
-}
-
 .small {
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
   background-color: transparent;
   color: var(--dashboard-color-dark-grey);
   border: 1px solid var(--dashboard-color-dark-grey);
   font-size: 1rem;
   margin-bottom: 1rem;
-  width: 83%;
+  border: none;
+  width: 100%;
   height: 2.5rem;
-  padding: 0;
-  margin-left: 1.7rem;
+  /* padding: 0; */
 }
-.small:hover {
+.small:hover,
+.create:hover {
   filter: brightness(96%);
+}
+
+.create {
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: transparent;
+  color: var(--dashboard-color-dark-grey);
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  margin-left: 1.7rem;
+  width: 82%;
+  height: 2.8rem;
+  padding: 0 1rem;
+  font-weight: bold;
+}
+
+.create:hover {
+  background-color: var(--button-invert-color-primary-hover);
+}
+
+.upload {
+  background-color: transparent;
+  color: var(--dashboard-color-dark-grey);
+  margin-bottom: 0;
+  font-size: 0.95rem;
+}
+
+.upload:hover {
+  background-color: var(--button-invert-color-primary-hover);
 }
 
 .button__spinner-wrapper {
@@ -58,4 +79,9 @@
   position: absolute;
   right: 3.65rem;
   top: 0.2rem;
+}
+
+.btn-fluid {
+  margin-top: 1rem;
+  width: 100%;
 }

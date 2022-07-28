@@ -84,4 +84,4 @@ export const showToastError = (error: AxiosError) => {
   errorToast(errCode);
 };
 
-export const runCommandTooltip = 'Execute function';
+export const runCommandTooltip = 'Execute Function';

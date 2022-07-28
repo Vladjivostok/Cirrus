@@ -5,23 +5,35 @@ import './input.css';
 type InputType = 'text' | 'password' | 'email' | 'select';
 
 interface InputProps {
-  value: string;
-  onChange: ChangeEventHandler<HTMLInputElement>;
+  value?: string;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
   name: string;
   type: InputType;
-  placeholder: string;
+  placeholder?: string;
+  className?: string;
+  inputWrapperClassname?: string;
 }
 
-const Input: React.FC<InputProps> = ({ value, name, type, placeholder, onChange }) => {
+const Input: React.FC<InputProps> = ({
+  value,
+  name,
+  type,
+  placeholder,
+  className,
+  inputWrapperClassname,
+  onChange
+}) => {
   return (
-    <input
-      className="input"
-      value={value}
-      name={name}
-      type={type}
-      placeholder={placeholder}
-      onChange={onChange}
-    />
+    <>
+      <div className={`inputWrapper-label ${inputWrapperClassname}`}>{placeholder}</div>
+      <input
+        className={`input ${className}`}
+        value={value}
+        name={name}
+        type={type}
+        onChange={onChange}
+      />
+    </>
   );
 };
 

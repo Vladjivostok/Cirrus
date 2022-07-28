@@ -20,7 +20,16 @@ export const errorMessageDialog = (message: ResponseErrorCode): string | undefin
     errorMessage = 'User already activated';
   }
 
-  if (message === 'err004' || message === 'err009' || message === 'err015') {
+  if (message === 'err010') {
+    errorMessage = 'Folder with that name already exists';
+  }
+
+  if (
+    message === 'err004' ||
+    message === 'err009' ||
+    message === 'err015' ||
+    message === 'err014'
+  ) {
     errorMessage = 'Access denied, you are not authorized!';
   }
 
@@ -34,6 +43,7 @@ export const errorMessageDialog = (message: ResponseErrorCode): string | undefin
     message === 'err102' ||
     message === 'err104' ||
     message === 'err105' ||
+    message === 'err108' ||
     message === 'err201' ||
     message === 'err202' ||
     message === 'err203' ||
@@ -68,6 +78,10 @@ export const errorMessageDialog = (message: ResponseErrorCode): string | undefin
     errorMessage = `File too large to upload, maximum upload size is ${convertSizeToMB(
       maxUploadSize
     )}`;
+  }
+
+  if (message === 'err110') {
+    errorMessage = 'File does not exist';
   }
 
   if (message === 'err207') {

@@ -9,9 +9,18 @@ interface SelectProps {
   onChange: React.ChangeEventHandler<HTMLSelectElement> | undefined;
   defaultValue: string;
   optionsArray: OptionObjectProp[];
+  inputWrapperClassname: string;
+  placeholder: string;
 }
 
-const Select: React.FC<SelectProps> = ({ name, defaultValue, onChange, optionsArray }) => {
+const Select: React.FC<SelectProps> = ({
+  name,
+  defaultValue,
+  onChange,
+  optionsArray,
+  inputWrapperClassname,
+  placeholder
+}) => {
   const options = optionsArray.map((option) => (
     <option key={option.label} value={option.value}>
       {option.label}
@@ -19,9 +28,12 @@ const Select: React.FC<SelectProps> = ({ name, defaultValue, onChange, optionsAr
   ));
 
   return (
-    <select defaultValue={defaultValue} onChange={onChange} name={name} className="select">
-      {options}
-    </select>
+    <>
+      <div className={`inputWrapper-label ${inputWrapperClassname}`}>{placeholder}</div>
+      <select defaultValue={defaultValue} onChange={onChange} name={name} className="select">
+        {options}
+      </select>
+    </>
   );
 };
 
