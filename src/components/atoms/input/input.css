@@ -8,9 +8,18 @@
   font-size: 1rem;
 }
 
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+.input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  box-shadow: 0 0 0 30px white inset;
+}
+
 .input:focus {
   border: 1px solid blue;
   outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .input-fluid {
@@ -33,14 +42,16 @@
   background-color: #ffffff;
 }
 
-.inputWrapper-label--login {
+.inputWrapper-label--registrationPage,
+.inputWrapper-label--forgot-passwordPage,
+.inputWrapper-label--password-recoveryPage,
+.inputWrapper-label--loginPage,
+.inputWrapper-label--invitationPage {
   bottom: 5.2rem;
   left: 1rem;
   background-color: #fff;
 }
 
 .inputWrapper-label--invitationPage {
-  bottom: 5.2rem;
-  left: 1rem;
   background-color: #f4f7f6;
 }
