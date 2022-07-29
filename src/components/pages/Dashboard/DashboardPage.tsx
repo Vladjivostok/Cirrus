@@ -418,7 +418,7 @@ const Dashboard = () => {
           <div className="files-upload">
             <Button
               onClick={openModal}
-              className="button upload small"
+              className="button upload borderless"
               type="button"
               label={'Upload file'}
               svg={<FileUploadIcon />}

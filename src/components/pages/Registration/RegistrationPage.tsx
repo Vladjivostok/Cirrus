@@ -88,6 +88,7 @@ const RegistrationPage: React.FC = () => {
         <img className="cirrusLogo" src={logo} alt="Cirrus logo missing" />
         <div className="inputWrapper">
           <Input
+            inputWrapperClassname="inputWrapper-label--registrationPage"
             name="email"
             placeholder="Email"
             type="email"
@@ -98,6 +99,7 @@ const RegistrationPage: React.FC = () => {
         </div>
         <div className="inputWrapper">
           <Input
+            inputWrapperClassname="inputWrapper-label--registrationPage"
             name="username"
             placeholder="Username"
             type="text"
@@ -108,6 +110,7 @@ const RegistrationPage: React.FC = () => {
         </div>
         <div className="inputWrapper">
           <Input
+            inputWrapperClassname="inputWrapper-label--registrationPage"
             name="password"
             placeholder="Password"
             type={toggleShowPassword ? 'text' : 'password'}
@@ -119,6 +122,7 @@ const RegistrationPage: React.FC = () => {
         </div>
         <div className="inputWrapper">
           <Input
+            inputWrapperClassname="inputWrapper-label--registrationPage"
             name="confirmPassword"
             placeholder="Confirm password"
             type={toggleShowPassword ? 'text' : 'password'}

@@ -87,6 +87,7 @@ const PasswordChangePage = () => {
         <img className="cirrusLogo" src={logo} alt="Cirrus logo missing" />
         <div className="inputWrapper">
           <Input
+            inputWrapperClassname="inputWrapper-label--password-recoveryPage"
             name="username"
             placeholder="Username"
             type="text"
@@ -97,6 +98,7 @@ const PasswordChangePage = () => {
         </div>
         <div className="inputWrapper">
           <Input
+            inputWrapperClassname="inputWrapper-label--password-recoveryPage"
             name="password"
             placeholder="Password"
             type={toggleShowPassword ? 'text' : 'password'}
@@ -108,6 +110,7 @@ const PasswordChangePage = () => {
         </div>
         <div className="inputWrapper">
           <Input
+            inputWrapperClassname="inputWrapper-label--password-recoveryPage"
             name="confirmPassword"
             placeholder="Confirm password"
             type={toggleShowPassword ? 'text' : 'password'}
