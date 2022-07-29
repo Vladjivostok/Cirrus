@@ -66,8 +66,9 @@ const RequestPasswordRecovery: React.FC = () => {
         <img className="cirrusLogo" src={logo} alt="Cirrus logo missing" />
         <div className="inputWrapper">
           <Input
+            inputWrapperClassname="inputWrapper-label--forgot-passwordPage"
             name="email"
-            placeholder="Please enter your email"
+            placeholder="Enter your email"
             type="email"
             value={formik.values.email}
             onChange={formik.handleChange}
