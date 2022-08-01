@@ -110,7 +110,6 @@
 
 .deleteFile-wrapper--message {
   font-size: 1.2rem;
-  text-shadow: 1px 0px;
 }
 
 .ReactModal__Overlay {
@@ -130,11 +129,6 @@
   width: 100%;
   padding: 0rem 1rem;
   align-items: center;
-}
-
-.deleteFile-wrapper--message {
-  font-size: 1.2rem;
-  text-shadow: 1px 0px;
 }
 
 .ReactModal__Overlay {
