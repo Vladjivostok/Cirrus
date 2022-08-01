@@ -15,7 +15,8 @@ export const errorToast = (message: ResponseErrorCode) => {
 
 export const successToast = (message: string) =>
   toast.success(message, {
-    theme: 'colored',
+    autoClose: 2500,
+    theme: 'light',
     position: 'top-center',
     bodyStyle: { height: '3.5rem', fontSize: '1.2rem' }
   });
@@ -61,6 +62,9 @@ export const transformDateAndTime = (date: Date, showSeconds: boolean) => {
 };
 
 export const convertSizeToMB = (size: number) => {
+  if (size < 10000) {
+    return (size / 1024).toFixed(2) + ' KB';
+  }
   return (size / 1048576).toFixed(2) + ' MB';
 };
 

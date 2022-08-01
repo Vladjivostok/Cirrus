@@ -7,8 +7,9 @@ import { updateUser } from '../../../store/redux/auth/authSlice';
 import { LogoutIcon } from '../../atoms/icons/logoutIcon/LogoutIcon';
 import { InviteUserIcon } from '../../atoms/icons/inviteUser/InviteUserIcon';
 
-import logo from '../../../assets/Cirrus.png';
+import logo from '../../../assets/CirrusInvert.png';
 import LocalStorageService from '../../../services/localStorageService';
+import Tooltip from '@mui/material/Tooltip';
 
 import './navBar.css';
 
@@ -46,18 +47,23 @@ const NavBar = () => {
 
   return (
     <div className="nav">
-      <div className="nav__item nav__item--logo">
-        <img onClick={navigateHome} src={logo} alt="logo" />
-      </div>
-      {role === 'ROLE_ADMIN' && (
-        <div className="nav__item">
-          <InviteUserIcon onClick={navigateToInviteUserPage} />
+      <Tooltip title="Cirrus Home">
+        <div className="nav__item nav__item--logo">
+          <img onClick={navigateHome} src={logo} alt="logo" />
         </div>
+      </Tooltip>
+      {role === 'ROLE_ADMIN' && (
+        <Tooltip title="Invite User">
+          <div className="nav__item">
+            <InviteUserIcon onClick={navigateToInviteUserPage} />
+          </div>
+        </Tooltip>
       )}
-
-      <div className="nav__item nav__item--bottom">
-        <LogoutIcon onClick={logout}></LogoutIcon>
-      </div>
+      <Tooltip title="Logout">
+        <div className="nav__item nav__item--bottom">
+          <LogoutIcon onClick={logout}></LogoutIcon>
+        </div>
+      </Tooltip>
     </div>
   );
 };

@@ -1,8 +1,6 @@
 import React, { MouseEventHandler } from 'react';
 import Modal from 'react-modal';
 
-import { CloseIcon } from '../../atoms/icons/close/Close';
-
 import './popUp.css';
 
 const customStyles = {
@@ -12,9 +10,13 @@ const customStyles = {
     right: 'auto',
     bottom: 'auto',
     marginRight: '-50%',
-    padding: '3rem',
+    padding: '2rem',
     transform: 'translate(-50%, -50%)',
-    boxShadow: '-5px 5px 4px 0px rgba(0, 0, 0, 0.33)'
+    boxShadow: '-5px 5px 4px 0px rgba(0, 0, 0, 0.33)',
+    borderRadius: '0.2rem'
+  },
+  overlay: {
+    backgroundColor: 'rgb(70 70 70 / 75%)'
   }
 };
 
@@ -29,9 +31,6 @@ const PopUp: React.FC<PopUpProps> = ({ children, isOpen, closeModal }) => {
   return (
     <div>
       <Modal ariaHideApp={false} isOpen={isOpen} style={customStyles} onRequestClose={closeModal}>
-        <div className="modalHeader">
-          <CloseIcon onClick={closeModal} />
-        </div>
         {children}
       </Modal>
     </div>

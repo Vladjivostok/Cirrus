@@ -1,8 +1,9 @@
 .button {
   transition-duration: 0.1s;
   border: 0;
-  border-radius: 0.3rem;
-  padding: 0.65rem 1.5rem;
+  border-radius: 0.2rem;
+  padding: 0.65rem 2.2rem;
+  letter-spacing: 0.1rem;
   background-color: var(--button-color-primary);
   color: var(--button-text-color);
   font-size: 1.1rem;
@@ -14,67 +15,49 @@
 }
 
 .invert {
-  padding: 0.65rem 0.9rem;
+  padding: 0;
   background-color: white;
-  color: var(--button-color-primary);
+  color: gray;
+  font-size: 0.95rem;
+  letter-spacing: 0;
 }
 .invert:hover {
-  background-color: var(--button-invert-color-primary-hover);
+  background-color: white;
+  color: var(--button-color-primary-hover);
 }
 
-.create {
-  border: 1px solid black;
+.small {
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
-  background-color: transparent;
-  color: var(--dashboard-color-dark-grey);
-  font-size: 1rem;
-  margin-bottom: 1rem;
-  margin-left: 1.7rem;
-  width: 82%;
-  height: 2.8rem;
-  padding: 0 1rem;
-  font-weight: bold;
+  justify-content: center;
+  padding: 0.65rem 1rem 0.65rem 0.5rem;
+  width: 11.5rem;
 }
 
-.create:hover {
-  background-color: var(--button-invert-color-primary-hover);
-  filter: brightness(96%);
-}
-
-.upload {
-  background-color: transparent;
-  color: var(--dashboard-color-dark-grey);
-  margin-bottom: 0;
-  border: 1px solid var(--dashboard-color-dark-grey);
-  font-size: 0.95rem;
-}
-
-.upload:hover {
-  background-color: var(--button-invert-color-primary-hover);
-}
-
-.borderless {
+.add-folder {
   display: flex;
   align-items: center;
-  border: none;
-  width: 100%;
-  height: 2.5rem;
+  justify-content: center;
+  padding: 0.65rem 1rem 0.65rem 1rem;
+  margin-bottom: 1.15rem;
 }
 
-.borderless:hover,
 .button__spinner-wrapper {
   position: relative;
 }
 
 .button__spinner {
   position: absolute;
-  right: 3.65rem;
+  right: 4.65rem;
   top: 0.2rem;
 }
 
-.btn-fluid {
-  margin-top: 1rem;
-  width: 100%;
+.cancel {
+  background-color: transparent;
+  border: 1px solid var(--dashboard-color-dark-grey);
+  color: var(--dashboard-color-dark-grey);
+}
+
+.cancel:hover {
+  background-color: var(--button-invert-color-primary-hover);
 }

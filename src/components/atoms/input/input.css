@@ -17,7 +17,7 @@
 }
 
 .input:focus {
-  border: 1px solid blue;
+  border: 1px solid var(--button-color-primary);
   outline: none;
   -webkit-tap-highlight-color: transparent;
 }
@@ -37,7 +37,7 @@
 }
 
 .folder-name {
-  bottom: 9.1rem;
+  bottom: 8.8rem;
   left: 3.6rem;
   background-color: #ffffff;
 }
@@ -53,5 +53,7 @@
 }
 
 .inputWrapper-label--invitationPage {
-  background-color: #f4f7f6;
+  bottom: 5.2rem;
+  left: 1rem;
+  background-color: white;
 }

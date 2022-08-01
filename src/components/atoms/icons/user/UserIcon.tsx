@@ -1,9 +1,13 @@
 import React from 'react';
-
-import { ReactComponent as UserSvg } from '../../../../assets/user-circle.svg';
+import Tooltip from '@mui/material/Tooltip';
+import { ReactComponent as UserSvg } from '../../../../assets/user.svg';
 
 import './user.css';
 
 export const UserIcon: React.FC = () => {
-  return <UserSvg className="userIcon" />;
+  return (
+    <Tooltip title="User">
+      <UserSvg className="userIcon" />
+    </Tooltip>
+  );
 };

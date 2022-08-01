@@ -11,6 +11,7 @@ import {
   transformDateAndTime
 } from '../../../common/utility';
 import Replay from '@mui/icons-material/Replay';
+import Tooltip from '@mui/material/Tooltip';
 
 type DynamicInfoProps = {
   executionInfo: ExecutionInfo[] | undefined;
@@ -94,13 +95,16 @@ const DynamicInfo: React.FC<DynamicInfoProps> = ({
                 <IconButton
                   sx={{
                     marginBottom: 1,
-                    marginTop: 0.5
+                    marginTop: 0.5,
+                    '&:hover': { background: 'none' }
                   }}
                   disabled={disableRunButton}
                   onClick={async () => {
                     rerunHandler(element, i);
                   }}>
-                  <Replay />
+                  <Tooltip title="Re-execute Function">
+                    <Replay className="replayIcon" />
+                  </Tooltip>
                 </IconButton>
                 <p className="dynamic-info__organization-name">
                   -Organization:

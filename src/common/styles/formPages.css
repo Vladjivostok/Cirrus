@@ -7,6 +7,7 @@
   width: 80%;
   flex: 1;
   max-width: 140rem;
+  background-color: var(--color-light);
 }
 
 .form {
@@ -15,8 +16,9 @@
   align-items: center;
   flex-direction: column;
   border: 0.5px solid #ccc;
-  border-radius: 0.4rem;
+  border-radius: 0.2rem;
   padding: 3.5rem 2.5rem;
+  background-color: white;
 }
 
 .cirrusLogo {
@@ -28,10 +30,6 @@
   background-color: var(--color-light);
 }
 
-.invitationContent input,
-select {
-  background-color: var(--color-light);
-}
 .buttonWrapper {
   display: flex;
   justify-content: space-between;

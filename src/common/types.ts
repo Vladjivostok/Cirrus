@@ -24,7 +24,7 @@ export type OnClickSvgProp = {
 
 export type FolderIconProps = {
   onClick: (id: number | undefined) => void;
-  title?: string;
+  title: string;
   id?: number | undefined;
   className?: string;
 };

@@ -1,6 +1,6 @@
 .dynamic-info {
   font-size: 1rem;
-  height: 50vh;
+  height: 58.33vh;
   overflow-y: auto;
 }
 
@@ -10,7 +10,7 @@
 }
 
 .dynamic-info__container {
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid lightgray;
 }
 
 .dynamic-info__code-response {
@@ -29,4 +29,8 @@
 
 .dynamic-info__name-spans {
   font-weight: 600;
+}
+
+.replayIcon:hover {
+  color: #07bc0c;
 }

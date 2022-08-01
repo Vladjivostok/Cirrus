@@ -1,36 +1,35 @@
 .folder {
-  height: 3.2rem;
+  height: 52px;
   overflow: visible;
   position: relative;
   width: 100%;
   display: flex;
-  background-color: var(--dashboard-color-dark-grey);
+  background-color: inherit;
   border-radius: 0.2rem;
   align-items: center;
-  margin-bottom: 0.5rem;
   cursor: pointer;
   border: none;
   z-index: 1;
+  padding: 1rem 0;
+  border-bottom: 1px solid lightgray;
 }
 
 .folder:hover,
 .focused {
-  background: linear-gradient(135deg, var(--button-color-primary) 70%, rgb(0, 0, 0) 60%);
-  box-shadow: -5px 5px 4px 0px rgba(0, 0, 0, 0.33);
-  transform: translateX(0.4rem);
+  background-color: var(--button-invert-color-primary-hover);
 }
 
 .folder__icon {
   object-fit: cover;
-  fill: var(--color-light);
-  width: 2rem;
+  fill: rgb(49, 49, 49);
+  width: 1.3rem;
   margin-left: 1rem;
 }
 
 .folder__title {
-  color: var(--color-light);
+  color: rgb(49, 49, 49);
   font-size: 0.85rem;
-  font-weight: 600;
-  margin-left: 3.4rem;
+  font-weight: 500;
+  margin-left: 3rem;
   position: absolute;
 }

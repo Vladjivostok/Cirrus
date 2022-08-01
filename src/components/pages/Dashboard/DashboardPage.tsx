@@ -7,7 +7,7 @@ import DynamicInfo from '../../atoms/dynamicInfo/DynamicInfo';
 import BasicTabs from '../../atoms/tabs/Tabs';
 
 import FileUploadIcon from '../../atoms/icons/fileUpload/FileUploadIcon';
-import CreateFolderIcon from '../../atoms/icons/createFolder/CreateFolder';
+import PlusIcon from '../../atoms/icons/plus/PlusIcon';
 import Input from '../../atoms/input/Input';
 import { UserIcon } from '../../atoms/icons/user/UserIcon';
 import { FolderIcon } from '../../atoms/icons/folder/Folder';
@@ -15,12 +15,12 @@ import { FileIcons } from '../../atoms/icons/fileIcons/FileIcons';
 
 import { MyTabs, ResponseErrorCode, ExecutionInfo } from '../../../common/types';
 import {
-  breakEmail,
   convertSizeToMB,
   errorToast,
   getCurrentDateAndTime,
   runCommandTooltip,
   showToastError,
+  successToast,
   transformDateAndTime,
   truncateString
 } from '../../../common/utility';
@@ -54,6 +54,8 @@ import codeExecutionService from '../../../services/codeExecutionService';
 import classNames from 'classnames';
 import './dashboard.css';
 import '../../../common/styles/muiStyles.css';
+import { UserGearIcon } from '../../atoms/icons/userGear/UserGearIcon';
+import { toastMessages } from '../../../common/messages';
 
 const Dashboard = () => {
   const {
@@ -196,6 +198,7 @@ const Dashboard = () => {
           }
         ]);
         setDisableRunButton(false);
+        dispatch(getOrganizationFiles({ organizationId: selectedFolder?.organization.id }));
       })
       .catch((error) => {
         setExecutionFileInfo((oldArray) =>
@@ -203,6 +206,7 @@ const Dashboard = () => {
         );
         setDisableRunButton(false);
         showToastError(error);
+        dispatch(getOrganizationFiles({ organizationId: selectedFolder?.organization.id }));
       });
   };
 
@@ -244,6 +248,7 @@ const Dashboard = () => {
       await fileManagementService.createOrganization(inputValue);
       setCreateModalIsOpen(false);
       dispatch(getUserFolders({ pageSize: 10 }));
+      successToast(toastMessages.successfulFolderCreation);
     } catch (error) {
       let errCode: ResponseErrorCode = '';
       if (error instanceof AxiosError) {
@@ -277,7 +282,9 @@ const Dashboard = () => {
               }}>
               <FileIcons fileExtension={fileExtension} />
 
-              <div title={params.row.file}>{truncateString(params.row.file, 29)}</div>
+              <Tooltip title={params.row.file} placement="right">
+                <div>{truncateString(params.row.file, 29)}</div>
+              </Tooltip>
             </Box>
           );
         }
@@ -319,6 +326,7 @@ const Dashboard = () => {
               {checkType(params.row.id) && (
                 <IconButton
                   sx={{
+                    '&:hover': { background: 'none' },
                     marginRight: 2
                   }}
                   disabled={disableRunButton}
@@ -332,7 +340,7 @@ const Dashboard = () => {
               )}
 
               <IconButton
-                sx={{ marginRight: 2 }}
+                sx={{ marginRight: 2, '&:hover': { background: 'none' } }}
                 onClick={() => {
                   downloadHandle(params);
                 }}>
@@ -342,7 +350,7 @@ const Dashboard = () => {
               </IconButton>
 
               <IconButton
-                sx={{ marginRight: 2 }}
+                sx={{ marginRight: 2, '&:hover': { background: 'none' } }}
                 onClick={() => {
                   openDeleteFileModal();
                   setParamsId(JSON.stringify(params.id));
@@ -374,6 +382,7 @@ const Dashboard = () => {
           const response = await fileManagementService.deleteFile(fileForDelete.id);
 
           if (response.deleted) {
+            successToast(toastMessages.successfulDelete);
             setCurrentPage(1);
             dispatch(getOrganizationFiles({ organizationId: selectedFolder?.organization.id }));
             setDeleteModalIsOpen(false);
@@ -408,105 +417,111 @@ const Dashboard = () => {
       currentFileId={currentFileId}></DynamicInfo>
   );
 
+  const renderUserIcon = () => {
+    if (userData?.roles[0] && userData?.roles[0].name === 'ROLE_ADMIN') {
+      return <UserGearIcon />;
+    } else if (userData?.roles[0] && userData?.roles[0].name === 'ROLE_USER') {
+      return <UserIcon />;
+    }
+    return <></>;
+  };
+
   return (
     <div className="dashboard">
-      <aside className="main-side">
-        <div className="main-side-user">
-          <div className="main-side-user-profile">
-            <UserIcon />
-          </div>
-          <div className="main-side-user-info">
-            <span className="main-side-user-info__username">{username}</span>
-            <span className="main-side-user-info__email">{breakEmail(email)}</span>
-          </div>
+      <div className="main-side-user">
+        <div className="main-side-user-profile">{renderUserIcon()}</div>
+        <div className="main-side-user-info">
+          <span className="main-side-user-info__username">{username}</span>
+          <span className="main-side-user-info__email">{email}</span>
         </div>
-        <Button
-          onClick={openCreateModal}
-          className="button create"
-          type="button"
-          label={'Create folder'}
-          svg={<CreateFolderIcon />}
-        />
-        <div className="main-side-folders__container">{myFolders}</div>
-      </aside>
-      <div className="main-content">
-        <div className="files">
-          <div className="files-upload">
+      </div>
+      <div className="main-content-container">
+        <aside className="main-side">
+          <div className="main-side-folders__container">
             <Button
-              onClick={openModal}
-              className="button upload borderless"
+              onClick={openCreateModal}
+              className="button hover add-folder"
               type="button"
-              label={'Upload file'}
-              svg={<FileUploadIcon />}
+              label={'Add folder'}
+              svg={<PlusIcon />}
+            />
+
+            {myFolders}
+          </div>
+        </aside>
+        <div className="main-content">
+          <div className="main-content-files-and-upload">
+            <div className="files-upload">
+              <Button
+                onClick={openModal}
+                className="button upload small"
+                type="button"
+                label={'Upload file'}
+                svg={<FileUploadIcon />}
+              />
+            </div>
+            <div className="files">
+              <CacheProvider value={muiCache}>
+                {rowsData && files && (
+                  <DataGrid
+                    onRowClick={(param) => setCurrentFileId(parseInt(JSON.stringify(param.id)))}
+                    rows={rowsData}
+                    loading={isLoading}
+                    columns={generateColumns()}
+                    pagination
+                    onPageChange={handlePageChange}
+                    pageSize={10}
+                    page={currentPage - 1}
+                    autoHeight={false}
+                    rowCount={files?.totalElements}
+                    paginationMode="server"
+                    autoPageSize={true}
+                    disableColumnMenu
+                  />
+                )}
+              </CacheProvider>
+            </div>
+          </div>
+          <div className="tabs__container">
+            <BasicTabs
+              tabs={tabs}
+              executionInfo={executionFileInfo}
+              currentFileId={currentFileId}
             />
           </div>
-          <CacheProvider value={muiCache}>
-            {rowsData && files && (
-              <DataGrid
-                onRowClick={(param) => setCurrentFileId(parseInt(JSON.stringify(param.id)))}
-                rows={rowsData}
-                loading={isLoading}
-                columns={generateColumns()}
-                pagination
-                onPageChange={handlePageChange}
-                pageSize={10}
-                page={currentPage - 1}
-                autoHeight={false}
-                disableSelectionOnClick
-                rowCount={files?.totalElements}
-                paginationMode="server"
-                autoPageSize={true}
-                disableColumnMenu
-              />
-            )}
-          </CacheProvider>
         </div>
-        <BasicTabs tabs={tabs} executionInfo={executionFileInfo} currentFileId={currentFileId} />
       </div>
       <BreadCrumbs />
       <PopUp label={'Upload File'} isOpen={modalIsOpen} closeModal={closeModal}>
         <FileUpload closePopUp={setModalIsOpen} setPageIndex={setCurrentPage} />
       </PopUp>
 
-      <PopUp label={'Upload File'} isOpen={createModalIsOpen} closeModal={closeCreateModal}>
-        <form onSubmit={submitHandler}>
-          <Input
-            type="text"
-            name="add"
-            className="input-fluid"
-            placeholder="Choose folder name"
-            onChange={inputValueHandler}
-            inputWrapperClassname="folder-name"
-          />
-          <Button
-            disabled={!inputValue.length}
-            label="Submit"
-            type="submit"
-            className="button btn-fluid"
-          />
-        </form>
-      </PopUp>
-
-      <PopUp label={'Delete File'} isOpen={deleteModalIsOpen} closeModal={closeDeleteFileModal}>
-        <div className="deleteFile-wrapper">
-          <div className="deleteFile-wrapper--message">
-            Are you sure you want to delete this file?
-          </div>
-
-          <div>
-            <Button
-              onClick={deleteFile}
-              className="button upload delete left"
-              type="button"
-              label={'Delete File'}
+      <PopUp label={'Create Folder'} isOpen={createModalIsOpen} closeModal={closeCreateModal}>
+        <div className="create-folder-modal">
+          <form onSubmit={submitHandler}>
+            <Input
+              type="text"
+              name="add"
+              className="input-fluid"
+              placeholder="Choose folder name"
+              onChange={inputValueHandler}
+              inputWrapperClassname="folder-name"
             />
-            <Button
-              onClick={closeDeleteFileModal}
-              className="button upload delete right"
-              type="button"
-              label="Cancel"
-            />
-          </div>
+            <div className="modalButtons">
+              <Button
+                label="Cancel"
+                type="button"
+                className="button cancel"
+                onClick={closeCreateModal}
+              />
+              <Button
+                label="Submit"
+                type="submit"
+                className="button"
+                disabled={!inputValue.length}
+              />
+            </div>
+          </form>
         </div>
       </PopUp>
       <PopUp label={'Delete File'} isOpen={deleteModalIsOpen} closeModal={closeDeleteFileModal}>
@@ -515,19 +530,14 @@ const Dashboard = () => {
             Are you sure, you want to delete this file?
           </div>
 
-          <div>
-            <Button
-              onClick={deleteFile}
-              className="button delete left"
-              type="button"
-              label={'Delete File'}
-            />
+          <div className="modalButtons">
             <Button
               onClick={closeDeleteFileModal}
-              className="button delete right"
+              className="button delete cancel"
               type="button"
               label="Cancel"
             />
+            <Button onClick={deleteFile} className="button delete" type="button" label={'Delete'} />
           </div>
         </div>
       </PopUp>

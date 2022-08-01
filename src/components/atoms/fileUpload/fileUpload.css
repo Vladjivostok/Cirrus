@@ -21,7 +21,7 @@
 
 .fileUpload__button-wrapper {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 
 .fileUpload__errMsg,

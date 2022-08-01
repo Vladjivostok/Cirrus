@@ -1,9 +1,15 @@
 .MuiDataGrid-root {
   border: none;
   width: 100%;
-  padding: 0 2rem;
-  height: 64.097%;
-  margin-top: 13.7rem;
+  padding-right: 2rem;
+  padding-left: 1rem;
+  margin-left: 0.5rem;
+  border-left: 1px solid lightgray;
+  border-radius: 0;
+}
+
+.MuiBox-root {
+  padding-right: 0.5rem;
 }
 
 .MuiDataGrid-columnHeaders {
@@ -36,15 +42,19 @@
 }
 
 .playArrow {
-  font-size: 2rem;
+  font-size: 1.8rem;
 }
 
 .playArrow:hover {
-  fill: green;
+  fill: #07bc0c;
+}
+
+.cloudDownloadIcon {
+  fill: var(--button-color-primary);
 }
 
 .cloudDownloadIcon:hover {
-  fill: var(--button-color-primary);
+  fill: var(--button-color-primary-hover);
 }
 
 .deleteIcon:hover {
@@ -67,4 +77,12 @@
   border-bottom-left-radius: 1.5rem;
   border-bottom-right-radius: 1.5rem;
   background-image: linear-gradient(360deg, #dee1e1 10%, #f4f4f4 360%);
+}
+
+.MuiDataGrid-selectedRowCount {
+  display: none;
+}
+
+.MuiTablePagination-root {
+  margin-left: auto;
 }

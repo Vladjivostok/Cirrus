@@ -96,6 +96,10 @@ const FileUpload: React.FC<FileUploadProps> = ({ closePopUp, setPageIndex }) => 
     }
   }, [acceptedFiles.length]);
 
+  const closeModalHandler = () => {
+    closePopUp(false);
+  };
+
   return (
     <div className="fileUpload">
       <h3 className="fileUpload__title">Choose a file to upload</h3>
@@ -110,6 +114,12 @@ const FileUpload: React.FC<FileUploadProps> = ({ closePopUp, setPageIndex }) => 
         <ul>{fileRejectionItems}</ul>
       </aside>
       <div className="fileUpload__button-wrapper">
+        <Button
+          onClick={closeModalHandler}
+          className="button cancel"
+          type="button"
+          label="Cancel"
+        />
         <Button
           label="Upload"
           type="button"

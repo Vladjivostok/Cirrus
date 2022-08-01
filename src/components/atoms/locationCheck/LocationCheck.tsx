@@ -6,10 +6,10 @@ const LocationCheck = (location: locationCheckProps) => {
   let pathName;
 
   if (location.pathname === `/dashboard`) {
-    pathName = 'Dashboard Page';
+    pathName = 'Dashboard';
   }
   if (location.pathname === `/admin/user-invitation`) {
-    pathName = 'User Invitation Page';
+    pathName = 'User invitation';
   }
 
   return pathName;
