@@ -11,6 +11,7 @@ import CreateFolderIcon from '../../atoms/icons/createFolder/CreateFolder';
 import Input from '../../atoms/input/Input';
 import { UserIcon } from '../../atoms/icons/user/UserIcon';
 import { FolderIcon } from '../../atoms/icons/folder/Folder';
+import { FileIcons } from '../../atoms/icons/fileIcons/FileIcons';
 
 import { MyTabs, ResponseErrorCode, ExecutionInfo } from '../../../common/types';
 import {
@@ -245,7 +246,6 @@ const Dashboard = () => {
       dispatch(getUserFolders({ pageSize: 10 }));
     } catch (error) {
       let errCode: ResponseErrorCode = '';
-      console.log(error);
       if (error instanceof AxiosError) {
         errCode = error.response?.data.message;
       }
@@ -263,7 +263,23 @@ const Dashboard = () => {
         sortable: false,
 
         renderCell: (params: GridCellParams) => {
-          return <div title={params.row.file}>{truncateString(params.row.file, 29)}</div>;
+          const fileExtension = params.row.file.match(/\.[0-9a-z]+$/i)[0];
+          return (
+            <Box
+              sx={{
+                outline: 'none',
+                border: 'none',
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                justifyContent: 'flex-start',
+                alignItems: 'center'
+              }}>
+              <FileIcons fileExtension={fileExtension} />
+
+              <div title={params.row.file}>{truncateString(params.row.file, 29)}</div>
+            </Box>
+          );
         }
       },
       {
@@ -462,7 +478,12 @@ const Dashboard = () => {
             onChange={inputValueHandler}
             inputWrapperClassname="folder-name"
           />
-          <Button label="Submit" type="submit" className="button btn-fluid" />
+          <Button
+            disabled={!inputValue.length}
+            label="Submit"
+            type="submit"
+            className="button btn-fluid"
+          />
         </form>
       </PopUp>
 

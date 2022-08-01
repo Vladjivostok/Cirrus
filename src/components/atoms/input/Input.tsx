@@ -21,6 +21,7 @@ const Input: React.FC<InputProps> = ({
   placeholder,
   className,
   inputWrapperClassname,
+
   onChange
 }) => {
   return (
