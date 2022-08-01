@@ -42,7 +42,7 @@ export const FileIcons: React.FC<FileIconsProps> = ({ fileExtension }) => {
 
   if (fileExtension === '.pptx' || fileExtension === '.ppt') {
     icon = (
-      <Tooltip title="Microsoft Word" placement="top">
+      <Tooltip title="Power Point" placement="top">
         <PowerPointFile className="file-icons" />
       </Tooltip>
     );
