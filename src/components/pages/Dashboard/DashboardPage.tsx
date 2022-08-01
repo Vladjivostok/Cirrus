@@ -432,7 +432,7 @@ const Dashboard = () => {
         <div className="main-side-user-profile">{renderUserIcon()}</div>
         <div className="main-side-user-info">
           <span className="main-side-user-info__username">{username}</span>
-          <span className="main-side-user-info__email">{email}</span>
+          <span className="main-side-user-info__email">{truncateString(email, 30)}</span>
         </div>
       </div>
       <div className="main-content-container">
@@ -527,7 +527,7 @@ const Dashboard = () => {
       <PopUp label={'Delete File'} isOpen={deleteModalIsOpen} closeModal={closeDeleteFileModal}>
         <div className="deleteFile-wrapper">
           <div className="deleteFile-wrapper--message">
-            Are you sure, you want to delete this file?
+            Are you sure you want to delete this file?
           </div>
 
           <div className="modalButtons">
