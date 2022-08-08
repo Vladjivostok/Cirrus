@@ -3,8 +3,8 @@ import React, { useEffect, useState, Dispatch, SetStateAction } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { maxUploadFiles, maxUploadSize, uploadFileTypes } from '../../../common/fileUtils';
 import { toastMessages } from '../../../common/messages';
-import { ErrorsForUpload, ResponseErrorCode } from '../../../common/types';
-import { convertSizeToMB, errorToast, successToast } from '../../../common/utility';
+import { ErrorsForUpload, ResponseErrorCode, StorageInfoResponse } from '../../../common/types';
+import { convertSizeToMB, errorToast, successToast, updateStorage } from '../../../common/utility';
 import fileManagementService from '../../../services/fileManagementService';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { getOrganizationFiles } from '../../../store/redux/fileManagement/fileManagemantSlice';
@@ -15,9 +15,10 @@ import './fileUpload.css';
 type FileUploadProps = {
   closePopUp: Dispatch<SetStateAction<boolean>>;
   setPageIndex: Dispatch<SetStateAction<number>>;
+  setStorage: React.Dispatch<React.SetStateAction<StorageInfoResponse | undefined>>;
 };
 
-const FileUpload: React.FC<FileUploadProps> = ({ closePopUp, setPageIndex }) => {
+const FileUpload: React.FC<FileUploadProps> = ({ closePopUp, setPageIndex, setStorage }) => {
   const user = useAppSelector((state) => state.auth.userData);
   const currentFolder = useAppSelector((state) => state.fileManage.selectedFolder);
 
@@ -71,6 +72,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ closePopUp, setPageIndex }) => 
           currentFolder?.organization.name
         );
         if (response.status == 200) {
+          updateStorage(setStorage);
           successToast(toastMessages.successfulUpload);
           setPageIndex(1);
           dispatch(getOrganizationFiles({ organizationId: currentFolder?.organization.id }));

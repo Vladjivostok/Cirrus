@@ -12,6 +12,7 @@ const PASSWORD_CHANGE_URL = '/password-recovery';
 const GET_USER_URL = '/users/me';
 const GET_ORGANIZATIONS_URL = '/organizations';
 const USER_TRIGGER_EXECUTE = '/functions/execute';
+const OCCUPIED_SPACE = '/files/space/occupied';
 
 const roles = {
   user: 'ROLE_USER',
@@ -33,5 +34,6 @@ export {
   PASSWORD_CHANGE_URL,
   GET_ORGANIZATION_FILES_URL,
   USER_TRIGGER_EXECUTE,
-  DOWNLOAD_FILE_URL
+  DOWNLOAD_FILE_URL,
+  OCCUPIED_SPACE
 };

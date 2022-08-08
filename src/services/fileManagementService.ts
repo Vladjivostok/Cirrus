@@ -5,7 +5,8 @@ import {
   GetFilesResponse,
   GetFilesResponseFromServer,
   OrganizationResponse,
-  CreateOrganizationResponse
+  CreateOrganizationResponse,
+  StorageInfoResponse
 } from '../common/types';
 
 import {
@@ -13,7 +14,8 @@ import {
   GET_ORGANIZATIONS_URL,
   GET_ORGANIZATION_FILES_URL,
   UPLOAD_FILE_URL,
-  DOWNLOAD_FILE_URL
+  DOWNLOAD_FILE_URL,
+  OCCUPIED_SPACE
 } from '../common/constants';
 import { AxiosResponse } from 'axios';
 
@@ -91,6 +93,13 @@ const fileManagementService = {
     const response = await httpService.get(
       `${process.env.REACT_APP_BASE_FILE_MANAGEMENT_API_URL}${DOWNLOAD_FILE_URL}`,
       { params: { fileInfoId } }
+    );
+    return response.data;
+  },
+
+  occupiedSpace: async (): Promise<StorageInfoResponse> => {
+    const response = await httpService.get(
+      `${process.env.REACT_APP_BASE_FILE_MANAGEMENT_API_URL}${OCCUPIED_SPACE}`
     );
     return response.data;
   }

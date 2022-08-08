@@ -7,7 +7,8 @@ import {
   REFRESH_TOKEN_URL,
   UPLOAD_FILE_URL,
   USER_TRIGGER_EXECUTE,
-  DOWNLOAD_FILE_URL
+  DOWNLOAD_FILE_URL,
+  OCCUPIED_SPACE
 } from '../common/constants';
 
 import LocalStorageService from './localStorageService';
@@ -17,6 +18,7 @@ const instance = axios.create({});
 const protectedRoutes = [
   `${process.env.REACT_APP_BASE_FILE_MANAGEMENT_API_URL}${GET_ORGANIZATION_FILES_URL}`,
   `${process.env.REACT_APP_BASE_USER_API_URL}${INVITE_USER_URL}`,
+  `${process.env.REACT_APP_BASE_FILE_MANAGEMENT_API_URL}${OCCUPIED_SPACE}`,
   `${process.env.REACT_APP_BASE_USER_API_URL}${GET_USER_URL}`,
   `${process.env.REACT_APP_BASE_FILE_MANAGEMENT_API_URL}${GET_ORGANIZATIONS_URL}`,
   `${process.env.REACT_APP_BASE_FILE_MANAGEMENT_API_URL}${GET_ORGANIZATION_FILES_URL}`,

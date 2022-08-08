@@ -9,6 +9,11 @@ export type UserEmail = {
   email: string;
 };
 
+export type StorageInfoResponse = {
+  maxSpace: number;
+  occupiedSpace: number;
+};
+
 export type FileContent = {
   id: number;
   name: string;

@@ -13,16 +13,23 @@ import { UserIcon } from '../../atoms/icons/user/UserIcon';
 import { FolderIcon } from '../../atoms/icons/folder/Folder';
 import { FileIcons } from '../../atoms/icons/fileIcons/FileIcons';
 
-import { MyTabs, ResponseErrorCode, ExecutionInfo } from '../../../common/types';
+import {
+  MyTabs,
+  ResponseErrorCode,
+  ExecutionInfo,
+  StorageInfoResponse
+} from '../../../common/types';
 import {
   convertSizeToMB,
+  convertToPercentages,
   errorToast,
   getCurrentDateAndTime,
   runCommandTooltip,
   showToastError,
   successToast,
   transformDateAndTime,
-  truncateString
+  truncateString,
+  updateStorage
 } from '../../../common/utility';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { getLocalUser } from '../../../store/redux/auth/authSlice';
@@ -56,6 +63,7 @@ import './dashboard.css';
 import '../../../common/styles/muiStyles.css';
 import { UserGearIcon } from '../../atoms/icons/userGear/UserGearIcon';
 import { toastMessages } from '../../../common/messages';
+import LinearProgress from '@mui/material/LinearProgress';
 
 const Dashboard = () => {
   const {
@@ -74,6 +82,7 @@ const Dashboard = () => {
   const [paramsId, setParamsId] = useState<null | string>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [inputValue, setInputValue] = useState('');
+  const [storage, setStorage] = useState<StorageInfoResponse>();
 
   const dispatch = useAppDispatch();
 
@@ -426,6 +435,9 @@ const Dashboard = () => {
     return <></>;
   };
 
+  // updateStorage(setStorage);
+  // console.log(convertToPercentages(storage?.maxSpace, storage?.occupiedSpace));
+
   return (
     <div className="dashboard">
       <div className="main-side-user">
@@ -434,6 +446,17 @@ const Dashboard = () => {
           <span className="main-side-user-info__username">{username}</span>
           <span className="main-side-user-info__email">{truncateString(email, 30)}</span>
         </div>
+        <Box sx={{ width: '10rem' }}>
+          <Tooltip
+            title={
+              convertToPercentages(storage?.maxSpace, storage?.occupiedSpace).toFixed(2) + '%'
+            }>
+            <LinearProgress
+              variant="determinate"
+              value={convertToPercentages(storage?.maxSpace, storage?.occupiedSpace)}
+            />
+          </Tooltip>
+        </Box>
       </div>
       <div className="main-content-container">
         <aside className="main-side">
@@ -493,7 +516,11 @@ const Dashboard = () => {
       </div>
       <BreadCrumbs />
       <PopUp label={'Upload File'} isOpen={modalIsOpen} closeModal={closeModal}>
-        <FileUpload closePopUp={setModalIsOpen} setPageIndex={setCurrentPage} />
+        <FileUpload
+          closePopUp={setModalIsOpen}
+          setPageIndex={setCurrentPage}
+          setStorage={setStorage}
+        />
       </PopUp>
 
       <PopUp label={'Create Folder'} isOpen={createModalIsOpen} closeModal={closeCreateModal}>

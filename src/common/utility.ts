@@ -1,10 +1,11 @@
 import { toast } from 'react-toastify';
-import { ResponseErrorCode } from './types';
+import { ResponseErrorCode, StorageInfoResponse } from './types';
 
 import errorMessageDialog from '../components/atoms/errorMessageDialog/errorMessageDialog.ts';
 
 import * as Yup from 'yup';
 import { AxiosError } from 'axios';
+import fileManagementService from '../services/fileManagementService';
 
 export const errorToast = (message: ResponseErrorCode) => {
   toast.error(errorMessageDialog(message), {
@@ -61,11 +62,14 @@ export const transformDateAndTime = (date: Date, showSeconds: boolean) => {
   ].join(' / ');
 };
 
-export const convertSizeToMB = (size: number) => {
-  if (size < 10000) {
-    return (size / 1024).toFixed(2) + ' KB';
+export const convertSizeToMB = (size: number | undefined) => {
+  if (size) {
+    if (size < 10000) {
+      return (size / 1024).toFixed(2) + ' KB';
+    }
+    return (size / 1048576).toFixed(2) + ' MB';
   }
-  return (size / 1048576).toFixed(2) + ' MB';
+  return 0;
 };
 
 export const folderTitleMaxLength = 15;
@@ -89,3 +93,21 @@ export const showToastError = (error: AxiosError) => {
 };
 
 export const runCommandTooltip = 'Execute Function';
+
+export const updateStorage = (
+  setStorage: React.Dispatch<React.SetStateAction<StorageInfoResponse | undefined>>
+) => {
+  fileManagementService.occupiedSpace().then((response) => {
+    setStorage(response);
+  });
+};
+
+export const convertToPercentages = (
+  maxSize: number | undefined,
+  occupiedSpace: number | undefined
+) => {
+  if (maxSize && occupiedSpace) {
+    return (occupiedSpace * 100) / maxSize;
+  }
+  return 0;
+};
