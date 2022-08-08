@@ -66,6 +66,8 @@ export const convertSizeToMB = (size: number | undefined) => {
   if (size) {
     if (size < 10000) {
       return (size / 1024).toFixed(2) + ' KB';
+    } else if (size >= 1073741824) {
+      return size / 1073741824 + ' GB';
     }
     return (size / 1048576).toFixed(2) + ' MB';
   }

@@ -136,6 +136,7 @@ const Dashboard = () => {
   useEffect(() => {
     dispatch(getLocalUser());
     dispatch(getUserFolders({ pageSize: 10 }));
+    updateStorage(setStorage);
   }, []);
 
   useEffect(() => {
@@ -208,6 +209,7 @@ const Dashboard = () => {
         ]);
         setDisableRunButton(false);
         dispatch(getOrganizationFiles({ organizationId: selectedFolder?.organization.id }));
+        updateStorage(setStorage);
       })
       .catch((error) => {
         setExecutionFileInfo((oldArray) =>
@@ -216,6 +218,7 @@ const Dashboard = () => {
         setDisableRunButton(false);
         showToastError(error);
         dispatch(getOrganizationFiles({ organizationId: selectedFolder?.organization.id }));
+        updateStorage(setStorage);
       });
   };
 
@@ -395,6 +398,7 @@ const Dashboard = () => {
             setCurrentPage(1);
             dispatch(getOrganizationFiles({ organizationId: selectedFolder?.organization.id }));
             setDeleteModalIsOpen(false);
+            updateStorage(setStorage);
           }
         }
       } catch (error) {
@@ -435,28 +439,33 @@ const Dashboard = () => {
     return <></>;
   };
 
-  // updateStorage(setStorage);
-  // console.log(convertToPercentages(storage?.maxSpace, storage?.occupiedSpace));
-
   return (
     <div className="dashboard">
       <div className="main-side-user">
-        <div className="main-side-user-profile">{renderUserIcon()}</div>
-        <div className="main-side-user-info">
-          <span className="main-side-user-info__username">{username}</span>
-          <span className="main-side-user-info__email">{truncateString(email, 30)}</span>
+        <div className="main-side-user-info-container">
+          <div className="main-side-user-profile">{renderUserIcon()}</div>
+          <div className="main-side-user-info">
+            <span className="main-side-user-info__username">{username}</span>
+            <Tooltip title={email ? email : 'Your email'}>
+              <span className="main-side-user-info__email">{truncateString(email, 30)}</span>
+            </Tooltip>
+          </div>
         </div>
-        <Box sx={{ width: '10rem' }}>
-          <Tooltip
-            title={
-              convertToPercentages(storage?.maxSpace, storage?.occupiedSpace).toFixed(2) + '%'
-            }>
-            <LinearProgress
-              variant="determinate"
-              value={convertToPercentages(storage?.maxSpace, storage?.occupiedSpace)}
-            />
-          </Tooltip>
-        </Box>
+        <Tooltip
+          title={convertToPercentages(storage?.maxSpace, storage?.occupiedSpace).toFixed(2) + '%'}>
+          <div className="main-side-user__storage">
+            <div className="main-side-user__storage-space">
+              {convertSizeToMB(storage?.occupiedSpace)} of {convertSizeToMB(storage?.maxSpace)} used
+            </div>
+            <Box sx={{ width: '12rem' }}>
+              <LinearProgress
+                sx={{ backgroundColor: 'var(--border-color)' }}
+                variant="determinate"
+                value={convertToPercentages(storage?.maxSpace, storage?.occupiedSpace)}
+              />
+            </Box>
+          </div>
+        </Tooltip>
       </div>
       <div className="main-content-container">
         <aside className="main-side">
