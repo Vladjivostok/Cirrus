@@ -459,7 +459,7 @@ const Dashboard = () => {
             </div>
             <Box sx={{ width: '12rem' }}>
               <LinearProgress
-                sx={{ backgroundColor: 'var(--border-color)' }}
+                sx={{ backgroundColor: 'var(--border-color)', borderRadius: '0.2rem' }}
                 variant="determinate"
                 value={convertToPercentages(storage?.maxSpace, storage?.occupiedSpace)}
               />

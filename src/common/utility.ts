@@ -104,12 +104,9 @@ export const updateStorage = (
   });
 };
 
-export const convertToPercentages = (
-  maxSize: number | undefined,
-  occupiedSpace: number | undefined
-) => {
-  if (maxSize && occupiedSpace) {
-    return (occupiedSpace * 100) / maxSize;
+export const convertToPercentages = (max: number | undefined, current: number | undefined) => {
+  if (max && current) {
+    return (current * 100) / max;
   }
   return 0;
 };
